@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "937280655422",
+    "firebase_url": "https://scope-ea55c.firebaseio.com",
+    "project_id": "scope-ea55c",
+    "storage_bucket": "scope-ea55c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:937280655422:android:7e2e294dca617e8d",
+        "android_client_info": {
+          "package_name": "com.example.felipearango.appscope"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "937280655422-trf4t79raeic5i1bp955hvkpt609tnbt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYst9HzlSDiFC_ds_zSez-z9_BsNwa9r4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
