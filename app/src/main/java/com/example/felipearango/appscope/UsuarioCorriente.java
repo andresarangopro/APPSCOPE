@@ -12,6 +12,7 @@ public class UsuarioCorriente {
     //Variables
     /////////////////////////
 
+    private String id;
     private String nombre;
     private String apellido;
     private String ocupacion;
@@ -19,13 +20,12 @@ public class UsuarioCorriente {
     private String universidad;
     private String celular;
     private String correo;
-    private String direccion;
     private String foto;
     private String frase;
-    private String idiomas;
     private String hobbies;
     private String conocimientosInformaticos;
     private ArrayList<String> anexos;
+    private ArrayList<String> idiomas;
     private ArrayList<String> experienciasProfesionales;
     private ArrayList<String> referenciasEmpleo;
     private ArrayList<String> formacion;
@@ -35,12 +35,13 @@ public class UsuarioCorriente {
     //Constructor
     /////////////////////////
 
-    public UsuarioCorriente(String nombre, String apellido, String ocupacion,
+    public UsuarioCorriente(String id, String nombre, String apellido, String ocupacion,
                             String fechaNacimiento, String universidad, String celular,
-                            String correo, String direccion, String foto, String frase,
-                            String idiomas, String hobbies, String conocimientosInformaticos,
-                            ArrayList<String> anexos, ArrayList<String> experienciasProfesionales,
+                            String correo, String foto, String frase, String hobbies,
+                            String conocimientosInformaticos, ArrayList<String> anexos,
+                            ArrayList<String> idiomas, ArrayList<String> experienciasProfesionales,
                             ArrayList<String> referenciasEmpleo, ArrayList<String> formacion) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.ocupacion = ocupacion;
@@ -48,21 +49,30 @@ public class UsuarioCorriente {
         this.universidad = universidad;
         this.celular = celular;
         this.correo = correo;
-        this.direccion = direccion;
         this.foto = foto;
         this.frase = frase;
-        this.idiomas = idiomas;
         this.hobbies = hobbies;
         this.conocimientosInformaticos = conocimientosInformaticos;
         this.anexos = anexos;
+        this.idiomas = idiomas;
         this.experienciasProfesionales = experienciasProfesionales;
         this.referenciasEmpleo = referenciasEmpleo;
         this.formacion = formacion;
     }
 
+
     //////////////////////////
     //Getters and Setters
     /////////////////////////
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNombre() {
         return nombre;
@@ -120,14 +130,6 @@ public class UsuarioCorriente {
         this.correo = correo;
     }
 
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
     public String getFoto() {
         return foto;
     }
@@ -142,14 +144,6 @@ public class UsuarioCorriente {
 
     public void setFrase(String frase) {
         this.frase = frase;
-    }
-
-    public String getIdiomas() {
-        return idiomas;
-    }
-
-    public void setIdiomas(String idiomas) {
-        this.idiomas = idiomas;
     }
 
     public String getHobbies() {
@@ -174,6 +168,14 @@ public class UsuarioCorriente {
 
     public void setAnexos(ArrayList<String> anexos) {
         this.anexos = anexos;
+    }
+
+    public ArrayList<String> getIdiomas() {
+        return idiomas;
+    }
+
+    public void setIdiomas(ArrayList<String> idiomas) {
+        this.idiomas = idiomas;
     }
 
     public ArrayList<String> getExperienciasProfesionales() {
