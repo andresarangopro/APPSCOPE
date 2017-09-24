@@ -23,6 +23,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -35,6 +38,7 @@ public class ScreenRegister extends AppCompatActivity {
     private EditText txtName,txtSNombre, txtPrimerA, txtSegundoA,txtUniversidad, txtCorreo,
             txtPass, txtPassC, txtPhone;
     private TextView lblDateInf,lblDisponibilidad,lblDateBorn;
+    private DatabaseReference databaseReference;
     private ImageButton iBtnSelectDateB;
     private RadioGroup rGDisponibilidadViaje;
     private Spinner spOcupation;
@@ -56,11 +60,19 @@ public class ScreenRegister extends AppCompatActivity {
         onClicklistener();
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
+        initializedDR();
     }
+
+
 
     ////////////////////////////////
     //Metodos
     ////////////////////////////////
+
+
+    private void initializedDR() {
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+    }
 
     /**
      *
@@ -96,6 +108,18 @@ public class ScreenRegister extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String mail = getTxtEdit(txtCorreo);
+                String pass = getTxtEdit(txtPass);
+                String passC = getTxtEdit(txtPassC);
+
+                if(!campEmpty(pass) && !campEmpty(passC) && !campEmpty(mail) && comprobarCampos()){
+                    if(comprobarPass(pass,passC)){
+                        registerUser(mail,pass);
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(),"Campos vacios",Toast.LENGTH_LONG).show();
+                }
+
 
             }
         });
@@ -129,9 +153,20 @@ public class ScreenRegister extends AppCompatActivity {
         }
     };
 
+    private boolean comprobarCampos(){
+        String name =getTxtEdit(txtName);
+        String apellido = getTxtEdit(txtPrimerA);
+        String dateBorn = lblDateBorn.getText().toString();
+        String universidad = getTxtEdit(txtUniversidad);
+        String celular = getTxtEdit(txtPhone);
+
+        return !campEmpty(name) && !campEmpty(apellido) && !campEmpty(dateBorn) && !campEmpty(universidad)
+                    && !campEmpty(celular);
+    }
+
     /**
      *
-     * @param id
+     *
      * @param txtName
      * @param sNombre
      * @param txtPrimerA
@@ -152,16 +187,15 @@ public class ScreenRegister extends AppCompatActivity {
      * @param refEmpleo
      * @param formacion
      */
-    private void tomarDatos(String id, String txtName, String sNombre, String txtPrimerA, String txtSegundoA
+    private UsuarioCorriente tomarDatos(String id,String txtName, String sNombre, String txtPrimerA, String txtSegundoA
                             , String ocupacion, String dateBorn , String txtUniversidad, String txtPhone,
                             String txtCorreo, String txtFoto, String txtFrase, String hobbies,
                             String conocimientosInf, int disponibilidadViaje, ArrayList<String> anexos,
                             ArrayList<String> idiomas, ArrayList<String> expProfesionales,
                             ArrayList<String> refEmpleo,ArrayList<String> formacion){
 
-        if(!campEmpty(id) && !campEmpty(txtName) && !campEmpty(txtPrimerA) && !campEmpty(txtUniversidad)
-               && !campEmpty(txtCorreo) && !campEmpty(dateBorn) && !campEmpty(disponibilidadViaje+"")
-                && !campEmpty(ocupacion)){
+        if(!campEmpty(txtName) && !campEmpty(txtPrimerA) && !campEmpty(txtUniversidad)
+               && !campEmpty(txtCorreo) && !campEmpty(dateBorn)){
                 String nombre = txtName+" "+sNombre;
                 String apellido = txtPrimerA+" "+txtSegundoA;
                 UsuarioCorriente uC = new UsuarioCorriente(id,nombre,apellido,ocupacion,dateBorn,
@@ -169,9 +203,10 @@ public class ScreenRegister extends AppCompatActivity {
                                                             txtFrase, hobbies, conocimientosInf,
                                                              anexos,idiomas,expProfesionales,
                                                                 refEmpleo,formacion);
+            return uC;
         }
 
-
+        return null;
     }
 
     /**
@@ -180,28 +215,116 @@ public class ScreenRegister extends AppCompatActivity {
      * @param pass Contraseña del usuario que se esta registrando
      */
     private void registerUser(String mail, String pass) {
+        final String mail1 = mail;
+        final String pass1 = pass;
         firebaseAuth.createUserWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(ScreenRegister.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-
                         if (task.isSuccessful()) {
                             Toast.makeText(ScreenRegister.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
                            // finish();
                             //startActivity(new Intent(ScreenRegister.this, MainActivity.class));
+                            loginUser(mail1,pass1);
+
                         } else {
-                            progressDialog.dismiss();
                             Toast.makeText(ScreenRegister.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
                         }
-                        progressDialog.dismiss();
                     }
                 });
     }
 
+    /**
+     *
+     * @param mail
+     * @param pass
+     */
+    private void loginUser(String mail, String pass){
+       // progressDialog.setMessage("Login user, please wait...");
+        //progressDialog.show();
+
+        firebaseAuth.signInWithEmailAndPassword(mail,pass)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                       // progressDialog.dismiss();
+                        if(task.isSuccessful()){
+                            creaUsuario();
+                        }else{
+                            Toast.makeText(ScreenRegister.this,"Datos errados",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+
+    public void creaUsuario (){
+        String id = "";
+        String name =getTxtEdit(txtName);
+        String sName = getTxtEdit(txtSNombre);
+        String apellido = getTxtEdit(txtPrimerA);
+        String sApellido = getTxtEdit(txtSegundoA);
+        String ocupacion = "";
+        String dateBorn = lblDateBorn.getText().toString();
+        String universidad = getTxtEdit(txtUniversidad);
+        String celular = getTxtEdit(txtPhone);
+        String foto = "";
+        String frase = "";
+        String hobbies = "";
+        String conocimientosInf = "";
+        int disponibilidadV = 0;
+        ArrayList<String> anexos = new ArrayList<String>();
+        ArrayList<String> idiomas = new ArrayList<String>();
+        ArrayList<String> expProfesionaless = new ArrayList<String>();
+        ArrayList<String> refEmpleo = new ArrayList<String>();
+        ArrayList<String> formacion = new ArrayList<String>();
+        String mail = getTxtEdit(txtCorreo);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        id = user.getUid();
+        // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
+        UsuarioCorriente uC =  tomarDatos(id,name,sName,apellido,sApellido,ocupacion,dateBorn,universidad
+                ,celular,mail,foto,frase,hobbies,conocimientosInf,disponibilidadV
+                ,anexos,idiomas,expProfesionaless,refEmpleo,formacion);
+
+        if(uC != null){
+            insertarUsCFireBase(uC,user);
+        }
+    }
+
+    /**
+     *
+     * @param uC
+     */
+    private void insertarUsCFireBase(UsuarioCorriente uC,FirebaseUser user){
+        databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
+        finish();
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+    }
+
+    /**
+     *
+     * @param camp
+     * @param camp2
+     * @return
+     */
+    private boolean comprobarPass(String camp, String camp2){
+        return camp.equals(camp2);
+    }
+
+    /**
+     *
+     * @param campo
+     * @return
+     */
     private boolean campEmpty(String campo){
         return TextUtils.isEmpty(campo);
     }
 
+    /**
+     *
+     * @param txt
+     * @return
+     */
     private String getTxtEdit(EditText txt){
         return txt.getText().toString();
     }
