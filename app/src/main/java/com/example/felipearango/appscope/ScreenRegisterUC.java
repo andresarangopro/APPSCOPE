@@ -2,7 +2,6 @@ package com.example.felipearango.appscope;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -29,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class ScreenRegister extends AppCompatActivity {
+public class ScreenRegisterUC extends AppCompatActivity {
 
     ///////////////////////////////
     //Variables
@@ -218,17 +217,17 @@ public class ScreenRegister extends AppCompatActivity {
         final String mail1 = mail;
         final String pass1 = pass;
         firebaseAuth.createUserWithEmailAndPassword(mail, pass)
-                .addOnCompleteListener(ScreenRegister.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(ScreenRegisterUC.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(ScreenRegister.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ScreenRegisterUC.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
                            // finish();
-                            //startActivity(new Intent(ScreenRegister.this, MainActivity.class));
+                            //startActivity(new Intent(ScreenRegisterUC.this, MainActivity.class));
                             loginUser(mail1,pass1);
 
                         } else {
-                            Toast.makeText(ScreenRegister.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
+                            Toast.makeText(ScreenRegisterUC.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -251,7 +250,7 @@ public class ScreenRegister extends AppCompatActivity {
                         if(task.isSuccessful()){
                             creaUsuario();
                         }else{
-                            Toast.makeText(ScreenRegister.this,"Datos errados",Toast.LENGTH_LONG).show();
+                            Toast.makeText(ScreenRegisterUC.this,"Datos errados",Toast.LENGTH_LONG).show();
                         }
                     }
                 });

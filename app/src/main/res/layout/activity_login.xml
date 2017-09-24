@@ -69,23 +69,21 @@
             android:weightSum="2"
             android:orientation="vertical">
             <TextView
+
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/lblForgotPass"
-                style="@style/txtLogin"
                 android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:text="Forgot Password?"
-                android:textAlignment="center" />
+                android:text="@string/text_forgotPass"/>
             <TextView
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/lblregister"
-                style="@style/txtLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="Register account"
-                android:textAlignment="center"/>
+                android:text="@string/text_register"
+                />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

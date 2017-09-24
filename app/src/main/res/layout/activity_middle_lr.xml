@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.felipearango.appscope.MiddleLR"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <ImageButton
+            android:id="@+id/iBtnCompany"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_weight="0.87"
+            app:srcCompat="@android:drawable/ic_menu_today" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/iBtnUser"
+            android:layout_width="wrap_content"
+            android:layout_height="210dp"
+            android:layout_weight="0.17"
+            app:srcCompat="@android:drawable/ic_menu_myplaces" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

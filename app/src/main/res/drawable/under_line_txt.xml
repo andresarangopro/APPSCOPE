@@ -9,11 +9,11 @@
 
             <corners android:radius="1dp" />
 
-            <padding android:bottom="10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
+            <padding android:bottom="-10dp" android:left="10dp" android:right="10dp" android:top="10dp" />
         </shape></item>
     </layer-list></item>
     <item android:state_enabled="true" android:state_focused="true"><layer-list>
-        <item android:bottom="10dp" android:left="-10dp" android:right="-10dp" android:top="-10dp"> <shape android:shape="rectangle">
+        <item android:bottom="10dp" android:left="10dp" android:right="-10dp" android:top="-10dp"> <shape android:shape="rectangle">
 
             <stroke android:width="2px" android:color="#ff8c00" />
 

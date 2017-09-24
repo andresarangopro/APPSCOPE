@@ -77,7 +77,8 @@ public class Login extends AppCompatActivity {
         lblRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Login.this,ScreenRegister.class));
+                finish();
+                startActivity(new Intent(Login.this,MiddleLR.class));
             }
         });
 
