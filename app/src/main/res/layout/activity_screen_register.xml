@@ -1,314 +1,206 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:weightSum="8"
+    android:orientation="vertical"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginLeft="16dp"
     tools:context="com.example.felipearango.appscope.ScreenRegisterUC">
 
-    <EditText
-        android:id="@+id/txtPrimerA"
-        android:layout_width="162dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:hint="Primer Apellido"
-        android:inputType="textPersonName"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline12"
-        android:layout_marginTop="0dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="horizontal">
 
-    <EditText
-        android:id="@+id/txtName"
-        android:layout_width="162dp"
-        android:layout_height="42dp"
-        android:ems="10"
-        android:hint="Nombre"
-        android:inputType="textPersonName"
-        tools:layout_editor_absoluteY="16dp"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
-    <EditText
-        android:id="@+id/txtSNombre"
-        android:layout_width="176dp"
-        android:layout_height="42dp"
-        android:layout_marginLeft="0dp"
-        android:ems="10"
-        android:hint="Segundo Nombre"
-        android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline9"
-        app:layout_constraintTop_toTopOf="@+id/guideline11"
-        android:layout_marginTop="0dp" />
-
-    <EditText
-        android:id="@+id/txtSegundoA"
-        android:layout_width="176dp"
-        android:layout_height="41dp"
-        android:layout_marginLeft="0dp"
-        android:ems="10"
-        android:hint="Segundo Apellido"
-        android:inputType="textPersonName"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline9"
-        app:layout_constraintTop_toTopOf="@+id/guideline12"
-        android:layout_marginTop="0dp" />
-
-    <Spinner
-        android:id="@+id/spOcupacion"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline19"
-        android:layout_marginTop="0dp" />
-
-    <TextView
-        android:id="@+id/lblDateBorn"
-        android:layout_width="136dp"
-        android:layout_height="40dp"
-        android:text="22/08/2017"
-        android:textSize="24dp"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline14"
-        android:layout_marginTop="0dp" />
-
-    <ImageButton
-        android:id="@+id/IBtnSelectDateB"
-        android:layout_width="45dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="0dp"
-        app:layout_constraintLeft_toRightOf="@+id/lblDateBorn"
-        app:layout_constraintTop_toTopOf="@+id/guideline14"
-        app:srcCompat="@android:drawable/ic_menu_edit" />
-
-    <EditText
-        android:id="@+id/txtUniversidad"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="0dp"
-        android:ems="10"
-        android:hint="Universidad o insituto"
-        android:textAlignment="center"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline15"
-        android:layout_marginTop="0dp"
-        app:layout_constraintHorizontal_bias="1.0" />
-
-    <EditText
-        android:id="@+id/txtCorreo"
-        android:layout_width="0dp"
-        android:layout_height="45dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:ems="10"
-        android:hint="Correo"
-        android:inputType="textEmailAddress"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline8"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline17" />
-
-    <EditText
-        android:id="@+id/txtPhone"
-        android:layout_width="164dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="0dp"
-        android:ems="10"
-        android:hint="Celular"
-        android:inputType="phone"
-        app:layout_constraintTop_toTopOf="@+id/guideline"
-        tools:layout_editor_absoluteX="110dp" />
-
-    <EditText
-        android:id="@+id/txtPass"
-        android:layout_width="164dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline18"
-        tools:layout_editor_absoluteY="337dp" />
-
-    <EditText
-        android:id="@+id/txtPassC"
-        android:layout_width="181dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp"
-        android:ems="10"
-        android:hint="Confirmar Password"
-        android:inputType="textPassword"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline9"
-        app:layout_constraintTop_toTopOf="@+id/guideline18" />
-
-    <TextView
-        android:id="@+id/lblDisponibilidad"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Disponibilidad de viajar?"
-        android:textAlignment="center"
-        android:layout_marginLeft="27dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline9"
-        app:layout_constraintTop_toTopOf="@+id/guideline13"
-        android:layout_marginTop="0dp" />
-
-    <RadioGroup
-        android:layout_width="123dp"
-        android:layout_height="32dp"
-        android:id="@+id/rGDisponibilidadViaje"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="@+id/guideline14"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline20">
-
-        <RadioButton
-            android:id="@+id/radioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <EditText
+            android:id="@+id/txtName"
             android:layout_weight="1"
-            android:text="Si" />
-
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="Nombre"
+            android:inputType="textPersonName"/>
+        <EditText
+            android:id="@+id/txtSNombre"
             android:layout_weight="1"
-            android:text="No" />
-    </RadioGroup>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="Segundo Nombre"
+            android:inputType="textPersonName" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/lblDateInf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fecha de nacimiento:"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline8"
-        app:layout_constraintTop_toTopOf="@+id/guideline13"
-        android:layout_marginTop="0dp" />
+        <EditText
+            android:id="@+id/txtPrimerA"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="Primer Apellido"
+            android:inputType="textPersonName"
+            android:layout_marginLeft="0dp" />
+        <EditText
+            android:id="@+id/txtSegundoA"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:hint="Segundo Apellido"
+            android:inputType="textPersonName" />
 
-    <Button
-        android:id="@+id/btnRegistrar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrar"
-        app:layout_constraintTop_toTopOf="@+id/guideline10"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="0dp"
-        style="@style/btnTap1"
-        app:layout_constraintLeft_toLeftOf="@+id/guideline21" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <Spinner
+            android:layout_weight="1"
+            android:id="@+id/spOcupacion"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
 
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guideline8"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="368dp" />
+        <EditText
+            android:hint="Fecha de nacimiento"
+            android:datePickerMode="calendar"
+            android:id="@+id/lblDateBorn"
+            android:focusable="false"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guideline9"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/txtUniversidad"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Universidad o instituto"
+            android:inputType="textPersonName"/>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.59" />
+        <EditText
+            android:id="@+id/txtCorreo"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Correo"
+            android:inputType="textEmailAddress"
+            android:textAlignment="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/txtPhone"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Teléfono"/>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.37" />
+        <EditText
+            android:id="@+id/txtPass"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Password"
+            android:inputType="textPassword" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="2"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/txtPassC"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:hint="Confirmar Password"/>
 
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guideline10"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.88" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:weightSum="2"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/lblDisponibilidad"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="Disponibilidad de viajar?"
+                android:textAlignment="center" />
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rGDisponibilidadViaje"
+                    android:orientation="horizontal"
+                    app:layout_constraintTop_toTopOf="@+id/guideline14"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="0dp"
+                    app:layout_constraintLeft_toLeftOf="@+id/guideline20">
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.78" />
+                    <RadioButton
+                        android:id="@+id/radioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Si" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline18"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.58" />
+                    <RadioButton
+                        android:id="@+id/radioButton2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="No" />
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline17"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.47" />
+    <LinearLayout
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:weightSum="3">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"></LinearLayout>
+        <Button
+            android:id="@+id/btnRegistrar"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Registrar"
+            style="@style/btnTap1" />
+    </LinearLayout>
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.37" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.27" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.22" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline12"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.11" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline11"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.01" />
-
-    <android.support.constraint.Guideline
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/guideline"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.67906064" />
-
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ScreenRegisterUC extends AppCompatActivity {
 
@@ -36,7 +37,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
 
     private EditText txtName,txtSNombre, txtPrimerA, txtSegundoA,txtUniversidad, txtCorreo,
             txtPass, txtPassC, txtPhone;
-    private TextView lblDateInf,lblDisponibilidad,lblDateBorn;
+    private TextView lblDisponibilidad,lblDateBorn;
     private DatabaseReference databaseReference;
     private ImageButton iBtnSelectDateB;
     private RadioGroup rGDisponibilidadViaje;
@@ -60,6 +61,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         initializedDR();
+        chooseDate();
     }
 
 
@@ -87,11 +89,9 @@ public class ScreenRegisterUC extends AppCompatActivity {
         txtPassC = (EditText) findViewById(R.id.txtPassC);
         txtPhone = (EditText) findViewById(R.id.txtPhone);
 
-        lblDateInf = (TextView) findViewById(R.id.lblDateInf);
         lblDisponibilidad = (TextView) findViewById(R.id.lblDisponibilidad);
         lblDateBorn = (TextView) findViewById(R.id.lblDateBorn);
 
-        iBtnSelectDateB = (ImageButton) findViewById(R.id.IBtnSelectDateB);
 
         rGDisponibilidadViaje = (RadioGroup) findViewById(R.id.rGDisponibilidadViaje);
 
@@ -122,35 +122,41 @@ public class ScreenRegisterUC extends AppCompatActivity {
 
             }
         });
-        iBtnSelectDateB.setOnClickListener(new View.OnClickListener() {
+    }
+
+
+    private void chooseDate(){
+
+        final Calendar calendar = Calendar.getInstance();
+        final int yy = calendar.get(Calendar.YEAR);
+        final int mm = calendar.get(Calendar.MONTH);
+        final int dd = calendar.get(Calendar.DAY_OF_MONTH);
+        lblDateBorn.setText(dd+"/"+mm+"/"+yy);
+        lblDateBorn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-               showDialog(0);
+            public void onClick(View view) {
+                Calendar mcurrentDate=Calendar.getInstance();
+                int mYear=mcurrentDate.get(Calendar.YEAR);
+                int mMonth=mcurrentDate.get(Calendar.MONTH);
+                int mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker=new DatePickerDialog(ScreenRegisterUC.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+
+                        actualizarFecha(selectedday+"/"+selectedmonth+"/"+selectedyear);
+
+                    }
+                },mYear, mMonth, mDay);
+
+                mDatePicker.setTitle("Seleccione su fecha de nacimiento");
+                mDatePicker.show();
             }
         });
     }
 
-    /**
-     *
-     * @param id
-     * @return
-     */
-    protected Dialog onCreateDialog(int id){
-        return new DatePickerDialog(this, datePickerLister, yearS, monthS, day);
+    private void actualizarFecha(String fecha){
+        lblDateBorn.setText(fecha);
     }
-
-    /**
-     *
-     */
-    private DatePickerDialog.OnDateSetListener datePickerLister = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            day = dayOfMonth;
-            monthS = month;
-            yearS = year;
-            lblDateBorn.setText(day+"/"+(monthS+1)+"/"+yearS);
-        }
-    };
 
     private boolean comprobarCampos(){
         String name =getTxtEdit(txtName);
