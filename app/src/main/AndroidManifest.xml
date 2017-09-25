@@ -22,11 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity" />
+        <activity android:name=".MainActivity" />
         <activity android:name=".ScreenRegisterUC" />
         <activity android:name=".MiddleLR" />
-        <activity android:name=".ScreenRegisterE"></activity>
+        <activity android:name=".ScreenRegisterE" />
+        <activity android:name=".Perfil"></activity>
     </application>
 
 </manifest>

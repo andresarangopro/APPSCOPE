@@ -42,6 +42,7 @@ public class Login extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         verificaSignIn();
+        btnTest();
     }
 
     ////////////////////////
@@ -126,6 +127,13 @@ public class Login extends AppCompatActivity {
         return txt.getText().toString();
     }
 
-
+    private void btnTest(){
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent( getApplicationContext(), Perfil.class));
+            }
+        });
+    }
 
 }
