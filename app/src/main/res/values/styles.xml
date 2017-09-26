@@ -23,7 +23,7 @@
 
     <style name="btnTap1">
         <item name="android:background">@drawable/mybutton</item>
-        <item name="android:textColor">#494646</item>
+        <item name="android:textColor">@color/colorAccent</item>
         <item name="android:layout_marginBottom">1dp</item>
         <item name="android:shadowDx">10</item>
         <item name="android:shadowRadius">1.8</item>

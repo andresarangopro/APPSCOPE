@@ -4,37 +4,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginLeft="16dp"
     tools:context="com.example.felipearango.appscope.MiddleLR"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
+        android:textAlignment="center"
+        android:textColor="@color/textoSecundario"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:textSize="25dp"
+        android:text="Eres..."/>
 
-
-        <ImageButton
-            android:id="@+id/iBtnCompany"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_weight="0.87"
-            app:srcCompat="@android:drawable/ic_menu_today" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <TextView
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorAccent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:textSize="20dp"
+        android:text="¿Usuario o empresa?"/>
 
-        <ImageButton
+
+    <LinearLayout
+        android:layout_marginTop="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="2">
+
+
+        <Button
+            android:text="Usuario"
+            android:layout_marginRight="10dp"
+            style="@style/btnTap1"
             android:id="@+id/iBtnUser"
-            android:layout_width="wrap_content"
-            android:layout_height="210dp"
-            android:layout_weight="0.17"
-            app:srcCompat="@android:drawable/ic_menu_myplaces" />
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:text="Empresa"
+            android:layout_marginLeft="10dp"
+            style="@style/btnTap1"
+            android:id="@+id/iBtnCompany"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
-
-
-
 </LinearLayout>

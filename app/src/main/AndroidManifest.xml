@@ -26,7 +26,11 @@
         <activity android:name=".ScreenRegisterUC" />
         <activity android:name=".MiddleLR" />
         <activity android:name=".ScreenRegisterE" />
-        <activity android:name=".Perfil"></activity>
+        <activity android:name=".Perfil" />
+        <activity
+            android:name=".RegistroEmail"
+            android:label="@string/title_activity_registro_email"
+            android:theme="@style/MyTheme" />
     </application>
 
 </manifest>
