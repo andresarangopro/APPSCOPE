@@ -4,42 +4,38 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
-public class MiddleLR extends AppCompatActivity {
+public class MiddleLR extends AppCompatActivity implements View.OnClickListener{
 
-    private ImageButton iBtnCompany, iBtnUser;
+    private Button iBtnCompany, iBtnUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_middle_lr);
         instanceXml();
-        setListenerBtn();
+
     }
 
     private void instanceXml(){
-        iBtnCompany = (ImageButton) findViewById(R.id.iBtnCompany);
-        iBtnUser = (ImageButton) findViewById(R.id.iBtnUser);
+        iBtnCompany = (Button) findViewById(R.id.iBtnCompany);
+        iBtnCompany.setOnClickListener(this);
+        iBtnUser = (Button) findViewById(R.id.iBtnUser);
+        iBtnUser.setOnClickListener(this);
     }
 
-    private void setListenerBtn(){
-        this.iBtnCompany.setOnClickListener(this.buttonClickListener);
-        this.iBtnUser.setOnClickListener(this.buttonClickListener);
 
+    @Override
+    public void onClick(View view) {
+        if(view == iBtnCompany){
+            finish();
+            startActivity(new Intent(MiddleLR.this,ScreenRegisterE.class));
+        }
+        if(view == iBtnUser){
+            finish();
+            startActivity(new Intent(MiddleLR.this,ScreenRegisterUC.class));
+        }
     }
-
-   public View.OnClickListener buttonClickListener = new View.OnClickListener() {
-       @Override
-       public void onClick(View v) {
-           if(v == iBtnCompany){
-               finish();
-               startActivity(new Intent(MiddleLR.this,ScreenRegisterE.class));
-           }
-           if(v == iBtnUser){
-               finish();
-               startActivity(new Intent(MiddleLR.this,ScreenRegisterUC.class));
-           }
-       }
-   };
 }
