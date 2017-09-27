@@ -168,7 +168,7 @@ public class Login extends AppCompatActivity {
 
     private void existIsEmpres(){
         final String[] exist = {""};
-        databaseReference.child("EmpresaUser").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("EmpresaUsers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();

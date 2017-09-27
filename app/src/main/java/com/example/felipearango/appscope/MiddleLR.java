@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 public class MiddleLR extends AppCompatActivity {
 
-    private ImageButton iBtnCompany, iBtnUser;
+    private Button iBtnCompany, iBtnUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,8 +20,8 @@ public class MiddleLR extends AppCompatActivity {
     }
 
     private void instanceXml(){
-        iBtnCompany = (ImageButton) findViewById(R.id.iBtnCompany);
-        iBtnUser = (ImageButton) findViewById(R.id.iBtnUser);
+        iBtnCompany = (Button) findViewById(R.id.iBtnCompany);
+        iBtnUser = (Button) findViewById(R.id.iBtnUser);
     }
 
     private void setListenerBtn(){
