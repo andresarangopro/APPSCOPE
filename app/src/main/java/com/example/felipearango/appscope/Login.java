@@ -41,8 +41,6 @@ public class Login extends AppCompatActivity {
 
     //////////////////////////
     //Oncreate
-    /////////////////////////
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +53,8 @@ public class Login extends AppCompatActivity {
         inicializatedFireBase();
        // btnTest();
     }
+
+    /////////////////////////
 
     ////////////////////////
     //Metodos
