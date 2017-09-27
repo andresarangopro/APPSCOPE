@@ -49,8 +49,8 @@ public class Login extends AppCompatActivity {
         onclickList();
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
-        verificaSignIn();
         inicializatedFireBase();
+        verificaSignIn();
        // btnTest();
     }
 
@@ -78,8 +78,9 @@ public class Login extends AppCompatActivity {
      */
     private void verificaSignIn(){
         if(firebaseAuth.getCurrentUser() != null){
-            finish();
-            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+            //finish();
+           // startActivity(new Intent(getApplicationContext(),MainActivity.class));
+           existIsCorrientU();
         }
     }
     /**
@@ -142,6 +143,7 @@ public class Login extends AppCompatActivity {
         }
         databaseReference = firebaseDatabase.getReference();
     }
+
 
     private void existIsCorrientU(){
 
