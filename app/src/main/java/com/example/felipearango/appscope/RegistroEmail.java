@@ -37,6 +37,7 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         startComponents();
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
     }
 
     private void startComponents(){

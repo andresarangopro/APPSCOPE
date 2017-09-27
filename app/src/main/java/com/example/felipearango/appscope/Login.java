@@ -17,6 +17,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
 
@@ -28,7 +34,10 @@ public class Login extends AppCompatActivity {
     private TextView lblForgotPass, lblRegister;
     private Button signIn;
     private ProgressDialog progressDialog;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
+    public static boolean calledAlready = false;
 
     //////////////////////////
     //Oncreate
@@ -41,7 +50,8 @@ public class Login extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         verificaSignIn();
-        btnTest();
+        inicializatedFireBase();
+       // btnTest();
     }
 
     /////////////////////////
@@ -111,13 +121,72 @@ public class Login extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if(task.isSuccessful()){
-                            finish();
-                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            existIsCorrientU();
+                           // finish();
+                          //  startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         }else{
                             Toast.makeText(Login.this,"Datos errados",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
+    }
+
+    /**
+     *
+     */
+    private void inicializatedFireBase(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        if (!calledAlready) {
+            firebaseDatabase.setPersistenceEnabled(true);
+            calledAlready = true;
+        }
+        databaseReference = firebaseDatabase.getReference();
+    }
+
+    private void existIsCorrientU(){
+
+        final String[] exist = {""};
+        databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                exist[0] =  dataSnapshot.child(user.getUid()).toString()+"";
+                if(dataSnapshot.child(user.getUid()).getValue() == null){
+                    existIsEmpres();
+                }else{
+                    finish();
+                    startActivity(new Intent(Login.this,MainActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void existIsEmpres(){
+        final String[] exist = {""};
+        databaseReference.child("EmpresaUser").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                exist[0] =  dataSnapshot.child(user.getUid()).toString()+"";
+                if(dataSnapshot.child(user.getUid()).getValue() == null){
+                    finish();
+                    startActivity(new Intent(Login.this,MiddleLR.class));
+                }else{
+                    finish();
+                    startActivity(new Intent(Login.this,MainActivity.class));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private boolean campEmpty(String campo){
