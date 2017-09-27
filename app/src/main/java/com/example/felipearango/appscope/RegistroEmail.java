@@ -30,7 +30,7 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private Button iBtnCompany, iBtnUser;
-
+    private static final String ESTADO_NUEVA = "NUEVA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +61,16 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
         if(checkEditText()){
-            registerUser(email.getText().toString(), contraseña.getText().toString());
             int vista = view.getId();
             switch(vista){
                 case R.id.iBtnCompany:{
-                    startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
+                   //registerUser(email.getText().toString(), contraseña.getText().toString());
+                   // startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
                     break;
                 }
                 case R.id.iBtnUser: {
-                    startActivity(new Intent(getApplicationContext(), ScreenRegisterE.class));
+                    //startActivity(new Intent(getApplicationContext(), ScreenRegisterE.class));
+                    registerUser(email.getText().toString(), contraseña.getText().toString());
                     break;
                 }
             }
@@ -93,28 +94,12 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         return valido;
     }
 
+
     /**
-     * @param mail
-     * @param pass
+     * Metodo register metodo que registra un usuario inexistente
+     * @param mail Correo del usuario nuevo a registrar
+     * @param pass Contraseña del usuario que se esta registrando
      */
-    private void loginUser(String mail, String pass){
-        // progressDialog.setMessage("Login user, please wait...");
-        //progressDialog.show();
-        firebaseAuth.signInWithEmailAndPassword(mail,pass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // progressDialog.dismiss();
-                        if(task.isSuccessful()){
-                            startActivity(new Intent(getApplicationContext(),MiddleLR.class));
-                        }else{
-                            Toast.makeText(getApplicationContext(),"Datos errados",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }
-
-
     private void registerUser(String mail, String pass) {
         final String mail1 = mail;
         final String pass1 = pass;
@@ -124,6 +109,8 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Toast.makeText(RegistroEmail.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
+                            // finish();
+                            //startActivity(new Intent(ScreenRegisterUC.this, MainActivity.class));
                             loginUser(mail1,pass1);
                         } else {
                             Toast.makeText(RegistroEmail.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
@@ -131,4 +118,70 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
                     }
                 });
     }
+
+    /**
+     *
+     * @param mail
+     * @param pass
+     */
+    private void loginUser(String mail, String pass){
+        // progressDialog.setMessage("Login user, please wait...");
+        //progressDialog.show();
+
+        firebaseAuth.signInWithEmailAndPassword(mail,pass)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // progressDialog.dismiss();
+                        if(task.isSuccessful()){
+                            creaUsuario();
+                        }else{
+                            Toast.makeText(RegistroEmail.this,"Datos errados",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+    }
+
+
+    public void creaUsuario (){
+        String id = "";
+        String name ="";
+        String apellido = "";
+        String ocupacion = "";
+        String dateBorn = "";
+        String universidad ="";
+        String celular = "";
+        String foto = "";
+        String frase = "";
+        String hobbies = "";
+        String conocimientosInf = "";
+        ArrayList<String> anexos = new ArrayList<String>();
+        ArrayList<String> idiomas = new ArrayList<String>();
+        ArrayList<String> expProfesionaless = new ArrayList<String>();
+        ArrayList<String> refEmpleo = new ArrayList<String>();
+        ArrayList<String> formacion = new ArrayList<String>();
+        String mail = "";
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        id = user.getUid();
+        mail = user.getEmail();
+        // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
+        UsuarioCorriente uC = new UsuarioCorriente(id,name,apellido,ocupacion,dateBorn,universidad
+                ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,
+                anexos,idiomas,expProfesionaless,refEmpleo,formacion);
+        if(uC != null){
+            insertarUsCFireBase(uC,user);
+        }
+    }
+
+    /**
+     *
+     * @param uC
+     */
+    private void insertarUsCFireBase(UsuarioCorriente uC,FirebaseUser user){
+        databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
+        finish();
+        startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
+        //startActivity(new Intent(getApplicationContext(),MainActivity.class));
+    }
+
 }

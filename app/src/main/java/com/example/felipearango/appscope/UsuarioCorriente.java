@@ -24,6 +24,7 @@ public class UsuarioCorriente {
     private String frase;
     private String hobbies;
     private String conocimientosInformaticos;
+    private String estadoCuenta;
     private ArrayList<String> anexos;
     private ArrayList<String> idiomas;
     private ArrayList<String> experienciasProfesionales;
@@ -38,8 +39,9 @@ public class UsuarioCorriente {
     public UsuarioCorriente(String id, String nombre, String apellido, String ocupacion,
                             String fechaNacimiento, String universidad, String celular,
                             String correo, String foto, String frase, String hobbies,
-                            String conocimientosInformaticos, ArrayList<String> anexos,
-                            ArrayList<String> idiomas, ArrayList<String> experienciasProfesionales,
+                            String conocimientosInformaticos, String estadoCuenta,
+                            ArrayList<String> anexos, ArrayList<String> idiomas,
+                            ArrayList<String> experienciasProfesionales,
                             ArrayList<String> referenciasEmpleo, ArrayList<String> formacion) {
         this.id = id;
         this.nombre = nombre;
@@ -53,6 +55,7 @@ public class UsuarioCorriente {
         this.frase = frase;
         this.hobbies = hobbies;
         this.conocimientosInformaticos = conocimientosInformaticos;
+        this.estadoCuenta = estadoCuenta;
         this.anexos = anexos;
         this.idiomas = idiomas;
         this.experienciasProfesionales = experienciasProfesionales;
@@ -160,6 +163,14 @@ public class UsuarioCorriente {
 
     public void setConocimientosInformaticos(String conocimientosInformaticos) {
         this.conocimientosInformaticos = conocimientosInformaticos;
+    }
+
+    public String getEstadoCuenta() {
+        return estadoCuenta;
+    }
+
+    public void setEstadoCuenta(String estadoCuenta) {
+        this.estadoCuenta = estadoCuenta;
     }
 
     public ArrayList<String> getAnexos() {

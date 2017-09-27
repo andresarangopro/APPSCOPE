@@ -38,6 +38,7 @@ public class Login extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase;
     private FirebaseAuth firebaseAuth;
     public static boolean calledAlready = false;
+    private UsuarioCorriente uC = null;
 
     //////////////////////////
     //Oncreate
@@ -51,6 +52,7 @@ public class Login extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         inicializatedFireBase();
         verificaSignIn();
+
        // btnTest();
     }
 
@@ -146,19 +148,22 @@ public class Login extends AppCompatActivity {
 
 
     private void existIsCorrientU(){
-
-        final String[] exist = {""};
         databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                exist[0] =  dataSnapshot.child(user.getUid()).toString()+"";
-                if(dataSnapshot.child(user.getUid()).getValue() == null){
+               // uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
+
+                Log.i("DATE",dataSnapshot.child(user.getUid()).toString());
+            /**    if(dataSnapshot.child(user.getUid()).getValue() == null){
                     existIsEmpres();
+                }else if(uC.getEstadoCuenta().equals("NUEVA")){
+                    finish();
+                    startActivity(new Intent(Login.this,ScreenRegisterE.class));
                 }else{
                     finish();
                     startActivity(new Intent(Login.this,MainActivity.class));
-                }
+                }*/
             }
 
             @Override

@@ -46,7 +46,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private int day,monthS,yearS;
-
+    private static final String ESTADO_ACTIVA = "ACTIVA";
 
     ////////////////////////////////
     //Oncreate
@@ -113,7 +113,8 @@ public class ScreenRegisterUC extends AppCompatActivity {
 
                 if(!campEmpty(pass) && !campEmpty(passC) && !campEmpty(mail) && comprobarCampos()){
                     if(comprobarPass(pass,passC)){
-                        registerUser(mail,pass);
+                        updateDatesUser();
+                       // registerUser(mail,pass);
                     }
                 }else{
                     Toast.makeText(getApplicationContext(),"Campos vacios",Toast.LENGTH_LONG).show();
@@ -169,101 +170,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
                     && !campEmpty(celular);
     }
 
-    /**
-     *
-     *
-     * @param txtName
-     * @param sNombre
-     * @param txtPrimerA
-     * @param txtSegundoA
-     * @param ocupacion
-     * @param dateBorn
-     * @param txtUniversidad
-     * @param txtPhone
-     * @param txtCorreo
-     * @param txtFoto
-     * @param txtFrase
-     * @param hobbies
-     * @param conocimientosInf
-     * @param disponibilidadViaje
-     * @param anexos
-     * @param idiomas
-     * @param expProfesionales
-     * @param refEmpleo
-     * @param formacion
-     */
-    private UsuarioCorriente tomarDatos(String id,String txtName, String sNombre, String txtPrimerA, String txtSegundoA
-                            , String ocupacion, String dateBorn , String txtUniversidad, String txtPhone,
-                            String txtCorreo, String txtFoto, String txtFrase, String hobbies,
-                            String conocimientosInf, int disponibilidadViaje, ArrayList<String> anexos,
-                            ArrayList<String> idiomas, ArrayList<String> expProfesionales,
-                            ArrayList<String> refEmpleo,ArrayList<String> formacion){
-
-        if(!campEmpty(txtName) && !campEmpty(txtPrimerA) && !campEmpty(txtUniversidad)
-               && !campEmpty(txtCorreo) && !campEmpty(dateBorn)){
-                String nombre = txtName+" "+sNombre;
-                String apellido = txtPrimerA+" "+txtSegundoA;
-                UsuarioCorriente uC = new UsuarioCorriente(id,nombre,apellido,ocupacion,dateBorn,
-                                                            txtUniversidad,txtPhone,txtCorreo,txtFoto,
-                                                            txtFrase, hobbies, conocimientosInf,
-                                                             anexos,idiomas,expProfesionales,
-                                                                refEmpleo,formacion);
-            return uC;
-        }
-
-        return null;
-    }
-
-    /**
-     * Metodo register metodo que registra un usuario inexistente
-     * @param mail Correo del usuario nuevo a registrar
-     * @param pass Contraseña del usuario que se esta registrando
-     */
-    private void registerUser(String mail, String pass) {
-        final String mail1 = mail;
-        final String pass1 = pass;
-        firebaseAuth.createUserWithEmailAndPassword(mail, pass)
-                .addOnCompleteListener(ScreenRegisterUC.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(ScreenRegisterUC.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
-                           // finish();
-                            //startActivity(new Intent(ScreenRegisterUC.this, MainActivity.class));
-                            loginUser(mail1,pass1);
-
-                        } else {
-                            Toast.makeText(ScreenRegisterUC.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }
-
-    /**
-     *
-     * @param mail
-     * @param pass
-     */
-    private void loginUser(String mail, String pass){
-       // progressDialog.setMessage("Login user, please wait...");
-        //progressDialog.show();
-
-        firebaseAuth.signInWithEmailAndPassword(mail,pass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                       // progressDialog.dismiss();
-                        if(task.isSuccessful()){
-                            creaUsuario();
-                        }else{
-                            Toast.makeText(ScreenRegisterUC.this,"Datos errados",Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-    }
-
-
-    public void creaUsuario (){
+    public void updateDatesUser(){
         String id = "";
         String name =getTxtEdit(txtName);
         String sName = getTxtEdit(txtSNombre);
@@ -283,13 +190,13 @@ public class ScreenRegisterUC extends AppCompatActivity {
         ArrayList<String> expProfesionaless = new ArrayList<String>();
         ArrayList<String> refEmpleo = new ArrayList<String>();
         ArrayList<String> formacion = new ArrayList<String>();
-        String mail = getTxtEdit(txtCorreo);
+        String mail = " ";
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
-        // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
-        UsuarioCorriente uC =  tomarDatos(id,name,sName,apellido,sApellido,ocupacion,dateBorn,universidad
-                ,celular,mail,foto,frase,hobbies,conocimientosInf,disponibilidadV
-                ,anexos,idiomas,expProfesionaless,refEmpleo,formacion);
+        mail = user.getUid();
+        UsuarioCorriente uC = new UsuarioCorriente(id,name+" "+sName,apellido+" "+sApellido,ocupacion,
+                dateBorn,universidad,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_ACTIVA,
+                anexos,idiomas,expProfesionaless,refEmpleo,formacion);
 
         if(uC != null){
             insertarUsCFireBase(uC,user);
@@ -303,7 +210,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
     private void insertarUsCFireBase(UsuarioCorriente uC,FirebaseUser user){
         databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
         finish();
-        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+       startActivity(new Intent(getApplicationContext(),MainActivity.class));
     }
 
     /**
@@ -333,4 +240,6 @@ public class ScreenRegisterUC extends AppCompatActivity {
     private String getTxtEdit(EditText txt){
         return txt.getText().toString();
     }
+
+
 }
