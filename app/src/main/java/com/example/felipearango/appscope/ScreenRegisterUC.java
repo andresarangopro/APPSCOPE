@@ -185,11 +185,11 @@ public class ScreenRegisterUC extends AppCompatActivity {
         String hobbies = "";
         String conocimientosInf = "";
         int disponibilidadV = 0;
-        ArrayList<String> anexos = new ArrayList<String>();
-        ArrayList<String> idiomas = new ArrayList<String>();
-        ArrayList<String> expProfesionaless = new ArrayList<String>();
-        ArrayList<String> refEmpleo = new ArrayList<String>();
-        ArrayList<String> formacion = new ArrayList<String>();
+        String anexos = "";
+        String idiomas = "";
+        String expProfesionaless ="";
+        String refEmpleo ="";
+        String formacion = "";
         String mail = " ";
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();

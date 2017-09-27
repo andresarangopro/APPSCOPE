@@ -152,18 +152,17 @@ public class Login extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-               // uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
-
+                uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                 Log.i("DATE",dataSnapshot.child(user.getUid()).toString());
             /**    if(dataSnapshot.child(user.getUid()).getValue() == null){
                     existIsEmpres();
-                }else if(uC.getEstadoCuenta().equals("NUEVA")){
+                }else*/ if(uC.getEstadoCuenta().equals("NUEVA")){
                     finish();
-                    startActivity(new Intent(Login.this,ScreenRegisterE.class));
+                    startActivity(new Intent(Login.this,ScreenRegisterUC.class));
                 }else{
                     finish();
                     startActivity(new Intent(Login.this,MainActivity.class));
-                }*/
+                }
             }
 
             @Override

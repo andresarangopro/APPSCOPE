@@ -1,6 +1,7 @@
 package com.example.felipearango.appscope;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Felipe Arango on 22/09/2017.
@@ -40,9 +41,9 @@ public class UsuarioCorriente {
                             String fechaNacimiento, String universidad, String celular,
                             String correo, String foto, String frase, String hobbies,
                             String conocimientosInformaticos, String estadoCuenta,
-                            ArrayList<String> anexos, ArrayList<String> idiomas,
-                            ArrayList<String> experienciasProfesionales,
-                            ArrayList<String> referenciasEmpleo, ArrayList<String> formacion) {
+                            String anexos, String idiomas,
+                            String experienciasProfesionales,
+                            String referenciasEmpleo, String formacion) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -54,15 +55,18 @@ public class UsuarioCorriente {
         this.foto = foto;
         this.frase = frase;
         this.hobbies = hobbies;
-        this.conocimientosInformaticos = conocimientosInformaticos;
+        this.conocimientosInformaticos =  conocimientosInformaticos;
         this.estadoCuenta = estadoCuenta;
-        this.anexos = anexos;
-        this.idiomas = idiomas;
-        this.experienciasProfesionales = experienciasProfesionales;
-        this.referenciasEmpleo = referenciasEmpleo;
-        this.formacion = formacion;
+        this.anexos = new ArrayList<String>(Arrays.asList(anexos.split(" , ")));
+        this.idiomas = new ArrayList<String>(Arrays.asList(idiomas.split(" , ")));
+        this.experienciasProfesionales = new ArrayList<String>(Arrays.asList(experienciasProfesionales.split(" , ")));
+        this.referenciasEmpleo = new ArrayList<String>(Arrays.asList(referenciasEmpleo.split(" , ")));
+        this.formacion = new ArrayList<String>(Arrays.asList(formacion.split(" , ")));
     }
 
+    public UsuarioCorriente() {
+
+    }
 
     //////////////////////////
     //Getters and Setters
