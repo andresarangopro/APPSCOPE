@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="30"/>
         <TextView
-            android:id="@+id/tvUniversity"
+            android:id="@+id/tvSegundo"
             android:textSize="20dp"
             android:textAlignment="center"
             android:text="Univesidad"

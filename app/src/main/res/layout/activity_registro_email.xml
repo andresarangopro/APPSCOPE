@@ -27,7 +27,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="200"
+        android:weightSum="180"
         android:layout_weight="70"
         android:orientation="vertical">
 
@@ -82,13 +82,41 @@
             android:background="@drawable/edittextborder"
             android:hint="Confirmar contraseña:"
             android:inputType="textPassword" />
-        <Button
-            android:id="@+id/btnRegistrar"
-            style="@style/btnTap1"
+        <TextView
             android:layout_marginTop="20dp"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:textSize="20dp"
+            android:text="Registrar como: "/>
+        <LinearLayout
+
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Registrar!"/>
+            android:weightSum="2">
+
+
+
+            <Button
+                android:text="Usuario"
+                android:layout_marginRight="10dp"
+                style="@style/btnTap1"
+                android:id="@+id/iBtnUser"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:text="Empresa"
+                android:layout_marginLeft="10dp"
+                style="@style/btnTap1"
+                android:id="@+id/iBtnCompany"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
         <TextView
             android:id="@+id/btnAlreadyRegister"
             android:textAlignment="center"

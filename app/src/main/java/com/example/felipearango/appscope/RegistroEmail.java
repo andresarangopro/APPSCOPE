@@ -29,6 +29,8 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
     private ArrayList<EditText> field = new ArrayList<>();
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
+    private Button iBtnCompany, iBtnUser;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,10 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         confirmar = (EditText)findViewById(R.id.contraseñaC);
         alreadyRegister = (TextView)findViewById(R.id.btnAlreadyRegister);
         alreadyRegister.setOnClickListener(this);
-        btnRegister = (Button) findViewById(R.id.btnRegistrar);
-        btnRegister.setOnClickListener(this);
+        iBtnCompany = (Button) findViewById(R.id.iBtnCompany);
+        iBtnCompany.setOnClickListener(this);
+        iBtnUser = (Button) findViewById(R.id.iBtnUser);
+        iBtnUser.setOnClickListener(this);
 
         field.add(email);
         field.add(contraseña);
@@ -56,17 +60,18 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        int vista = view.getId();
-        switch(vista){
-            case R.id.btnRegistrar:{
-                if(checkEditText()){
-                    registerUser(email.getText().toString(),contraseña.getText().toString());
+        if(checkEditText()){
+            registerUser(email.getText().toString(), contraseña.getText().toString());
+            int vista = view.getId();
+            switch(vista){
+                case R.id.iBtnCompany:{
+                    startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
+                    break;
                 }
-                break;
-            }
-            case R.id.btnAlreadyRegister: {
-
-                break;
+                case R.id.iBtnUser: {
+                    startActivity(new Intent(getApplicationContext(), ScreenRegisterE.class));
+                    break;
+                }
             }
         }
     }

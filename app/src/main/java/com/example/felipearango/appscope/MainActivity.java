@@ -46,6 +46,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
 
+        /////////////////////////
+        //////Test!!!!
+        //////////////////////
+       // startActivity(new Intent(getApplicationContext(), Perfil.class));
     }
 
     @Override

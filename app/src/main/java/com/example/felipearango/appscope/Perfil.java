@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,7 +24,7 @@ public class Perfil extends MainActivity {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private UsuarioCorriente user;
-
+    private TextView tvNombre, tvSegundo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,24 +34,15 @@ public class Perfil extends MainActivity {
         View contentView = inflater.inflate(R.layout.activity_perfil, null, false);
         mDrawer.addView(contentView, 0);
         initializedDR();
+        startComponents();
+        existIsCorrientU();
 
-        firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                if (firebaseUser != null) {
-                    String userId = firebaseUser.getUid();
-                    String userEmail = firebaseUser.getEmail();
-                    Toast.makeText(Perfil.this, ""+userId+" "+userEmail, Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
     }
 
     private void startComponents(){
 
-
+        tvNombre = (TextView)findViewById(R.id.tvNombre);
+        tvSegundo = (TextView)findViewById(R.id.tvSegundo);
 
     }
 
@@ -67,6 +59,7 @@ public class Perfil extends MainActivity {
                 UsuarioCorriente us =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                 Log.e("Hola", ""+dataSnapshot.child(user.getUid()));
                 setUser(us);
+                setTextViews(us);
             }
 
             @Override
@@ -80,9 +73,15 @@ public class Perfil extends MainActivity {
         user = us;
     }
 
-    private void setTextViews(){
+    private void setTextViews(Object object){
 
+        if(object instanceof UsuarioCorriente){
+            UsuarioCorriente us = (UsuarioCorriente)object;
+            tvNombre.setText(us.getNombre()+" "+us.getApellido());
 
+        }else{
+
+        }
 
     }
 }
