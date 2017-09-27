@@ -27,6 +27,7 @@
             android:layout_height="100dp"
             android:layout_weight="1" />
         <TextView
+            android:id="@+id/tvNombre"
             android:textSize="25dp"
             android:textAlignment="center"
             android:text="Acá va el nombre"
@@ -34,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="30"/>
         <TextView
+            android:id="@+id/tvUniversity"
             android:textSize="20dp"
             android:textAlignment="center"
             android:text="Univesidad"
@@ -41,13 +43,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="30"/>
         <TextView
+
             android:textSize="20dp"
             android:textAlignment="center"
             android:text="El resto de cambpos toca agregarlos en codigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="30"/>
-
 
     </LinearLayout>
 

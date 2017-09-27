@@ -24,6 +24,7 @@ public class Perfil extends MainActivity {
     private DatabaseReference databaseReference;
     private UsuarioCorriente user;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -47,6 +48,12 @@ public class Perfil extends MainActivity {
         };
     }
 
+    private void startComponents(){
+
+
+
+    }
+
     private void initializedDR() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
@@ -59,7 +66,7 @@ public class Perfil extends MainActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 UsuarioCorriente us =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                 Log.e("Hola", ""+dataSnapshot.child(user.getUid()));
-                ponerDatos(us);
+                setUser(us);
             }
 
             @Override
@@ -69,9 +76,13 @@ public class Perfil extends MainActivity {
         });
     }
 
-    private void ponerDatos(UsuarioCorriente us){
+    private void setUser(UsuarioCorriente us){
         user = us;
     }
 
+    private void setTextViews(){
 
+
+
+    }
 }
