@@ -154,9 +154,9 @@ public class Login extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                 Log.i("DATE",dataSnapshot.child(user.getUid()).toString());
-            /**    if(dataSnapshot.child(user.getUid()).getValue() == null){
+              if(dataSnapshot.child(user.getUid()).getValue() == null){
                     existIsEmpres();
-                }else*/ if(uC.getEstadoCuenta().equals("NUEVA")){
+                }else if(uC.getEstadoCuenta().equals("NUEVA")){
                     finish();
                     startActivity(new Intent(Login.this,ScreenRegisterUC.class));
                 }else{
@@ -173,15 +173,19 @@ public class Login extends AppCompatActivity {
     }
 
     private void existIsEmpres(){
-        final String[] exist = {""};
         databaseReference.child("EmpresaUsers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                exist[0] =  dataSnapshot.child(user.getUid()).toString()+"";
+                Empresa uE = dataSnapshot.child(user.getUid()).getValue(Empresa.class);
+                Log.i("DATE",dataSnapshot.child(user.getUid()).toString());
                 if(dataSnapshot.child(user.getUid()).getValue() == null){
+                   // finish();
+                   // startActivity(new Intent(Login.this,MiddleLR.class));
+                    Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_LONG).show();
+                }else if(uE.getEstadoCuenta().equals("NUEVA")){
                     finish();
-                    startActivity(new Intent(Login.this,MiddleLR.class));
+                    startActivity(new Intent(Login.this,ScreenRegisterE.class));
                 }else{
                     finish();
                     startActivity(new Intent(Login.this,MainActivity.class));

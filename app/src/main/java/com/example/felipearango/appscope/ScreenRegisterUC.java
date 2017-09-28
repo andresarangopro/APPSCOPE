@@ -70,7 +70,6 @@ public class ScreenRegisterUC extends AppCompatActivity {
     //Metodos
     ////////////////////////////////
 
-
     private void initializedDR() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }

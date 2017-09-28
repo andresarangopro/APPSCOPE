@@ -1,6 +1,7 @@
 package com.example.felipearango.appscope;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Felipe Arango on 23/09/2017.
@@ -12,6 +13,7 @@ public class Empresa {
     //////////////////////////
     ///Variables de clase
     /////////////////////////
+    private String id;
     private String razonSocial;
     private String urlEmpresa;
     private String mail;
@@ -26,18 +28,31 @@ public class Empresa {
     //////Constructor
     /////////////////////////////
 
-    public Empresa(String razonSocial, String urlEmpresa, String mail, String estadoCuenta, ArrayList<String> redesSociales) {
+
+    public Empresa(String id, String razonSocial, String urlEmpresa, String mail, String estadoCuenta,
+                   String redesSociales) {
+        this.id = id;
         this.razonSocial = razonSocial;
         this.urlEmpresa = urlEmpresa;
         this.mail = mail;
         this.estadoCuenta = estadoCuenta;
-        this.redesSociales = redesSociales;
+        this.redesSociales = new ArrayList<String>(Arrays.asList(redesSociales.split(" , ")));
     }
+
+    public Empresa(){}
 
     ///////////////////////////
     ///////Getters and Setters
     ///////////////////////////
 
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getRazonSocial() {
         return razonSocial;

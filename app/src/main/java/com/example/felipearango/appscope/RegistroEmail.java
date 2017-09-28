@@ -1,5 +1,6 @@
 package com.example.felipearango.appscope;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -30,13 +31,16 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private Button iBtnCompany, iBtnUser;
+    private ProgressDialog progressDialog;
     private static final String ESTADO_NUEVA = "NUEVA";
+    private int tipoUser = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_email);
         startComponents();
+        progressDialog = new ProgressDialog(this);
         firebaseAuth = FirebaseAuth.getInstance();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -64,7 +68,8 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
             int vista = view.getId();
             switch(vista){
                 case R.id.iBtnCompany:{
-                   //registerUser(email.getText().toString(), contraseña.getText().toString());
+                    tipoUser = 1;
+                   registerUser(email.getText().toString(), contraseña.getText().toString());
                    // startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
                     break;
                 }
@@ -94,7 +99,6 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         return valido;
     }
 
-
     /**
      * Metodo register metodo que registra un usuario inexistente
      * @param mail Correo del usuario nuevo a registrar
@@ -111,7 +115,7 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
                             Toast.makeText(RegistroEmail.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
                             // finish();
                             //startActivity(new Intent(ScreenRegisterUC.this, MainActivity.class));
-                            loginUser(mail1,pass1);
+                            loginUser(mail1,pass1,tipoUser);
                         } else {
                             Toast.makeText(RegistroEmail.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
                         }
@@ -124,24 +128,28 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
      * @param mail
      * @param pass
      */
-    private void loginUser(String mail, String pass){
-        // progressDialog.setMessage("Login user, please wait...");
-        //progressDialog.show();
+    private void loginUser(String mail, String pass, final int tipoUser){
+        progressDialog.setMessage("Register user, please wait...");
+        progressDialog.show();
 
         firebaseAuth.signInWithEmailAndPassword(mail,pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        // progressDialog.dismiss();
                         if(task.isSuccessful()){
-                            creaUsuario();
+                            if(tipoUser == 0){
+                                creaUsuario();
+                            }else{
+                                creaUEmpresa();
+                            }
+
+                            progressDialog.dismiss();
                         }else{
                             Toast.makeText(RegistroEmail.this,"Datos errados",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
     }
-
 
     public void creaUsuario (){
         String id = "";
@@ -164,7 +172,6 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
-        // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
         UsuarioCorriente uC = new UsuarioCorriente(id,name,apellido,ocupacion,dateBorn,universidad
                 ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,
                 anexos,idiomas,expProfesionaless,refEmpleo,formacion);
@@ -175,13 +182,42 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
 
     /**
      *
+     */
+    public void creaUEmpresa(){
+        String id = "";
+        String razonSocial="";
+        String urlEmpresa="";
+        String mail="";
+        String redesSociales = "";
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        id = user.getUid();
+        mail = user.getEmail();
+        Empresa uE = new Empresa(id,razonSocial,urlEmpresa,mail,ESTADO_NUEVA,redesSociales);
+        if(uE != null){
+            insertarUsEmFireBase(uE,user);
+        }
+    }
+
+    /**
+     *
      * @param uC
+     * @param user
      */
     private void insertarUsCFireBase(UsuarioCorriente uC,FirebaseUser user){
         databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
         finish();
         startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
-        //startActivity(new Intent(getApplicationContext(),MainActivity.class));
+    }
+
+    /**
+     *
+     * @param uE
+     * @param user
+     */
+    private void insertarUsEmFireBase(Empresa uE,FirebaseUser user){
+        databaseReference.child("EmpresaUsers").child(user.getUid()).setValue(uE);
+        finish();
+        startActivity(new Intent(getApplicationContext(), ScreenRegisterE.class));
     }
 
 }
