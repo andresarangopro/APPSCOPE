@@ -35,7 +35,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
     //Variables
     //////////////////////////////
 
-    private EditText txtName,txtSNombre, txtPrimerA, txtSegundoA,txtUniversidad, txtCorreo,
+    private EditText txtName,txtSNombre, txtPrimerA, txtSegundoA,txtUniversidad,
             txtPass, txtPassC, txtPhone;
     private TextView lblDisponibilidad,lblDateBorn;
     private DatabaseReference databaseReference;
@@ -83,9 +83,6 @@ public class ScreenRegisterUC extends AppCompatActivity {
         txtPrimerA = (EditText) findViewById(R.id.txtPrimerA);
         txtSegundoA = (EditText) findViewById(R.id.txtSegundoA);
         txtUniversidad = (EditText) findViewById(R.id.txtUniversidad);
-        txtCorreo = (EditText) findViewById(R.id.txtCorreo);
-        txtPass = (EditText) findViewById(R.id.txtPass);
-        txtPassC = (EditText) findViewById(R.id.txtPassC);
         txtPhone = (EditText) findViewById(R.id.txtPhone);
 
         lblDisponibilidad = (TextView) findViewById(R.id.lblDisponibilidad);
@@ -106,7 +103,6 @@ public class ScreenRegisterUC extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mail = getTxtEdit(txtCorreo);
                 String pass = getTxtEdit(txtPass);
                 String passC = getTxtEdit(txtPassC);
 

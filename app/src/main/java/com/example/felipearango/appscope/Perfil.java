@@ -33,6 +33,7 @@ public class Perfil extends MainActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_perfil, null, false);
         mDrawer.addView(contentView, 0);
+        firebaseAuth = FirebaseAuth.getInstance();
         initializedDR();
         startComponents();
         existIsCorrientU();
@@ -78,7 +79,6 @@ public class Perfil extends MainActivity {
         if(object instanceof UsuarioCorriente){
             UsuarioCorriente us = (UsuarioCorriente)object;
             tvNombre.setText(us.getNombre()+" "+us.getApellido());
-
         }else{
 
         }
