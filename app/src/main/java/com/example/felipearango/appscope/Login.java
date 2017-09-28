@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
+    public static int TIPO_USUARIO = 0;
 
     //////////////////////////
     //Variables
@@ -153,13 +154,15 @@ public class Login extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
-                Log.i("DATE",dataSnapshot.child(user.getUid()).toString());
+                Log.e("DATE",dataSnapshot.child(user.getUid()).toString());
               if(dataSnapshot.child(user.getUid()).getValue() == null){
                     existIsEmpres();
                 }else if(uC.getEstadoCuenta().equals("NUEVA")){
+                  TIPO_USUARIO = 0;
                     finish();
                     startActivity(new Intent(Login.this,ScreenRegisterUC.class));
                 }else{
+                  TIPO_USUARIO = 0;
                     finish();
                     startActivity(new Intent(Login.this,MainActivity.class));
                 }
@@ -178,15 +181,17 @@ public class Login extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 Empresa uE = dataSnapshot.child(user.getUid()).getValue(Empresa.class);
-                Log.i("DATE",dataSnapshot.child(user.getUid()).toString());
+                Log.e("DATE",dataSnapshot.child(user.getUid()).toString());
                 if(dataSnapshot.child(user.getUid()).getValue() == null){
                    // finish();
                    // startActivity(new Intent(Login.this,MiddleLR.class));
                     Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_LONG).show();
                 }else if(uE.getEstadoCuenta().equals("NUEVA")){
+                    TIPO_USUARIO = 1;
                     finish();
                     startActivity(new Intent(Login.this,ScreenRegisterE.class));
                 }else{
+                    TIPO_USUARIO = 1;
                     finish();
                     startActivity(new Intent(Login.this,MainActivity.class));
                 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +17,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
+import static com.example.felipearango.appscope.Login.calledAlready;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -27,6 +39,10 @@ public class MainActivity extends AppCompatActivity
     private Button btn;
     private FirebaseAuth firebaseAuth;
     protected DrawerLayout mDrawer;
+    private TextView txtNavMail,txtNavName;
+    private ImageView iVNavPerfil;
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +57,28 @@ public class MainActivity extends AppCompatActivity
                 this, mDrawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         firebaseAuth = FirebaseAuth.getInstance();
-
+        inicializatedComponents();
+        inicializatedFireBase();
+        datosUser();
         /////////////////////////
         //////Test!!!!
         //////////////////////
        // startActivity(new Intent(getApplicationContext(), Perfil.class));
+    }
+
+    /**
+     *
+     */
+    private void inicializatedFireBase(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        if (!calledAlready) {
+            firebaseDatabase.setPersistenceEnabled(true);
+            calledAlready = true;
+        }
+        databaseReference = firebaseDatabase.getReference();
     }
 
     @Override
@@ -107,6 +136,57 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void inicializatedComponents(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        txtNavMail = (TextView) headerView.findViewById(R.id.txtNavMail);
+        txtNavName = (TextView) headerView.findViewById(R.id.txtNavName);
+
+        iVNavPerfil = (ImageView) headerView.findViewById(R.id.iVNavPerfil);
+    }
+
+    private void datosUser(){
+        if(TIPO_USUARIO == 0){
+           eventPDU("CorrientsUsers");
+        }else{
+            eventPDU("EmpresaUsers");
+        }
+    }
+
+    public void eventPDU(String usChildString){
+        databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //listUsers.clear();
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(TIPO_USUARIO == 0){
+                    UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
+                    putDatesUsC(uC);
+                }else{
+                   Empresa uE =  dataSnapshot.child(user.getUid()).getValue(Empresa.class);
+                    putDatesUsE(uE);
+                }
+                // putImage(userIn);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    private void putDatesUsC(UsuarioCorriente uC){
+        Log.e("USER",TIPO_USUARIO+" ---- "+uC.getId().toString());
+        txtNavName.setText(uC.getNombre()+" "+uC.getApellido());
+        txtNavMail.setText(uC.getCorreo());
+    }
+
+    private void putDatesUsE(Empresa uE){
+        Log.e("USER",TIPO_USUARIO+" ---- "+uE.getId().toString());
+        txtNavName.setText(uE.getNombre());
+        txtNavMail.setText(uE.getMail());
     }
 
     private void signout(){

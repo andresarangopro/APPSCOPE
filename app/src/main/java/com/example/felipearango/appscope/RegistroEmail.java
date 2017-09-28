@@ -185,14 +185,16 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
      */
     public void creaUEmpresa(){
         String id = "";
+        String nombre="";
         String razonSocial="";
         String urlEmpresa="";
         String mail="";
+        String foto = "";
         String redesSociales = "";
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
-        Empresa uE = new Empresa(id,razonSocial,urlEmpresa,mail,ESTADO_NUEVA,redesSociales);
+        Empresa uE = new Empresa(id,nombre,razonSocial,urlEmpresa,mail,ESTADO_NUEVA,foto,redesSociales);
         if(uE != null){
             insertarUsEmFireBase(uE,user);
         }
