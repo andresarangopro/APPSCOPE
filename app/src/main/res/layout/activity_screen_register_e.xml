@@ -11,7 +11,7 @@
     tools:context="com.example.felipearango.appscope.ScreenRegisterE">
 
     <LinearLayout
-        android:layout_weight="50"
+        android:layout_weight="70"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="80"
-            android:weightSum="7"
+            android:weightSum="9"
             android:orientation="vertical">
 
             <EditText
@@ -42,11 +42,11 @@
 
 
             <EditText
-                android:id="@+id/txtMailE"
+                android:id="@+id/txtRazonSoc"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:hint="Mail" />
+                android:hint="Razon Social" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -55,33 +55,86 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/txtPassE"
+                    android:id="@+id/txtUrl"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:hint="Password" />
-
-                <EditText
-                    android:id="@+id/txtPassEC"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:hint="Confirm Password" />
+                    android:hint="Url de la empresa: " />
             </LinearLayout>
 
-            <Button
-                android:layout_marginTop="30dp"
-                android:id="@+id/btnRegisterE"
-                style="@style/btnTap1"
-                android:layout_width="200dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="Registrar" />
+                android:weightSum="5">
+                <EditText
+                    android:id="@+id/txtNIT"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="4"
+                    android:hint="NIT" />
+                <Button
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    style="@style/btnTap1"
+                    android:text="+"
+                    android:textSize="40dp"
+                    android:id="@+id/btnAgregarNit"
+                />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="1"
+                android:id="@+id/llRedesSociales"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:weightSum="5">
+                    <EditText
+                        android:id="@+id/txtSocial"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="4"
+                        android:hint="Redes sociales" />
+                    <Button
+                        android:id="@+id/btnAgregarRedesSociales"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        style="@style/btnTap1"
+                        android:text="+"
+                        android:textSize="40dp" />
+                </LinearLayout>
 
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:weightSum="3">
+                <LinearLayout
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"></LinearLayout>
+                <Button
+                    android:id="@+id/btnRegisterE"
+                    style="@style/btnTap1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:text="Registrar" />
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
-
-
 </LinearLayout>

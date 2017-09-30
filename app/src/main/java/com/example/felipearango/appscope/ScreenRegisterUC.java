@@ -106,7 +106,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
                 String pass = getTxtEdit(txtPass);
                 String passC = getTxtEdit(txtPassC);
 
-                if(!campEmpty(pass) && !campEmpty(passC) && !campEmpty(mail) && comprobarCampos()){
+                if(!campEmpty(pass) && !campEmpty(passC) && comprobarCampos()){
                     if(comprobarPass(pass,passC)){
                         updateDatesUser();
                        // registerUser(mail,pass);
