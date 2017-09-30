@@ -14,10 +14,12 @@ public class Empresa {
     ///Variables de clase
     /////////////////////////
     private String id;
+    private String nombre;
     private String razonSocial;
     private String urlEmpresa;
     private String mail;
     private String estadoCuenta;
+    private String foto;
     private ArrayList<String> redesSociales = new ArrayList<>();
     /*
     Es importante recalcar que para publicar ofertas de trabajo se requiere el lugar, una descripción del empleo
@@ -29,13 +31,15 @@ public class Empresa {
     /////////////////////////////
 
 
-    public Empresa(String id, String razonSocial, String urlEmpresa, String mail, String estadoCuenta,
-                   String redesSociales) {
+    public Empresa(String id, String nombre, String razonSocial, String urlEmpresa, String mail,
+                   String estadoCuenta, String foto,String redesSociales) {
         this.id = id;
+        this.nombre = nombre;
         this.razonSocial = razonSocial;
         this.urlEmpresa = urlEmpresa;
         this.mail = mail;
         this.estadoCuenta = estadoCuenta;
+        this.foto = foto;
         this.redesSociales = new ArrayList<String>(Arrays.asList(redesSociales.split(" , ")));
     }
 
@@ -52,6 +56,14 @@ public class Empresa {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getRazonSocial() {
@@ -84,6 +96,14 @@ public class Empresa {
 
     public void setEstadoCuenta(String estadoCuenta) {
         this.estadoCuenta = estadoCuenta;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public ArrayList<String> getRedesSociales() {

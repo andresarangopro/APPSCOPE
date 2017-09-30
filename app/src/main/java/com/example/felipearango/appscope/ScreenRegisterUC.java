@@ -188,7 +188,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
         String mail = " ";
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
-        mail = user.getUid();
+        mail = user.getEmail();
         UsuarioCorriente uC = new UsuarioCorriente(id,name+" "+sName,apellido+" "+sApellido,ocupacion,
                 dateBorn,universidad,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_ACTIVA,
                 anexos,idiomas,expProfesionaless,refEmpleo,formacion);
