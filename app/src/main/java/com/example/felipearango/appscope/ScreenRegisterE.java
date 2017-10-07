@@ -93,7 +93,6 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
         btn.setText("+");
         btn.setTextSize(40);
         btn.setBackgroundResource(R.drawable.mybutton);
-
         llrow.addView(btn);
         llRedesSociales.setWeightSum(llRedesSociales.getWeightSum()+1);
         llRedesSociales.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
