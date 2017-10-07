@@ -6,4 +6,22 @@
     android:layout_height="match_parent"
     tools:context="com.example.felipearango.appscope.OfertaTrabajo">
 
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tvDetalles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tvEtiqueta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btnAgregar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
 </android.support.constraint.ConstraintLayout>
