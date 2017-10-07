@@ -1,7 +1,10 @@
 package com.example.felipearango.appscope;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,20 +13,38 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import static com.example.felipearango.appscope.ScreenRegisterUC.ESTADO_ACTIVA;
+
 public class ScreenRegisterE extends AppCompatActivity implements View.OnClickListener {
 
     private EditText txtnameE,txtRazonSoc, txtNIT, txtUrl, txtSocial;
     private Button btnRegisterE, btnAgregarNIT, btnAgregarRedSocial;
     private LinearLayout llRedesSociales;
+    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_register_e);
         instanceXml();
-
-
+        firebaseAuth = FirebaseAuth.getInstance();
+        initializedDR();
     }
+
+    ////////////////////////////////
+    //Metodos
+    ////////////////////////////////
+
+    private void initializedDR() {
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+    }
+
 
     private void instanceXml(){
         txtnameE = (EditText) findViewById(R.id.txtNameE);
@@ -41,6 +62,18 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
 
         btnAgregarNIT = (Button) findViewById(R.id.btnAgregarNit);
         btnAgregarNIT.setOnClickListener(this);
+
+        txtSocial.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                Log.e("DATE","estas aquí");
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+
+            }
+        });
     }
 
     private void addToSocialNetwork(){
@@ -68,6 +101,33 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
         llRedesSociales.addView(llrow);
     }
 
+    private void takeDates(){
+        String id = "";
+        String nombre = getTxtEdit(txtnameE);
+        String razonSocial = getTxtEdit(txtRazonSoc);
+        String urlEmpresa = getTxtEdit(txtUrl);
+        String nitEmpresa = getTxtEdit(txtNIT);
+        String mail="";
+        String foto = "";
+        String redesSociales = "";
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        id = user.getUid();
+        mail = user.getEmail();
+        Empresa uE = new Empresa(id, nombre, razonSocial, urlEmpresa,nitEmpresa,
+                mail,ESTADO_ACTIVA,foto,redesSociales);
+        if(uE != null){
+            insertarUsEFireBase(uE,user);
+        }
+    }
+    private boolean comprobarcampos(){
+        return true;
+    }
+
+    private void insertarUsEFireBase(Empresa uE,FirebaseUser user){
+        databaseReference.child("EmpresaUsers").child(user.getUid()).setValue(uE);
+        finish();
+        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+    }
 
     @Override
     public void onClick(View view) {
@@ -81,11 +141,30 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
                 break;
             }
             case R.id.btnRegisterE: {
+                takeDates();
                 break;
             }
             default:{
 
             }
         }
+    }
+
+    /**
+     *
+     * @param campo
+     * @return
+     */
+    private boolean campEmpty(String campo){
+        return TextUtils.isEmpty(campo);
+    }
+
+    /**
+     *
+     * @param txt
+     * @return
+     */
+    private String getTxtEdit(EditText txt){
+        return txt.getText().toString();
     }
 }

@@ -17,6 +17,7 @@ public class Empresa {
     private String nombre;
     private String razonSocial;
     private String urlEmpresa;
+    private String nit;
     private String mail;
     private String estadoCuenta;
     private String foto;
@@ -31,12 +32,14 @@ public class Empresa {
     /////////////////////////////
 
 
-    public Empresa(String id, String nombre, String razonSocial, String urlEmpresa, String mail,
-                   String estadoCuenta, String foto,String redesSociales) {
+    public Empresa(String id, String nombre, String razonSocial, String urlEmpresa,
+                   String nit, String mail, String estadoCuenta, String foto,
+                   String redesSociales) {
         this.id = id;
         this.nombre = nombre;
         this.razonSocial = razonSocial;
         this.urlEmpresa = urlEmpresa;
+        this.nit = nit;
         this.mail = mail;
         this.estadoCuenta = estadoCuenta;
         this.foto = foto;
@@ -80,6 +83,14 @@ public class Empresa {
 
     public void setUrlEmpresa(String urlEmpresa) {
         this.urlEmpresa = urlEmpresa;
+    }
+
+    public String getNit() {
+        return nit;
+    }
+
+    public void setNit(String nit) {
+        this.nit = nit;
     }
 
     public String getMail() {

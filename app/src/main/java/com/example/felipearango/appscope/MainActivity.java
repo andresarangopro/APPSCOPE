@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,12 +38,14 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Button btn;
+    private TextView txtNameP;
     private FirebaseAuth firebaseAuth;
     protected DrawerLayout mDrawer;
     private TextView txtNavMail,txtNavName;
     private ImageView iVNavPerfil;
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +146,7 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         txtNavMail = (TextView) headerView.findViewById(R.id.txtNavMail);
         txtNavName = (TextView) headerView.findViewById(R.id.txtNavName);
-
+        txtNameP = (TextView) findViewById(R.id.txtNameP);
         iVNavPerfil = (ImageView) headerView.findViewById(R.id.iVNavPerfil);
     }
 
@@ -181,12 +184,14 @@ public class MainActivity extends AppCompatActivity
         Log.e("USER",TIPO_USUARIO+" ---- "+uC.getId().toString());
         txtNavName.setText(uC.getNombre()+" "+uC.getApellido());
         txtNavMail.setText(uC.getCorreo());
+        txtNameP.setText(uC.getNombre());
     }
 
     private void putDatesUsE(Empresa uE){
         Log.e("USER",TIPO_USUARIO+" ---- "+uE.getId().toString());
         txtNavName.setText(uE.getNombre());
         txtNavMail.setText(uE.getMail());
+        txtNameP.setText(uE.getNombre());
     }
 
     private void signout(){

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -46,7 +47,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private int day,monthS,yearS;
-    private static final String ESTADO_ACTIVA = "ACTIVA";
+    public static final String ESTADO_ACTIVA = "ACTIVA";
 
     ////////////////////////////////
     //Oncreate
@@ -103,17 +104,17 @@ public class ScreenRegisterUC extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String pass = getTxtEdit(txtPass);
-                String passC = getTxtEdit(txtPassC);
-
-                if(!campEmpty(pass) && !campEmpty(passC) && comprobarCampos()){
+               // String pass = getTxtEdit(txtPass);
+               // String passC = getTxtEdit(txtPassC);
+                updateDatesUser();
+             /**   if(!campEmpty(pass) && !campEmpty(passC) && comprobarCampos()){
                     if(comprobarPass(pass,passC)){
                         updateDatesUser();
                        // registerUser(mail,pass);
                     }
                 }else{
                     Toast.makeText(getApplicationContext(),"Campos vacios",Toast.LENGTH_LONG).show();
-                }
+                }**/
 
 
             }
@@ -203,7 +204,9 @@ public class ScreenRegisterUC extends AppCompatActivity {
      * @param uC
      */
     private void insertarUsCFireBase(UsuarioCorriente uC,FirebaseUser user){
+        Log.e("INFO", "NO<...");
         databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
+        Log.e("INFO", "SI...");
         finish();
        startActivity(new Intent(getApplicationContext(),MainActivity.class));
     }
