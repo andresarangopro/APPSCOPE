@@ -9,31 +9,204 @@
     tools:context="com.example.felipearango.appscope.MainActivity"
     android:weightSum="8"
     tools:showIn="@layout/app_bar_main">
+
+    <!--weight: 0.5
+    - Espacio -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.5" ></LinearLayout>
 
+    <!--weight: 2
+     -Foto, nombre, Ocupacion, correo -->
    <LinearLayout
        android:layout_width="match_parent"
        android:layout_height="0dp"
        android:layout_weight="2"
-       android:orientation="horizontal"
-       android:weightSum="2">
+       android:orientation="vertical">
 
-       <ImageView
-           android:id="@+id/imageView"
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="1"/>
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="horizontal"
+          android:weightSum="2">
 
-       <TextView
-           android:id="@+id/txtNameP"
-           android:text="name"
-           android:textSize="25dp"
-           android:layout_width="0dp"
-           android:layout_height="match_parent"
-           android:layout_weight="1"/>
+          <ImageView
+              android:id="@+id/imageView"
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:src="@drawable/user"/>
+
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="match_parent"
+              android:layout_weight="1"
+              android:orientation="vertical"
+              android:weightSum="3">
+
+              <TextView
+                  android:id="@+id/txtNameP"
+                  android:text="name"
+                  android:textSize="25dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_weight="1"/>
+
+
+              <TextView
+                  android:id="@+id/txtOcupacionP"
+                  android:text="Ocupación"
+                  android:textSize="25dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_weight="1"/>
+
+
+              <TextView
+                  android:id="@+id/txtCorreoP"
+                  android:text="Correo"
+                  android:textSize="25dp"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:layout_weight="1"/>
+          </LinearLayout>
+
+
+      </LinearLayout>
 
    </LinearLayout>
+
+    <!--weight: 2
+       -rating bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.75"
+            android:numStars="5"
+            android:isIndicator="true"
+            android:stepSize="0.1"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.25"
+            android:textSize="20dp"
+            android:text="Frase:''   ''" />
+
+    </LinearLayout>
+
+    <!--Weigth: 3.5-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3.5">
+        <TabHost
+            android:id="@+id/tHData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/tab1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola1"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola2"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola3"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola4"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola5"/>
+
+
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
+    </LinearLayout>
+
+
 </LinearLayout>

@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity
 
     private Button btn;
     private TextView txtNameP;
-    protected FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
     protected DrawerLayout mDrawer;
     private TextView txtNavMail,txtNavName;
     private ImageView iVNavPerfil;
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_manage) {
 
         } else if (id == R.id.nav_share) {
-            startActivity(new Intent(getApplication(),OfertaTrabajo.class));
+
         } else if (id == R.id.nav_send) {
             signout();
         }
