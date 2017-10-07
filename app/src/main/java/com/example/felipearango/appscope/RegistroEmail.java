@@ -222,5 +222,4 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         finish();
         startActivity(new Intent(getApplicationContext(), ScreenRegisterE.class));
     }
-
 }
