@@ -32,6 +32,7 @@ public class Ofertas extends MainActivity {
         ll.setOnTouchListener(new OnSwipeTouchListener(Ofertas.this) {
             public void onSwipeTop() {
                 Toast.makeText(Ofertas.this, "top", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Ofertas.this, "top", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeRight() {
                 Toast.makeText(Ofertas.this, "right", Toast.LENGTH_SHORT).show();
