@@ -11,50 +11,5 @@
     android:orientation="vertical"
     tools:context="com.example.felipearango.appscope.Perfil">
 
-
-
-    <LinearLayout
-        android:layout_marginTop="50dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="100">
-
-        <ImageView
-            android:layout_gravity="center_horizontal"
-            android:src="@mipmap/ic_launcher_round"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_weight="1" />
-        <TextView
-            android:id="@+id/tvNombre"
-            android:textSize="25dp"
-            android:textAlignment="center"
-            android:text="Acá va el nombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"/>
-        <TextView
-            android:id="@+id/tvSegundo"
-            android:textSize="20dp"
-            android:textAlignment="center"
-            android:text="Univesidad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"/>
-        <TextView
-
-            android:textSize="20dp"
-            android:textAlignment="center"
-            android:text="El resto de cambpos toca agregarlos en codigo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="30"/>
-
-    </LinearLayout>
-
-
-
-
-    
+    <include layout="@layout/content_main" />
 </ScrollView>

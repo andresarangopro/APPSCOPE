@@ -33,7 +33,6 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
     private Button iBtnCompany, iBtnUser;
     private ProgressDialog progressDialog;
     private static final String ESTADO_NUEVA = "NUEVA";
-    private int tipoUser = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +67,13 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
             int vista = view.getId();
             switch(vista){
                 case R.id.iBtnCompany:{
-                    tipoUser = 1;
+                    Login.TIPO_USUARIO = 1;
                    registerUser(email.getText().toString(), contraseña.getText().toString());
                    // startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
                     break;
                 }
                 case R.id.iBtnUser: {
+                    Login.TIPO_USUARIO = 0;
                     //startActivity(new Intent(getApplicationContext(), ScreenRegisterE.class));
                     registerUser(email.getText().toString(), contraseña.getText().toString());
                     break;
@@ -115,7 +115,7 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
                             Toast.makeText(RegistroEmail.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
                             // finish();
                             //startActivity(new Intent(ScreenRegisterUC.this, MainActivity.class));
-                            loginUser(mail1,pass1,tipoUser);
+                            loginUser(mail1,pass1,Login.TIPO_USUARIO);
                         } else {
                             Toast.makeText(RegistroEmail.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
                         }

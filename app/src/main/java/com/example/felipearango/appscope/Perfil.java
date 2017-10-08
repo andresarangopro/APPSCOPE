@@ -21,8 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Perfil extends MainActivity {
 
-    private FirebaseAuth firebaseAuth;
-    private DatabaseReference databaseReference;
+
     private UsuarioCorriente user;
     private TextView tvNombre, tvSegundo;
 
@@ -36,14 +35,10 @@ public class Perfil extends MainActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         initializedDR();
         startComponents();
-        existIsCorrientU();
-
+        datosUser();
     }
 
     private void startComponents(){
-
-        tvNombre = (TextView)findViewById(R.id.tvNombre);
-        tvSegundo = (TextView)findViewById(R.id.tvSegundo);
 
     }
 
@@ -51,24 +46,6 @@ public class Perfil extends MainActivity {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
-    private void existIsCorrientU(){
-
-        databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                UsuarioCorriente us =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
-                Log.e("Hola", ""+dataSnapshot.child(user.getUid()));
-                setUser(us);
-                setTextViews(us);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     private void setUser(UsuarioCorriente us){
         user = us;

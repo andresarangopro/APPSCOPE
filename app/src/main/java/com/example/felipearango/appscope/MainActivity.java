@@ -39,11 +39,10 @@ public class MainActivity extends AppCompatActivity
 
     private Button btn;
     private TextView txtNameP;
-    private FirebaseAuth firebaseAuth;
+    protected FirebaseAuth firebaseAuth;
     protected DrawerLayout mDrawer;
     private TextView txtNavMail,txtNavName;
-    private ImageView iVNavPerfil;
-    private DatabaseReference databaseReference;
+    protected DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
 
 
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity
     /**
      *
      */
-    private void inicializatedFireBase(){
+    protected void inicializatedFireBase(){
         firebaseDatabase = FirebaseDatabase.getInstance();
         if (!calledAlready) {
             firebaseDatabase.setPersistenceEnabled(true);
@@ -129,9 +128,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
-
+            startActivity(new Intent(getApplicationContext(),Perfil.class));
         } else if (id == R.id.nav_share) {
-
+            startActivity(new Intent(getApplicationContext(),OfertaTrabajo.class));
         } else if (id == R.id.nav_send) {
             signout();
         }
@@ -146,11 +145,9 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         txtNavMail = (TextView) headerView.findViewById(R.id.txtNavMail);
         txtNavName = (TextView) headerView.findViewById(R.id.txtNavName);
-        txtNameP = (TextView) findViewById(R.id.txtNameP);
-        iVNavPerfil = (ImageView) headerView.findViewById(R.id.iVNavPerfil);
     }
 
-    private void datosUser(){
+    protected void datosUser(){
         if(TIPO_USUARIO == 0){
            eventPDU("CorrientsUsers");
         }else{
@@ -164,6 +161,7 @@ public class MainActivity extends AppCompatActivity
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //listUsers.clear();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                Log.e(""+TIPO_USUARIO,"HOLAAAA");
                 if(TIPO_USUARIO == 0){
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                     putDatesUsC(uC);
@@ -191,7 +189,6 @@ public class MainActivity extends AppCompatActivity
         Log.e("USER",TIPO_USUARIO+" ---- "+uE.getId().toString());
         txtNavName.setText(uE.getNombre());
         txtNavMail.setText(uE.getMail());
-        txtNameP.setText(uE.getNombre());
     }
 
     private void signout(){

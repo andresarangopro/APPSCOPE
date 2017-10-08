@@ -164,7 +164,7 @@ public class Login extends AppCompatActivity {
                 }else{
                   TIPO_USUARIO = 0;
                     finish();
-                    startActivity(new Intent(Login.this,MainActivity.class));
+                    startActivity(new Intent(Login.this,Perfil.class));
                 }
             }
 
@@ -193,7 +193,7 @@ public class Login extends AppCompatActivity {
                 }else{
                     TIPO_USUARIO = 1;
                     finish();
-                    startActivity(new Intent(Login.this,MainActivity.class));
+                    startActivity(new Intent(Login.this,Perfil.class));
                 }
             }
 
