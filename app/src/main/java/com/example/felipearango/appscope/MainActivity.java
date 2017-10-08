@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
-
+            startActivity(new Intent(getApplicationContext(),Perfil.class));
         } else if (id == R.id.nav_manage) {
             startActivity(new Intent(getApplicationContext(),Perfil.class));
         } else if (id == R.id.nav_share) {
