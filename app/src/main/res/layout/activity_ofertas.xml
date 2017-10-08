@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+
+    tools:context="com.example.felipearango.appscope.Ofertas">
+
+    <LinearLayout
+        android:id="@+id/llLayout"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        android:weightSum="20"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+            <TextView
+                android:textAlignment="center"
+                android:textColor="@color/textoSecundario"
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:textSize="40dp"
+                android:text="TITULO"/>
+            <TextView
+                android:textColor="@color/colorAccent"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:textSize="20dp"
+                android:layout_weight="1"
+                android:text="Empresa"/>
+            <ScrollView
+                android:layout_marginTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10">
+                <TextView
+                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla tincidunt dictum. Morbi semper gravida nunc ut consequat. Quisque nunc lectus, pharetra vitae ullamcorper in, pulvinar vitae massa. Donec dignissim interdum velit, eget viverra dolor convallis vel. Sed vestibulum efficitur massa non mattis. Etiam facilisis enim ut ante auctor, nec scelerisque augue finibus. Nam eleifend nisl nec erat lacinia, molestie interdum ligula laoreet. Nam hendrerit facilisis enim id venenatis. Morbi sed libero turpis. Maecenas eget blandit tortor.
+                    Fusce mollis pellentesque erat, eu posuere arcu fermentum at. Mauris eleifend rutrum felis, ut ornare urna iaculis eu. Phasellus tincidunt vestibulum lacus, sed egestas dolor pulvinar quis. Ut scelerisque nisl eget urna eleifend ultricies. Nunc et finibus velit, id tempor diam. Sed vehicula arcu eget libero pellentesque laoreet. In sodales libero eget ligula tempus commodo. Nam et molestie sapien. Vivamus maximus purus vulputate nisi tempus elementum."
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </ScrollView>
+            <Button
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:text="Ofertar"
+                style="@style/btnTap1"/>
+    </LinearLayout>
+
+</LinearLayout>

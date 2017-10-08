@@ -31,7 +31,8 @@
             android:name=".RegistroEmail"
             android:label="@string/title_activity_registro_email"
             android:theme="@style/MyTheme" />
-        <activity android:name=".OfertaTrabajo"></activity>
+        <activity android:name=".OfertaTrabajo" />
+        <activity android:name=".Ofertas"></activity>
     </application>
 
 </manifest>
