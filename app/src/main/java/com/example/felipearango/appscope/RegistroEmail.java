@@ -169,11 +169,12 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         String refEmpleo ="";
         String formacion = "";
         String mail = "";
+        float rating = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
         UsuarioCorriente uC = new UsuarioCorriente(id,name,apellido,ocupacion,dateBorn,universidad
-                ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,
+                ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,rating,
                 anexos,idiomas,expProfesionaless,refEmpleo,formacion);
         if(uC != null){
             insertarUsCFireBase(uC,user);
@@ -192,10 +193,11 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         String mail="";
         String foto = "";
         String redesSociales = "";
+        float rating = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
-        Empresa uE = new Empresa(id,nombre,razonSocial,urlEmpresa,nit,mail,ESTADO_NUEVA,foto,redesSociales);
+        Empresa uE = new Empresa(id,nombre,razonSocial,urlEmpresa,nit,mail,ESTADO_NUEVA,foto,rating,redesSociales);
         if(uE != null){
             insertarUsEmFireBase(uE,user);
         }
