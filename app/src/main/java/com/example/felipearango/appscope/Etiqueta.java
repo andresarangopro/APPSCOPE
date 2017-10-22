@@ -10,7 +10,6 @@ import java.util.Arrays;
 public class Etiqueta {
 
     public String nombreEtiqueta;
-    public ArrayList<Trabajo> trabajo;
 
     public Etiqueta(String nombreEtiqueta, String nombreT, String Desc) {
         this.nombreEtiqueta = nombreEtiqueta;

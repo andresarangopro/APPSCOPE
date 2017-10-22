@@ -27,4 +27,12 @@ public class Trabajo {
                 ", et=" + et +
                 '}';
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescripción() {
+        return descripción;
+    }
 }
