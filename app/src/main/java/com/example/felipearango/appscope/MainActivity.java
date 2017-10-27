@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(getApplicationContext(),Perfil.class));
         } else if (id == R.id.nav_manage) {
-            startActivity(new Intent(getApplicationContext(),Perfil.class));
+            startActivity(new Intent(getApplicationContext(),Settings.class));
         } else if (id == R.id.nav_share) {
             startActivity(new Intent(getApplicationContext(),OfertaTrabajo.class));
         } else if (id == R.id.nav_send) {
