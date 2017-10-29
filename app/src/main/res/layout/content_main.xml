@@ -8,15 +8,8 @@
 
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.example.felipearango.appscope.MainActivity"
-    android:weightSum="8"
-    tools:showIn="@layout/app_bar_main">
+    android:weightSum="8"   >
 
-    <!--weight: 0.5
-    - Espacio -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.5" ></LinearLayout>
 
     <!--weight: 2
      -Foto, nombre, Ocupacion, correo -->
@@ -200,4 +193,5 @@
             </LinearLayout>
         </TabHost>
     </LinearLayout>
+
 </LinearLayout>

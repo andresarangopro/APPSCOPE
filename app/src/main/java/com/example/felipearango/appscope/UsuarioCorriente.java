@@ -26,6 +26,7 @@ public class UsuarioCorriente {
     private String hobbies;
     private String conocimientosInformaticos;
     private String estadoCuenta;
+    private float rating;
     private ArrayList<String> anexos;
     private ArrayList<String> idiomas;
     private ArrayList<String> experienciasProfesionales;
@@ -40,7 +41,7 @@ public class UsuarioCorriente {
     public UsuarioCorriente(String id, String nombre, String apellido, String ocupacion,
                             String fechaNacimiento, String universidad, String celular,
                             String correo, String foto, String frase, String hobbies,
-                            String conocimientosInformaticos, String estadoCuenta,
+                            String conocimientosInformaticos, String estadoCuenta,float rating,
                             String anexos, String idiomas,
                             String experienciasProfesionales,
                             String referenciasEmpleo, String formacion) {
@@ -57,6 +58,7 @@ public class UsuarioCorriente {
         this.hobbies = hobbies;
         this.conocimientosInformaticos =  conocimientosInformaticos;
         this.estadoCuenta = estadoCuenta;
+        this.rating = rating;
         this.anexos = new ArrayList<String>(Arrays.asList(anexos.split(" , ")));
         this.idiomas = new ArrayList<String>(Arrays.asList(idiomas.split(" , ")));
         this.experienciasProfesionales = new ArrayList<String>(Arrays.asList(experienciasProfesionales.split(" , ")));
@@ -175,6 +177,14 @@ public class UsuarioCorriente {
 
     public void setEstadoCuenta(String estadoCuenta) {
         this.estadoCuenta = estadoCuenta;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
     }
 
     public ArrayList<String> getAnexos() {

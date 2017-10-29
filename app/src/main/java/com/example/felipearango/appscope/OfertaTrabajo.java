@@ -1,8 +1,10 @@
 package com.example.felipearango.appscope;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +28,7 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
 
     private EditText titulo, detalles, etiquetas;
     private Button btnIngresar;
+    private  ArrayList<String> listEtiquetas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +38,10 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
         mDrawer.addView(contentView, 0);
         iniciar();
         getUser();
+       // inicializatedFireBase();
     }
 
     private void getUser(){
-
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-
         titulo = (EditText)findViewById(R.id.tvTitulo);
         detalles = (EditText)findViewById(R.id.tvDetalles);
         etiquetas = (EditText)findViewById(R.id.tvEtiqueta);
@@ -52,22 +53,28 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
         initializedDR();
     }
 
-    private void addJob(String nombre, String desc, String etiquetas, Object usr){
+    private void addJob(String titulo, String desc, String etiquetas, Object usr){
 
-        ArrayList<String> ets = new ArrayList<>(Arrays.asList(etiquetas.split(",")));
+        String idJob =  databaseReference.push().getKey();
+        Trabajo t = new Trabajo(idJob,0,titulo,desc,"","");
+        Etiqueta et ;
+        insertarJobFB(t);
+        listEtiquetas = new ArrayList<String>(Arrays.asList(etiquetas.split(",")));
 
         if(usr instanceof Empresa){
-            Empresa emp = (Empresa) usr;
-            addJobToET(ets, nombre, desc);
+            for (int i = 0; i < listEtiquetas.size() ; i++) {
+                Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
+                et = new Etiqueta(parametrizacionEtiqueta(listEtiquetas.get(i)),
+                        ((Empresa) usr).getId(), t.getId());
+                insertarEtiqFB(et);
+            }
         }else{
-
-        }
-    }
-
-    private void addJobToET(ArrayList<String> ets, String nombre, String desc){
-
-        for (String et: ets) {
-            nodeExist(et, nombre, desc);
+            for (int i = 0; i < listEtiquetas.size() ; i++) {
+                Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
+                et = new Etiqueta(parametrizacionEtiqueta(listEtiquetas.get(i)),
+                        ((UsuarioCorriente) usr).getId(), t.getId());
+                insertarEtiqFB(et);
+            }
         }
     }
 
@@ -76,47 +83,54 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void nodeExist(final String et, final String nombre, final String desc){
-        FirebaseUser user = firebaseAuth.getCurrentUser();
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                Etiqueta ets = new Etiqueta("", nombre, desc);
-                //Empresa empresa = new Empresa("AA","BB","","","","","","","");
-
-                databaseReference.child("Etiquetas").child(ets.getNombreEtiqueta()).setValue(ets);
-
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
     @Override
     public void onClick(View view) {
+        if(btnIngresar == view){
+           eventPDUA("EmpresaUsers");
+        }
 
-        eventPDUA("EmpresaUsers");
+    }
 
+    private void insertarJobFB(Trabajo job){
+        databaseReference.child("Jobs").child(job.getId()).setValue(job);
+    }
+
+    private void insertarEtiqFB(Etiqueta etiqueta){
+        databaseReference.child("Etiqueta").child(etiqueta.getNombreEtiqueta())
+                .child(etiqueta.getIdEmpresa()).child(etiqueta.getIdTrabajo()).setValue(etiqueta);
     }
 
     public void eventPDUA(String usChildString){
-        databaseReference.child("EmpresaUsers").addValueEventListener(new ValueEventListener() {
+        databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(TIPO_USUARIO == 0){
+                    UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
+                    addJob(titulo.getText().toString(), detalles.getText().toString(), etiquetas.getText().toString(), uC);
+                }else {
 
-                Empresa uE =  dataSnapshot.child(user.getUid()).getValue(Empresa.class);
-
-                addJob(titulo.getText().toString(), detalles.getText().toString(),etiquetas.getText().toString(), uE);
+                    Empresa uE = dataSnapshot.child(user.getUid()).getValue(Empresa.class);
+                    addJob(titulo.getText().toString(), detalles.getText().toString(), etiquetas.getText().toString(), uE);
+                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+    }
+
+    private String parametrizacionEtiqueta(String etiqueta){
+        String sSubCadena = etiqueta;
+        String fisrtLetter = etiqueta;
+
+        fisrtLetter = fisrtLetter.substring(0,1);
+        fisrtLetter = fisrtLetter.toUpperCase();
+        sSubCadena = sSubCadena.substring(1,sSubCadena.length());
+        sSubCadena= sSubCadena.toLowerCase();
+
+        return fisrtLetter+sSubCadena;
     }
 
 }

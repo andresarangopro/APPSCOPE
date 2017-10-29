@@ -187,12 +187,13 @@ public class ScreenRegisterUC extends AppCompatActivity {
         String refEmpleo ="";
         String formacion = "";
         String mail = " ";
+        float rating = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
         UsuarioCorriente uC = new UsuarioCorriente(id,name+" "+sName,apellido+" "+sApellido,ocupacion,
                 dateBorn,universidad,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_ACTIVA,
-                anexos,idiomas,expProfesionaless,refEmpleo,formacion);
+                rating,anexos,idiomas,expProfesionaless,refEmpleo,formacion);
 
         if(uC != null){
             insertarUsCFireBase(uC,user);
@@ -204,11 +205,11 @@ public class ScreenRegisterUC extends AppCompatActivity {
      * @param uC
      */
     private void insertarUsCFireBase(UsuarioCorriente uC,FirebaseUser user){
-        Log.e("INFO", "NO<...");
+        Log.e("INFO", "NO...");
         databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
         Log.e("INFO", "SI...");
         finish();
-       startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        startActivity(new Intent(getApplicationContext(),Perfil.class));
     }
 
     /**

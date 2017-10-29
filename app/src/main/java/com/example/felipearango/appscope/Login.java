@@ -25,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class Login extends AppCompatActivity {
-    public static int TIPO_USUARIO = 0;
+
 
     //////////////////////////
     //Variables
@@ -40,6 +40,7 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     public static boolean calledAlready = false;
     private UsuarioCorriente uC = null;
+    public static int TIPO_USUARIO = 0;
 
     //////////////////////////
     //Oncreate

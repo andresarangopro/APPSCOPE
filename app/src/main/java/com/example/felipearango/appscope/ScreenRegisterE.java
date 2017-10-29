@@ -109,15 +109,17 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
         String mail="";
         String foto = "";
         String redesSociales = "";
+        float rating = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
         Empresa uE = new Empresa(id, nombre, razonSocial, urlEmpresa,nitEmpresa,
-                mail,ESTADO_ACTIVA,foto,redesSociales);
+                mail,ESTADO_ACTIVA,foto,rating,redesSociales);
         if(uE != null){
             insertarUsEFireBase(uE,user);
         }
     }
+
     private boolean comprobarcampos(){
         return true;
     }
@@ -125,12 +127,11 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
     private void insertarUsEFireBase(Empresa uE,FirebaseUser user){
         databaseReference.child("EmpresaUsers").child(user.getUid()).setValue(uE);
         finish();
-        startActivity(new Intent(getApplicationContext(),MainActivity.class));
+        startActivity(new Intent(getApplicationContext(),Perfil.class));
     }
 
     @Override
     public void onClick(View view) {
-
         switch (view.getId()){
             case R.id.btnAgregarNit:{
                 break;

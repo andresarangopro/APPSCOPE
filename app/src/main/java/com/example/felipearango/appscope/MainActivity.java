@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity
     protected static DatabaseReference databaseReference;
     protected static FirebaseDatabase firebaseDatabase;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         /////////////////////////
         //////Test!!!!
         //////////////////////
-       // startActivity(new Intent(getApplicationContext(), Perfil.class));
+        // startActivity(new Intent(getApplicationContext(), Perfil.class));
     }
 
     /**
@@ -118,7 +117,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(getApplicationContext(),Perfil.class));
         } else if (id == R.id.nav_manage) {
-            startActivity(new Intent(getApplicationContext(),Perfil.class));
+            startActivity(new Intent(getApplicationContext(),Settings.class));
         } else if (id == R.id.nav_share) {
             startActivity(new Intent(getApplicationContext(),OfertaTrabajo.class));
         } else if (id == R.id.nav_send) {
@@ -139,24 +138,25 @@ public class MainActivity extends AppCompatActivity
 
     protected void datosUser(){
         if(TIPO_USUARIO == 0){
-           eventPDU("CorrientsUsers");
+            eventPDU("CorrientsUsers");
         }else{
             eventPDU("EmpresaUsers");
         }
     }
 
     public void eventPDU(String usChildString){
+        final Object obj = null;
         databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //listUsers.clear();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                Log.e(""+TIPO_USUARIO,"HOLAAAA");
                 if(TIPO_USUARIO == 0){
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                     putDatesUsC(uC);
+
                 }else{
-                   Empresa uE =  dataSnapshot.child(user.getUid()).getValue(Empresa.class);
+                    Empresa uE =  dataSnapshot.child(user.getUid()).getValue(Empresa.class);
                     putDatesUsE(uE);
                 }
                 // putImage(userIn);
@@ -172,6 +172,9 @@ public class MainActivity extends AppCompatActivity
         Log.e("USER",TIPO_USUARIO+" ---- "+uC.getId().toString());
         txtNavName.setText(uC.getNombre()+" "+uC.getApellido());
         txtNavMail.setText(uC.getCorreo());
+
+      //  txtNameP.setText(uC.getNombre());
+        //putTxt("NOMBRE","MAIL","PROGAMMING");
 
     }
 
