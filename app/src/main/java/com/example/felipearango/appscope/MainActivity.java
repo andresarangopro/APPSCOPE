@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
 import static com.example.felipearango.appscope.Login.calledAlready;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     protected static FirebaseAuth firebaseAuth;
     protected DrawerLayout mDrawer;
     private TextView txtNavMail,txtNavName;
+    private ImageView iVNavPerfil;
     protected static DatabaseReference databaseReference;
     protected static FirebaseDatabase firebaseDatabase;
     private MenuView.ItemView nav_gallery;
@@ -138,7 +141,7 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         txtNavMail = (TextView) headerView.findViewById(R.id.txtNavMail);
         txtNavName = (TextView) headerView.findViewById(R.id.txtNavName);
-
+        iVNavPerfil = (ImageView) headerView.findViewById(R.id.iVNavPerfil);
         if(TIPO_USUARIO == 1){
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_gallery).setVisible(false);
@@ -165,10 +168,11 @@ public class MainActivity extends AppCompatActivity
                 if(TIPO_USUARIO == 0){
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                     putDatesUsC(uC);
-
+                    putImg(uC);
                 }else{
                     Empresa uE =  dataSnapshot.child(user.getUid()).getValue(Empresa.class);
                     putDatesUsE(uE);
+                    putImg(uE);
                 }
                 // putImage(userIn);
             }
@@ -178,7 +182,25 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+    private void putImg(Object obj){
+        if(obj instanceof UsuarioCorriente){
+            if(!(((UsuarioCorriente)obj).getFoto().equals(""))){
+                Picasso.with(MainActivity.this)
+                        .load(((UsuarioCorriente)obj).getFoto())
+                        .transform(new CircleTransform())
+                        .into(iVNavPerfil);
 
+            }
+        }else{
+            if(!(((Empresa)obj).getFoto().equals(""))){
+                Picasso.with(MainActivity.this)
+                        .load(((Empresa)obj).getFoto())
+                        .transform(new CircleTransform())
+                        .into(iVNavPerfil);
+
+            }
+        }
+    }
     private void putDatesUsC(UsuarioCorriente uC){
         Log.e("USER",TIPO_USUARIO+" ---- "+uC.getId().toString());
         txtNavName.setText(uC.getNombre()+" "+uC.getApellido());
