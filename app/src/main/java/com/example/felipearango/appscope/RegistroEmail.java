@@ -2,13 +2,12 @@ package com.example.felipearango.appscope;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -107,6 +106,8 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
     private void registerUser(String mail, String pass) {
         final String mail1 = mail;
         final String pass1 = pass;
+        progressDialog.setMessage("Register user, please wait...");
+        progressDialog.show();
         firebaseAuth.createUserWithEmailAndPassword(mail, pass)
                 .addOnCompleteListener(RegistroEmail.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -129,9 +130,6 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
      * @param pass
      */
     private void loginUser(String mail, String pass, final int tipoUser){
-        progressDialog.setMessage("Register user, please wait...");
-        progressDialog.show();
-
         firebaseAuth.signInWithEmailAndPassword(mail,pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

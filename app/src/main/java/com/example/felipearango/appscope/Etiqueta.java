@@ -1,8 +1,5 @@
 package com.example.felipearango.appscope;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * Created by Sebastian Luna R on 10/7/2017.
  */
@@ -18,6 +15,7 @@ public class Etiqueta {
         this.idEmpresa = idEmpresa;
         this.idTrabajo = idTrabajo;
     }
+    public Etiqueta(){}
 
     public String getNombreEtiqueta() {
         return nombreEtiqueta;

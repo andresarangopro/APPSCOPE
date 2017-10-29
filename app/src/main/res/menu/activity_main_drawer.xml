@@ -4,12 +4,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_camera"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:icon="@drawable/ic_notifications_button"
+            android:title="Notificaciones" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:icon="@drawable/ic_employee"
+            android:title="Ofertas de trabajo" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_male"
@@ -24,8 +24,8 @@
         <menu>
             <item
                 android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
+                android:icon="@drawable/ic_work_calendar"
+                android:title="Ofertar trabajo" />
             <item
                 android:id="@+id/nav_send"
                 android:icon="@drawable/ic_turn_off"
