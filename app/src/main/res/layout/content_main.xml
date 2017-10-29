@@ -154,23 +154,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="Hola2"/>
-
-
                     </LinearLayout>
-
                     <LinearLayout
                         android:id="@+id/tab3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-
                         <TextView
                             android:id="@+id/tV3"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:hint="Hola3"/>
-
-
                     </LinearLayout>
 
                     <LinearLayout
