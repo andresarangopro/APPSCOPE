@@ -72,4 +72,12 @@ public class Trabajo {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescripción() {
+        return descripción;
+    }
 }

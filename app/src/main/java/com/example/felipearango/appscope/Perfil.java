@@ -33,7 +33,6 @@ public class Perfil extends MainActivity {
     private int[] listTabs = {R.id.tab1,R.id.tab2,R.id.tab3,R.id.tab4,R.id.tab5};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_perfil, null, false);
