@@ -2,15 +2,12 @@ package com.example.felipearango.appscope;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,14 +20,12 @@ import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
 
 public class Perfil extends MainActivity {
 
-
-    private UsuarioCorriente user;
-    private ImageView imVPerfil,iVNavPerfil;
+    private ImageView imVPerfil;
     private TabHost tHData;
     private Object obj;
     private TextView  tVNamep, tVOcupacion, tVCorreo, tVFrase;
-
     private int[] listTabs = {R.id.tab1,R.id.tab2,R.id.tab3,R.id.tab4,R.id.tab5};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +53,6 @@ public class Perfil extends MainActivity {
         databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //listUsers.clear();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(TIPO_USUARIO == 0){
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
@@ -70,7 +64,6 @@ public class Perfil extends MainActivity {
                     obj = uE;
                 }
                 putImg(obj);
-                // putImage(userIn);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -97,12 +90,6 @@ public class Perfil extends MainActivity {
                         .load(((UsuarioCorriente)obj).getFoto())
                         .transform(new CircleTransform())
                         .into(imVPerfil);
-
-                Picasso.with(Perfil.this)
-                        .load(((UsuarioCorriente)obj).getFoto())
-                        .transform(new CircleTransform())
-                        .into(iVNavPerfil);
-
             }
         }else{
             if(!(((Empresa)obj).getFoto().equals(""))){
@@ -110,28 +97,17 @@ public class Perfil extends MainActivity {
                         .load(((Empresa)obj).getFoto())
                         .transform(new CircleTransform())
                         .into(imVPerfil);
-
-                Picasso.with(Perfil.this)
-                        .load(((Empresa)obj).getFoto())
-                        .transform(new CircleTransform())
-                        .into(iVNavPerfil);
-
             }
         }
     }
 
     private void startComponents(){
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
-
         tHData = (TabHost) findViewById(R.id.tHData);
         tVNamep = (TextView) findViewById(R.id.tVNameP);
         tVOcupacion = (TextView) findViewById(R.id.tVOcupacionP);
         tVCorreo = (TextView) findViewById(R.id.tVCorreoP);
         tVFrase = (TextView) findViewById(R.id.tVFrase);
-
         imVPerfil = (ImageView) findViewById(R.id.imVPerfil);
-        iVNavPerfil = (ImageView) headerView.findViewById(R.id.iVNavPerfil);
     }
 
 
@@ -152,7 +128,5 @@ public class Perfil extends MainActivity {
     private void initializedDR() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
-
-
 
 }
