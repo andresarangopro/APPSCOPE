@@ -2,16 +2,17 @@ package com.example.felipearango.appscope;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity
     private TextView txtNavMail,txtNavName;
     protected static DatabaseReference databaseReference;
     protected static FirebaseDatabase firebaseDatabase;
-
+    private MenuView.ItemView nav_gallery;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +59,6 @@ public class MainActivity extends AppCompatActivity
         //////////////////////
         // startActivity(new Intent(getApplicationContext(), Perfil.class));
     }
-
     /**
      *
      */
@@ -113,7 +113,11 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(),Oferta.class));
 // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(getApplicationContext(),Oferta.class));
+            if(TIPO_USUARIO == 0){
+                startActivity(new Intent(getApplicationContext(),Oferta.class));
+            }else{
+
+            }
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(getApplicationContext(),Perfil.class));
         } else if (id == R.id.nav_manage) {
@@ -134,6 +138,13 @@ public class MainActivity extends AppCompatActivity
         View headerView = navigationView.getHeaderView(0);
         txtNavMail = (TextView) headerView.findViewById(R.id.txtNavMail);
         txtNavName = (TextView) headerView.findViewById(R.id.txtNavName);
+
+        if(TIPO_USUARIO == 1){
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_gallery).setVisible(false);
+        }else{
+
+        }
     }
 
     protected void datosUser(){

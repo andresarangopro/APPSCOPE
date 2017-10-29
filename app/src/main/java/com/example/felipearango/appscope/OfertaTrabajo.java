@@ -1,21 +1,17 @@
 package com.example.felipearango.appscope;
 
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -56,11 +52,16 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
     private void addJob(String titulo, String desc, String etiquetas, Object usr){
 
         String idJob =  databaseReference.push().getKey();
-        Trabajo t = new Trabajo(idJob,0,titulo,desc,"","");
         Etiqueta et ;
-        insertarJobFB(t);
+        Trabajo t;
         listEtiquetas = new ArrayList<String>(Arrays.asList(etiquetas.split(",")));
 
+        if(usr instanceof Empresa){
+            t = new Trabajo(idJob,0,titulo,desc,"","", ((Empresa) usr).getId());
+        }else{
+            t = new Trabajo(idJob,0,titulo,desc,"","", ((UsuarioCorriente) usr).getId());
+        }
+        insertarJobFB(t);
         if(usr instanceof Empresa){
             for (int i = 0; i < listEtiquetas.size() ; i++) {
                 Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
@@ -76,6 +77,9 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
                 insertarEtiqFB(et);
             }
         }
+
+
+
     }
 
     private void initializedDR() {

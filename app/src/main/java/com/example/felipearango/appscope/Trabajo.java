@@ -1,8 +1,5 @@
 package com.example.felipearango.appscope;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 /**
  * Created by Sebastian Luna R on 10/7/2017.
  */
@@ -15,15 +12,20 @@ public class Trabajo {
     private String descripción = "";
     private String localizacion;
     private String estado;
+    private String idEmpresa;
 
-    public Trabajo(String id, int aspirantes, String titulo, String descripción, String localizacion, String estado) {
+    public Trabajo(String id, int aspirantes, String titulo, String descripción, String localizacion,
+                   String estado, String idEmpresa) {
         this.id = id;
         this.aspirantes = aspirantes;
         this.titulo = titulo;
         this.descripción = descripción;
         this.localizacion = localizacion;
         this.estado = estado;
+        this.idEmpresa = idEmpresa;
     }
+
+    public Trabajo(){}
 
     public String getId() {
         return id;
@@ -73,11 +75,11 @@ public class Trabajo {
         this.estado = estado;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getIdEmpresa() {
+        return idEmpresa;
     }
 
-    public String getDescripción() {
-        return descripción;
+    public void setIdEmpresa(String idEmpresa) {
+        this.idEmpresa = idEmpresa;
     }
 }
