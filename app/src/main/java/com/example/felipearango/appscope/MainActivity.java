@@ -111,22 +111,21 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_camera) {
             startActivity(new Intent(getApplicationContext(),Oferta.class));
-// Handle the camera action
+            finish();
         } else if (id == R.id.nav_gallery) {
-            if(TIPO_USUARIO == 0){
-                startActivity(new Intent(getApplicationContext(),Oferta.class));
-            }else{
-
-            }
+            startActivity(new Intent(getApplicationContext(), Oferta.class));
+            finish();
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(getApplicationContext(),Perfil.class));
+            finish();
         } else if (id == R.id.nav_manage) {
             startActivity(new Intent(getApplicationContext(),Settings.class));
+            finish();
         } else if (id == R.id.nav_share) {
             startActivity(new Intent(getApplicationContext(),OfertaTrabajo.class));
+            finish();
         } else if (id == R.id.nav_send) {
             signout();
         }
