@@ -8,4 +8,6 @@
     <color name="Hint">#9C9C9C</color>
     <color name="textoSecundario">#017580</color>
     <color name="textolbl">#B5B5B5</color>
+    <color name="Aprobado">#51B751</color>
+    <color name="NoAprobado">#C33939</color>
 </resources>
