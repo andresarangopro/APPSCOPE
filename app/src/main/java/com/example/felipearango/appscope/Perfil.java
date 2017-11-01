@@ -23,7 +23,7 @@ public class Perfil extends MainActivity {
     private ImageView imVPerfil;
     private TabHost tHData;
     private Object obj;
-    private TextView  tVNamep, tVOcupacion, tVCorreo, tVFrase;
+    private TextView  tVNamep, tVOcupacion, tVFrase;
     private int[] listTabs = {R.id.tab1,R.id.tab2,R.id.tab3,R.id.tab4,R.id.tab5};
 
     @Override
@@ -75,7 +75,6 @@ public class Perfil extends MainActivity {
     private void putTxt(Object obj){
         if(obj instanceof UsuarioCorriente){
             tVNamep.setText(((UsuarioCorriente)obj).getNombre());
-            tVCorreo.setText(((UsuarioCorriente) obj).getCorreo());
             tVOcupacion.setText(((UsuarioCorriente) obj).getOcupacion());
         }else{
             tVNamep.setText(((Empresa)obj).getNombre());
@@ -105,7 +104,6 @@ public class Perfil extends MainActivity {
         tHData = (TabHost) findViewById(R.id.tHData);
         tVNamep = (TextView) findViewById(R.id.tVNameP);
         tVOcupacion = (TextView) findViewById(R.id.tVOcupacionP);
-        tVCorreo = (TextView) findViewById(R.id.tVCorreoP);
         tVFrase = (TextView) findViewById(R.id.tVFrase);
         imVPerfil = (ImageView) findViewById(R.id.imVPerfil);
     }
@@ -128,5 +126,4 @@ public class Perfil extends MainActivity {
     private void initializedDR() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
-
 }

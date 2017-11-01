@@ -34,7 +34,9 @@
         <activity android:name=".OfertaTrabajo" />
         <activity android:name=".Oferta" />
         <activity android:name=".Settings" />
-        <activity android:name=".CompletarPerfil"></activity>
+        <activity android:name=".CompletarPerfil" />
+        <activity android:name=".Activity_Admin" />
+        <activity android:name=".Activity_notificaciones"></activity>
     </application>
 
 </manifest>
