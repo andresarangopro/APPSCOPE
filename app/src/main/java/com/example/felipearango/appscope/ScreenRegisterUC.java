@@ -32,7 +32,7 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
     //////////////////////////////
 
     private EditText txtName,txtSNombre, txtPrimerA, txtSegundoA,txtUniversidad,
-            txtPass, txtPassC, txtPhone;
+            txtPass, txtEtiquetaRU, txtPhone;
     private TextView lblDisponibilidad,lblDateBorn;
     private DatabaseReference databaseReference;
     private ImageButton iBtnSelectDateB;
@@ -81,7 +81,7 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
         txtSegundoA = (EditText) findViewById(R.id.txtSegundoA);
         txtUniversidad = (EditText) findViewById(R.id.txtUniversidad);
         txtPhone = (EditText) findViewById(R.id.txtPhone);
-
+        txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
         lblDisponibilidad = (TextView) findViewById(R.id.lblDisponibilidad);
         lblDateBorn = (TextView) findViewById(R.id.lblDateBorn);
 
@@ -106,12 +106,13 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
         if(v == btnRegister){
             updateDatesUser();
         }else if(v == btnAddLabelR){
-            addToEtiquetas();
+            addToEtiquetas(getTxtEdit(txtEtiquetaRU));
+            txtEtiquetaRU.setText("");
         }
     }
 
 
-    private void addToEtiquetas(){
+    private void addToEtiquetas(String lbl){
 
         LinearLayout llrow = new LinearLayout(this);
         LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
@@ -121,6 +122,7 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
 
         EditText nET = new EditText(this);
         nET.setEnabled(false);
+        nET.setText(lbl);
         nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1.9f));
         llrow.addView(nET);
 
