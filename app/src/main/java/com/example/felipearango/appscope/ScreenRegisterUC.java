@@ -1,12 +1,10 @@
 package com.example.felipearango.appscope;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -14,23 +12,20 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
-public class ScreenRegisterUC extends AppCompatActivity {
+public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickListener{
 
     ///////////////////////////////
     //Variables
@@ -43,10 +38,12 @@ public class ScreenRegisterUC extends AppCompatActivity {
     private ImageButton iBtnSelectDateB;
     private RadioGroup rGDisponibilidadViaje;
     private Spinner spOcupation;
-    private Button btnRegister;
+    private Button btnRegister,btnAddLabelR;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private int day,monthS,yearS;
+
+    private LinearLayout lLayoutEtiquetas;
     public static final String ESTADO_ACTIVA = "ACTIVA";
 
     ////////////////////////////////
@@ -58,7 +55,6 @@ public class ScreenRegisterUC extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_register);
         instanceXml();
-        onClicklistener();
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
         initializedDR();
@@ -95,31 +91,52 @@ public class ScreenRegisterUC extends AppCompatActivity {
         spOcupation = (Spinner) findViewById(R.id.spOcupacion);
 
         btnRegister = (Button) findViewById(R.id.btnRegistrar);
+        btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
+
+        btnAddLabelR.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
+        lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
     }
 
     /**
      *
      */
-    private void onClicklistener(){
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // String pass = getTxtEdit(txtPass);
-               // String passC = getTxtEdit(txtPassC);
-                updateDatesUser();
-             /**   if(!campEmpty(pass) && !campEmpty(passC) && comprobarCampos()){
-                    if(comprobarPass(pass,passC)){
-                        updateDatesUser();
-                       // registerUser(mail,pass);
-                    }
-                }else{
-                    Toast.makeText(getApplicationContext(),"Campos vacios",Toast.LENGTH_LONG).show();
-                }**/
-
-
-            }
-        });
+    @Override
+    public void onClick(View v) {
+        if(v == btnRegister){
+            updateDatesUser();
+        }else if(v == btnAddLabelR){
+            addToEtiquetas();
+        }
     }
+
+
+    private void addToEtiquetas(){
+
+        LinearLayout llrow = new LinearLayout(this);
+        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
+        llrow.setWeightSum(2f);
+        llrow.setOrientation(LinearLayout.HORIZONTAL);
+        llrow.setLayoutParams(llParams);
+
+        EditText nET = new EditText(this);
+        nET.setEnabled(false);
+        nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1.9f));
+        llrow.addView(nET);
+
+        Button btn = new Button(this);
+        btn.setOnClickListener(this);
+        btn.setText("----");
+        btn.setTextSize(12);
+        //btn.setBackgroundResource(R.drawable.mybutton);
+        llrow.addView(btn);
+
+        lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
+        lLayoutEtiquetas.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
+                lLayoutEtiquetas.getWeightSum()+1));
+        lLayoutEtiquetas.addView(llrow);
+    }
+
 
 
     private void chooseDate(){
@@ -187,13 +204,14 @@ public class ScreenRegisterUC extends AppCompatActivity {
         String refEmpleo ="";
         String formacion = "";
         String mail = " ";
+        String etiquetas= "";
         float rating = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
         UsuarioCorriente uC = new UsuarioCorriente(id,name+" "+sName,apellido+" "+sApellido,ocupacion,
                 dateBorn,universidad,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_ACTIVA,
-                rating,anexos,idiomas,expProfesionaless,refEmpleo,formacion);
+                rating,anexos,idiomas,expProfesionaless,refEmpleo,formacion, etiquetas);
 
         if(uC != null){
             insertarUsCFireBase(uC,user);
@@ -239,6 +257,7 @@ public class ScreenRegisterUC extends AppCompatActivity {
     private String getTxtEdit(EditText txt){
         return txt.getText().toString();
     }
+
 
 
 }

@@ -99,8 +99,9 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_work) {
+            startActivity(new Intent(getApplicationContext(), Oferta.class));
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -138,15 +139,14 @@ public class MainActivity extends AppCompatActivity
     private void inicializatedComponents(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
+        Menu nav_Menu = navigationView.getMenu();
         txtNavMail = (TextView) headerView.findViewById(R.id.txtNavMail);
         txtNavName = (TextView) headerView.findViewById(R.id.txtNavName);
         iVNavPerfil = (ImageView) headerView.findViewById(R.id.iVNavPerfil);
         if(TIPO_USUARIO == 1){
-            Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_gallery).setVisible(false);
-        }else{
-
         }
+
     }
 
     protected void datosUser(){

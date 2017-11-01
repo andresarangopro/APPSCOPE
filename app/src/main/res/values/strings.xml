@@ -7,4 +7,5 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_perfil">perfil</string>
     <string name="title_activity_registro_email">RegistroEmail</string>
+    <string name="mi_mensaje"><b>+</b></string>
 </resources>

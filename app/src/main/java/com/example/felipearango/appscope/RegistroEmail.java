@@ -167,13 +167,14 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         String refEmpleo ="";
         String formacion = "";
         String mail = "";
+        String etiquetas = "";
         float rating = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
         UsuarioCorriente uC = new UsuarioCorriente(id,name,apellido,ocupacion,dateBorn,universidad
                 ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,rating,
-                anexos,idiomas,expProfesionaless,refEmpleo,formacion);
+                anexos,idiomas,expProfesionaless,refEmpleo,formacion, etiquetas);
         if(uC != null){
             insertarUsCFireBase(uC,user);
         }

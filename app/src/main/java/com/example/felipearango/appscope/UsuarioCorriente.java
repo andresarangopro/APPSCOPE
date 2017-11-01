@@ -32,7 +32,7 @@ public class UsuarioCorriente {
     private ArrayList<String> experienciasProfesionales;
     private ArrayList<String> referenciasEmpleo;
     private ArrayList<String> formacion;
-
+    private ArrayList<String> etiquetas;
 
     //////////////////////////
     //Constructor
@@ -44,7 +44,7 @@ public class UsuarioCorriente {
                             String conocimientosInformaticos, String estadoCuenta,float rating,
                             String anexos, String idiomas,
                             String experienciasProfesionales,
-                            String referenciasEmpleo, String formacion) {
+                            String referenciasEmpleo, String formacion, String etiquetas) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -64,7 +64,10 @@ public class UsuarioCorriente {
         this.experienciasProfesionales = new ArrayList<String>(Arrays.asList(experienciasProfesionales.split(" , ")));
         this.referenciasEmpleo = new ArrayList<String>(Arrays.asList(referenciasEmpleo.split(" , ")));
         this.formacion = new ArrayList<String>(Arrays.asList(formacion.split(" , ")));
+        this.etiquetas = new ArrayList<String>(Arrays.asList(formacion.split(" , ")));
     }
+
+
 
     public UsuarioCorriente() {
 
@@ -225,5 +228,13 @@ public class UsuarioCorriente {
 
     public void setFormacion(ArrayList<String> formacion) {
         this.formacion = formacion;
+    }
+
+    public ArrayList<String> getEtiquetas() {
+        return etiquetas;
+    }
+
+    public void setEtiquetas(ArrayList<String> etiquetas) {
+        this.etiquetas = etiquetas;
     }
 }
