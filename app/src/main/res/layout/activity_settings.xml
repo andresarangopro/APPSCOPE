@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="8"
+    android:layout_marginTop="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginBottom="16dp"
     tools:context="com.example.felipearango.appscope.Settings">
     <!--0.8 SUM WEIGHT-->
     <LinearLayout
@@ -38,55 +41,47 @@
             android:layout_height="0dp"
             android:layout_weight="0.5"/>
     </LinearLayout>
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3.5"
+        android:weightSum="10"
+        android:layout_weight="5"
         android:orientation="vertical"
-        android:weightSum="8">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:hint="Nombre" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:hint="Nombre" />
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:hint="Frase"
-            android:textAlignment="inherit" />
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1.5"
-            android:hint="Frase" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:weightSum="4"
-        android:orientation="horizontal">
+        android:layout_height="0dp">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7">
 
-        <Button
-            android:id="@+id/btnSendImg"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Send"
-            android:layout_weight="2"/>
+            <include
+                layout="@layout/activity_completar_perfil"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </include>
+        </ScrollView>
+        <LinearLayout
+            android:paddingTop="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            android:weightSum="4"
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/btnSendImg"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:text="Send"
+                style="@style/btnTap1"
+                android:layout_marginRight="10dp"
+                android:layout_weight="2"/>
+            <Button
+                android:id="@+id/btnCompletarPefil"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:text="Completar perfil"
+                style="@style/btnTap1"
+                android:layout_weight="2"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

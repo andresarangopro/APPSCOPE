@@ -12,99 +12,125 @@
     tools:context="com.example.felipearango.appscope.ScreenRegisterUC">
 
     <TableLayout
+        android:layout_weight="9"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:stretchColumns="1"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:stretchColumns="1">
+
         <TextView
-            android:textAlignment="center"
-            android:textColor="@color/textoSecundario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="25dp"
+            android:layout_marginBottom="25dp"
             android:text="¡Completa tú registro!"
-            android:layout_marginBottom="25dp"/>
+            android:textAlignment="center"
+            android:textColor="@color/textoSecundario"
+            android:textSize="25dp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <EditText
                 android:id="@+id/txtName"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:hint="Nombre"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName" />
+
             <EditText
                 android:id="@+id/txtSNombre"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:hint="Segundo Nombre"
                 android:inputType="textPersonName" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <EditText
                 android:id="@+id/txtPrimerA"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="0dp"
+                android:layout_weight="1"
                 android:hint="Primer Apellido"
-                android:inputType="textPersonName"
-                android:layout_marginLeft="0dp" />
+                android:inputType="textPersonName" />
+
             <EditText
                 android:id="@+id/txtSegundoA"
-                android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:hint="Segundo Apellido"
                 android:inputType="textPersonName" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
+
             <Spinner
-                android:layout_weight="1"
                 android:id="@+id/spOcupacion"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
 
             <EditText
-                android:hint="Fecha de nacimiento"
-                android:datePickerMode="calendar"
                 android:id="@+id/lblDateBorn"
-                android:focusable="false"
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:datePickerMode="calendar"
+                android:focusable="false"
+                android:hint="Fecha de nacimiento" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
+
             <EditText
                 android:id="@+id/txtUniversidad"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 android:hint="Universidad o instituto"
-                android:inputType="textPersonName"/>
+                android:inputType="textPersonName" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/txtPhone"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:hint="Teléfono" />
 
 
         </LinearLayout>
@@ -112,44 +138,45 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:weightSum="2"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:weightSum="2">
+
             <EditText
-                android:id="@+id/txtPhone"
+                android:id="@+id/tvEtiqueta1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:hint="Teléfono"/>
+                android:hint="Etiqueta 1" />
+
+
         </LinearLayout>
-
-
         <LinearLayout
-            android:id="@+id/lLayoutEtiquetas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:weightSum="1"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="horizontal">
-                <EditText
-                    android:id="@+id/txtLabelU"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.7"/>
-                <Button
-                    android:id="@+id/btnAddLabelR"
-                    android:text="@string/mi_mensaje"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"/>
-            </LinearLayout>
+            <EditText
+                android:id="@+id/tvEtiqueta2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:hint="Etiqueta 2" />
         </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <EditText
+                android:id="@+id/tvEtiqueta3"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:hint="Etiqueta 3" />
+        </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -157,7 +184,6 @@
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:weightSum="3">
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
@@ -204,23 +230,30 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginTop="15dp"
             android:layout_weight="1"
             android:weightSum="3">
+
             <LinearLayout
-                android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"></LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_weight="1"></LinearLayout>
+
             <Button
                 android:id="@+id/btnRegistrar"
+                style="@style/btnTap1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Registrar"
-                style="@style/btnTap1" />
+                android:text="Registrar" />
         </LinearLayout>
+
+
+
+
+
     </TableLayout>
 
 

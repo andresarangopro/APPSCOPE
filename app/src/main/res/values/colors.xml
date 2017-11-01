@@ -10,4 +10,5 @@
     <color name="textolbl">#B5B5B5</color>
     <color name="Aprobado">#51B751</color>
     <color name="NoAprobado">#C33939</color>
+    <color name="BackEdit">#66619790</color>
 </resources>

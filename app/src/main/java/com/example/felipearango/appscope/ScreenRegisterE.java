@@ -89,6 +89,7 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
         llrow.addView(nET);
 
         Button btn = new Button(this);
+
         btn.setOnClickListener(this);
         btn.setText("+");
         btn.setTextSize(40);
