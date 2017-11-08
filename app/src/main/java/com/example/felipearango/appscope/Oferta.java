@@ -72,7 +72,7 @@ public class Oferta extends MainActivity implements View.OnClickListener{
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
 
-        View popupView = inflater.inflate(R.layout.popup_empresa, null);
+        View popupView = inflater.inflate(R.layout.popup_empresa,   null);
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
         int height = LinearLayout.LayoutParams.WRAP_CONTENT;
         boolean focusable = true;
