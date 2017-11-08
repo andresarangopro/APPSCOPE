@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llPrincipal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -36,11 +37,16 @@
                 android:layout_weight="1"
                 android:text="Empresa"/>
             <ScrollView
+                android:background="@drawable/textview_border"
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="10">
                 <TextView
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:id="@+id/tvDetalles"
                     android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris fringilla tincidunt dictum. Morbi semper gravida nunc ut consequat. Quisque nunc lectus, pharetra vitae ullamcorper in, pulvinar vitae massa. Donec dignissim interdum velit, eget viverra dolor convallis vel. Sed vestibulum efficitur massa non mattis. Etiam facilisis enim ut ante auctor, nec scelerisque augue finibus. Nam eleifend nisl nec erat lacinia, molestie interdum ligula laoreet. Nam hendrerit facilisis enim id venenatis. Morbi sed libero turpis. Maecenas eget blandit tortor.
                     Fusce mollis pellentesque erat, eu posuere arcu fermentum at. Mauris eleifend rutrum felis, ut ornare urna iaculis eu. Phasellus tincidunt vestibulum lacus, sed egestas dolor pulvinar quis. Ut scelerisque nisl eget urna eleifend ultricies. Nunc et finibus velit, id tempor diam. Sed vehicula arcu eget libero pellentesque laoreet. In sodales libero eget ligula tempus commodo. Nam et molestie sapien. Vivamus maximus purus vulputate nisi tempus elementum."
@@ -55,6 +61,62 @@
                 android:layout_weight="2"
                 android:text="Ofertar"
                 style="@style/btnTap1"/>
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/llMove"
+            android:layout_marginTop="10dp"
+            android:weightSum="2"
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
 
+            <LinearLayout
+                android:id="@+id/llLeft"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:background="@drawable/ic_keyboard_arrow_up_black_24dp"
+                    android:foregroundGravity="center_horizontal" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="Empresa!"
+                    android:textColor="@color/colorAccent" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llTop"
+                android:orientation="vertical"
+                android:weightSum="2"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_gravity="center_horizontal"
+                    android:foregroundGravity="center_horizontal"
+                    android:background="@drawable/ic_keyboard_arrow_right_black_24dp"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp" />
+                <TextView
+                    android:gravity="center_horizontal"
+                    android:layout_gravity="center_horizontal"
+                    android:textColor="@color/colorAccent"
+                    android:text="Siguiente"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

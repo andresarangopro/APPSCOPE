@@ -10,47 +10,70 @@
     android:orientation="vertical"
     tools:context="com.example.felipearango.appscope.CompletarPerfil">
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:hint="Nombre" />
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        android:layout_weight="7"
+        android:weightSum="7"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="Ocupación" />
+            android:hint="Nombre"
+            android:inputType="text|textCapWords|textAutoCorrect|textAutoComplete|textPersonName"
+            android:singleLine="true" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="Edad" />
+            android:hint="Ocupación"
+            android:inputType="text|textAutoCorrect|textAutoComplete"
+            android:singleLine="true" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="Frase " />
+            android:hint="Edad"
+            android:inputType="number"
+            android:singleLine="true" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="Universidad" />
+            android:hint="Frase "
+            android:inputType="text|textAutoCorrect|textAutoComplete|textLongMessage"
+            android:singleLine="true" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="Celular" />
+            android:hint="Universidad"
+            android:inputType="text|textAutoCorrect|textAutoComplete" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:hint="Ubicación " />
+            android:hint="Celular"
+            android:inputType="textAutoCorrect|textAutoComplete|number" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:hint="Ubicación "
+            android:inputType="text|textAutoCorrect|textAutoComplete"
+            android:singleLine="true" />
 
+    </LinearLayout>
 </LinearLayout>

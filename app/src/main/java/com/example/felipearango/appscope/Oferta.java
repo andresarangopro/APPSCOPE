@@ -3,11 +3,14 @@
     import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
+    import android.view.Gravity;
+    import android.view.LayoutInflater;
+    import android.view.MotionEvent;
+    import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+    import android.widget.PopupWindow;
+    import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
@@ -21,7 +24,8 @@ public class Oferta extends MainActivity implements View.OnClickListener{
 
     private TextView tvTrabajo, tvEmpresa, tvTitulo;
     private Button btnOfertar;
-    private LinearLayout ll;
+    private LinearLayout llPrincipal;
+    private LinearLayout ll, llMove;
     private ArrayList<Trabajo> trabajos = new ArrayList<>();
     private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
     private int counter = 0;
@@ -36,24 +40,73 @@ public class Oferta extends MainActivity implements View.OnClickListener{
 
         iniciarComponentes();
         startArrayEtiquetas("Ingeniero");
+
+
+
+
+
         ll = (LinearLayout) findViewById(R.id.llLayout);
-        ll.setOnTouchListener(new OnSwipeTouchListener(Oferta.this) {
+        llMove = (LinearLayout) findViewById(R.id.llMove);
+
+
+        llMove.setOnTouchListener(new OnSwipeTouchListener(Oferta.this) {
             public void onSwipeTop() {
-                empresa = true;
-                Toast.makeText(Oferta.this, "top", Toast.LENGTH_SHORT).show();
+                showPopUp();
             }
             public void onSwipeRight() {
-           //   showJob(++counter);
-                Toast.makeText(Oferta.this, "right", Toast.LENGTH_SHORT).show();
+
+              //  Toast.makeText(Oferta.this, "right", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeLeft() {
                 showJob(++counter);
-                Toast.makeText(Oferta.this, "left", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(Oferta.this, "left", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeBottom() {
-                Toast.makeText(Oferta.this, "bottom", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(Oferta.this, "bottom", Toast.LENGTH_SHORT).show();
             }
 
+        });
+
+
+    }
+
+    private void showPopUp(){
+
+
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        View popupView = inflater.inflate(R.layout.popup_empresa, null);
+        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        //////////////////////////////////////////////////////////////
+        ////////Inicialización de los dos componentes de el pop up
+        //////////////////////////////////////////////////////////////
+
+        TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
+        TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tvDetalles));
+
+
+        //////////////////////////////////////////////////////////////
+        ////Esto muestra el pop Up window
+        ////////////////////////////////////////////////////////////
+
+        popupWindow.showAtLocation(ll, Gravity.CENTER, 0, 0);
+
+
+
+        //////////////////////////////////////////////////
+        ////////Listener que oculta el pop Up
+        ////////////////////////////////////////////////
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
         });
     }
 
@@ -88,6 +141,8 @@ public class Oferta extends MainActivity implements View.OnClickListener{
         tvTrabajo = (TextView)findViewById(R.id.tvDetalles);
         tvTitulo = (TextView)findViewById(R.id.tvTitulo);
         tvEmpresa = (TextView)findViewById(R.id.tvEmpresa);
+        llPrincipal = (LinearLayout)findViewById(R.id.llPopUp);
+        ll = (LinearLayout)findViewById(R.id.llPrincipal);
         btnOfertar = (Button)findViewById(R.id.btnAplicar);
         btnOfertar.setOnClickListener(this);
     }

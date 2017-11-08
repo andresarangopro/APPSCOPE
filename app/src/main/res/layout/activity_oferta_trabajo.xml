@@ -11,61 +11,74 @@
     android:weightSum="15"
     tools:context="com.example.felipearango.appscope.OfertaTrabajo">
     <LinearLayout
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="15"
+        android:layout_weight="15">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"></LinearLayout>
-    <TextView
-        android:textColor="@color/textoSecundario"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
-        android:layout_weight="2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:textSize="25dp"
-        android:text="¡Oferta tú trabajo!"/>
-    <EditText
-        android:hint="Nombre del trabajo!"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edittextborder"
-        android:id="@+id/tvTitulo"
-        android:layout_weight="2"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
 
-    <EditText
-        android:id="@+id/tvDetalles"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_weight="5"
-        android:background="@drawable/edittextborder"
-        android:gravity="start"
-        android:hint="Descripción" />
-    <EditText
-        android:hint="Etiqueta"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/edittextborder"
-        android:layout_weight="2"
-        android:id="@+id/tvEtiqueta"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
-    <LinearLayout
-         android:layout_marginTop="20dp"
-         android:weightSum="3"
-         android:layout_weight="2"
-         android:layout_width="match_parent"
-         android:layout_height="0dp">
-         <LinearLayout
-             android:layout_weight="1"
-             android:layout_width="0dp"
-             android:layout_height="match_parent"></LinearLayout>
-         <Button
-             android:text="Agregar trabajo"
-             style="@style/btnTap1"
-             android:layout_weight="1"
-             android:id="@+id/btnAgregar"
-             android:layout_width="0dp"
-             android:layout_height="match_parent" />
-     </LinearLayout>
+        <TextView
 
+            android:textColor="@color/textoSecundario"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="25dp"
+            android:text="¡Oferta tú trabajo!"/>
+        <EditText
+
+            android:hint="Nombre del trabajo!"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edittextborder"
+            android:id="@+id/tvTitulo"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
+        <EditText
+            android:id="@+id/tvDetalles"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="5"
+            android:background="@drawable/edittextborder"
+            android:gravity="start"
+            android:hint="Descripción" />
+        <EditText
+            android:hint="Etiqueta"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/edittextborder"
+            android:layout_weight="2"
+            android:id="@+id/tvEtiqueta"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+        <LinearLayout
+             android:layout_marginTop="20dp"
+             android:weightSum="3"
+             android:layout_weight="2"
+             android:layout_width="match_parent"
+             android:layout_height="0dp">
+             <LinearLayout
+                 android:layout_weight="1"
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent"></LinearLayout>
+             <Button
+                 android:text="Agregar trabajo"
+                 style="@style/btnTap1"
+                 android:layout_weight="1"
+                 android:id="@+id/btnAgregar"
+                 android:layout_width="0dp"
+                 android:layout_height="match_parent" />
+         </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
