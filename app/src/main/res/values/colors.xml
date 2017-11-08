@@ -6,6 +6,7 @@
     <color name="orangeBasic">#21B2BF</color>
     <color name="orangeBasicFade">#D921B2BF</color>
     <color name="background">#FFFFFF</color>
+    <color name="backgroundFaded">#FAFFFFFF</color>
     <color name="Hint">#9C9C9C</color>
     <color name="textoSecundario">#017580</color>
     <color name="textolbl">#B5B5B5</color>

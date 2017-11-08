@@ -1,37 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:layout_marginTop="20dp"
+    android:layout_marginBottom="20dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     android:paddingRight="16dp"
     android:paddingLeft="16dp"
     android:paddingBottom="16dp"
     android:paddingTop="16dp"
     android:id="@+id/llPopUp"
-    android:background="@drawable/linear_border"
+    android:background="@drawable/pop_up_style"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/tvEmpresa"
-            android:textAlignment="center"
-            android:textColor="@color/colorAccent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:text="Nombre de la empresa!"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_weight="40"
+        android:weightSum="2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <ImageView
+            android:id="@+id/imVPerfil"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:src="@drawable/user" />
         <ScrollView
             android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-            android:paddingBottom="16dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textColor="@color/colorAccent"
+                    android:gravity="center_horizontal"
+                    android:id="@+id/tVNameP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textSize="25dp" />
+                <TextView
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorAccent"
+                    android:id="@+id/tVOcupacionP"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Ocupación"
+                    android:textSize="25dp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <!--weight: 2
+       -rating bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="20"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <RatingBar
+
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:stepSize="0.1" />
+
+        <TextView
+            android:textColor="@color/textoSecundario"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/tVFrase"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tvDetalles"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="Frase:''   ''"
+            android:textSize="20dp" />
+
+    </LinearLayout>
+
+    <!--Weigth: 3-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="50">
+        <TabHost
+            android:id="@+id/tHData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="15dp"
-                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a augue ut ante porttitor vehicula. Duis accumsan turpis nec dolor ullamcorper aliquam. Quisque metus nibh, egestas quis imperdiet ut, mattis vitae erat. Nam ullamcorper sagittis elit, eget iaculis enim rutrum nec. Ut vestibulum sem vel sollicitudin feugiat. Aliquam fermentum ultricies fermentum. Etiam sed finibus nisi. Praesent bibendum, odio quis faucibus vulputate, sapien sem sodales ipsum, sed malesuada erat felis eget est. Maecenas tortor ex, posuere ultrices feugiat eget, porta at sem."
-                android:textColor="@color/background" />
-        </ScrollView>
+                android:orientation="vertical">
 
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:id="@+id/tab1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola1"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola2"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab3"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola3"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab4"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tV4"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola4"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/tab5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tV5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:hint="Hola5"/>
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+
+    </LinearLayout>
 </LinearLayout>

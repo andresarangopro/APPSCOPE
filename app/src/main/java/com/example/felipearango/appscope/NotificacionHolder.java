@@ -14,8 +14,8 @@ public class NotificacionHolder extends RecyclerView.ViewHolder implements View.
 
     public NotificacionHolder(View itemView) {
         super(itemView);
-        tvTitulo = (TextView)itemView.findViewById(R.id.tvTitulo);
-        tvEmpresa = (TextView)itemView.findViewById(R.id.tvEmpresa);
+        tvTitulo = (TextView)itemView.findViewById(R.id.tvEmpresa);
+        tvEmpresa = (TextView)itemView.findViewById(R.id.tvTrabajo);
         tvEstado = (TextView)itemView.findViewById(R.id.tvEstado);
         itemView.setOnClickListener(this);
     }

@@ -41,10 +41,6 @@ public class Oferta extends MainActivity implements View.OnClickListener{
         iniciarComponentes();
         startArrayEtiquetas("Ingeniero");
 
-
-
-
-
         ll = (LinearLayout) findViewById(R.id.llLayout);
         llMove = (LinearLayout) findViewById(R.id.llMove);
 
