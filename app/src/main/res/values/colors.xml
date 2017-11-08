@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#000000</color>
     <color name="orangeBasic">#21B2BF</color>
+    <color name="orangeBasicFade">#D921B2BF</color>
     <color name="background">#FFFFFF</color>
     <color name="Hint">#9C9C9C</color>
     <color name="textoSecundario">#017580</color>

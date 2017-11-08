@@ -22,12 +22,12 @@ import static com.example.felipearango.appscope.ScreenRegisterUC.ESTADO_ACTIVA;
 
 public class ScreenRegisterE extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText txtnameE,txtRazonSoc, txtNIT, txtUrl, txtSocial;
-    private Button btnRegisterE, btnAgregarNIT, btnAgregarRedSocial;
+    private EditText txtnameE,txtRazonSoc, txtNIT, txtUrl, txtSocial1, txtSocial2, txtSocial3;
+    private Button btnRegisterE, btnAgregarNIT, btnAgregarRedSocial1, btnAgregarRedSocial2, btnAgregarRedSocial3;
     private LinearLayout llRedesSociales;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
-
+    private int counter = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +35,7 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
         instanceXml();
         firebaseAuth = FirebaseAuth.getInstance();
         initializedDR();
+        addToSocialNetwork();
     }
 
     ////////////////////////////////
@@ -51,54 +52,36 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
         txtRazonSoc = (EditText) findViewById(R.id.txtRazonSoc);
         txtNIT = (EditText) findViewById(R.id.txtNIT);
         txtUrl = (EditText) findViewById(R.id.txtUrl);
-        txtSocial = (EditText) findViewById(R.id.txtSocial);
+        txtSocial1 = (EditText) findViewById(R.id.txtSocial1);
+        txtSocial2 = (EditText) findViewById(R.id.txtSocial2);
+        txtSocial3 = (EditText) findViewById(R.id.txtSocial3);
         llRedesSociales = (LinearLayout) findViewById(R.id.llRedesSociales);
 
         btnRegisterE = (Button) findViewById(R.id.btnRegisterE);
         btnRegisterE.setOnClickListener(this);
 
-        btnAgregarRedSocial = (Button) findViewById(R.id.btnAgregarRedesSociales);
-        btnAgregarRedSocial.setOnClickListener(this);
+        btnAgregarRedSocial1 = (Button) findViewById(R.id.btnAgregarRedesSociales1);
+        btnAgregarRedSocial1.setOnClickListener(this);
+
+        btnAgregarRedSocial2 = (Button) findViewById(R.id.btnAgregarRedesSociales2);
+        btnAgregarRedSocial2.setOnClickListener(this);
+
+        btnAgregarRedSocial3 = (Button) findViewById(R.id.btnAgregarRedesSociales3);
+        btnAgregarRedSocial3.setOnClickListener(this);
 
         btnAgregarNIT = (Button) findViewById(R.id.btnAgregarNit);
         btnAgregarNIT.setOnClickListener(this);
 
-        txtSocial.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View v) {
-                Log.e("DATE","estas aquí");
-            }
 
-            @Override
-            public void onViewDetachedFromWindow(View v) {
-
-            }
-        });
     }
 
     private void addToSocialNetwork(){
 
-        LinearLayout llrow = new LinearLayout(this);
-        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                0, 1);
-        llrow.setWeightSum(5f);
-        llrow.setLayoutParams(llParams);
+        txtSocial2.setVisibility(View.INVISIBLE);
+        btnAgregarRedSocial2.setVisibility(View.INVISIBLE);
+        txtSocial3.setVisibility(View.GONE);
+        btnAgregarRedSocial3.setVisibility(View.GONE);
 
-        EditText nET = new EditText(this);
-        nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 4f));
-        llrow.addView(nET);
-
-        Button btn = new Button(this);
-
-        btn.setOnClickListener(this);
-        btn.setText("+");
-        btn.setTextSize(40);
-        btn.setBackgroundResource(R.drawable.mybutton);
-        llrow.addView(btn);
-        llRedesSociales.setWeightSum(llRedesSociales.getWeightSum()+1);
-        llRedesSociales.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
-                llRedesSociales.getWeightSum()+1));
-        llRedesSociales.addView(llrow);
     }
 
     private void takeDates(){
@@ -137,12 +120,31 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
             case R.id.btnAgregarNit:{
                 break;
             }
-            case R.id.btnAgregarRedesSociales:{
-                addToSocialNetwork();
-                break;
-            }
             case R.id.btnRegisterE: {
                 takeDates();
+                break;
+            }
+            case R.id.btnAgregarRedesSociales1: {
+                counter++;
+                if(counter == 2){
+                    txtSocial2.setVisibility(View.VISIBLE);
+                    btnAgregarRedSocial2.setVisibility(View.VISIBLE);
+                }else if(counter == 3){
+                    txtSocial3.setVisibility(View.VISIBLE);
+                    btnAgregarRedSocial3.setVisibility(View.VISIBLE);
+                }
+                break;
+            }
+            case R.id.btnAgregarRedesSociales2: {
+                counter--;
+                txtSocial2.setVisibility(View.GONE);
+                btnAgregarRedSocial2.setVisibility(View.GONE);
+                break;
+            }
+            case R.id.btnAgregarRedesSociales3: {
+                counter--;
+                txtSocial3.setVisibility(View.GONE);
+                btnAgregarRedSocial3.setVisibility(View.GONE);
                 break;
             }
             default:{

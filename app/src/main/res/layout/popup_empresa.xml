@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:paddingRight="16dp"
+    android:paddingLeft="16dp"
+    android:paddingBottom="16dp"
+    android:paddingTop="16dp"
+    android:id="@+id/llPopUp"
+    android:background="@drawable/linear_border"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvEmpresa"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:text="Nombre de la empresa!"/>
+        <ScrollView
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:paddingBottom="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tvDetalles"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="15dp"
+                android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut a augue ut ante porttitor vehicula. Duis accumsan turpis nec dolor ullamcorper aliquam. Quisque metus nibh, egestas quis imperdiet ut, mattis vitae erat. Nam ullamcorper sagittis elit, eget iaculis enim rutrum nec. Ut vestibulum sem vel sollicitudin feugiat. Aliquam fermentum ultricies fermentum. Etiam sed finibus nisi. Praesent bibendum, odio quis faucibus vulputate, sapien sem sodales ipsum, sed malesuada erat felis eget est. Maecenas tortor ex, posuere ultrices feugiat eget, porta at sem."
+                android:textColor="@color/background" />
+        </ScrollView>
+
+</LinearLayout>

@@ -29,7 +29,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="80"
+            android:layout_weight="70"
             android:weightSum="9"
             android:orientation="vertical">
 
@@ -87,29 +87,74 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:weightSum="1"
+                android:layout_weight="3"
+                android:weightSum="3"
+
                 android:id="@+id/llRedesSociales"
                 android:orientation="vertical">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:weightSum="5">
-                    <EditText
-                        android:id="@+id/txtSocial"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="4"
-                        android:hint="Redes sociales" />
-                    <Button
-                        android:id="@+id/btnAgregarRedesSociales"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
                         android:layout_weight="1"
-                        style="@style/btnTap1"
-                        android:text="+"
-                        android:textSize="40dp" />
+
+                        android:weightSum="5">
+                        <EditText
+                            android:id="@+id/txtSocial1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:hint="Redes sociales" />
+                        <Button
+                            android:id="@+id/btnAgregarRedesSociales1"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/btnTap1"
+                            android:text="+"
+                            android:textSize="40dp" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+
+                        android:weightSum="5">
+                        <EditText
+                            android:id="@+id/txtSocial2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="4"
+                            android:hint="Redes sociales" />
+                        <Button
+                            android:id="@+id/btnAgregarRedesSociales2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            style="@style/btnTap1"
+                            android:text="-"
+                            android:textSize="40dp" />
+                    </LinearLayout>
+                    <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+
+                            android:weightSum="5">
+                            <EditText
+                                android:id="@+id/txtSocial3"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="4"
+                                android:hint="Redes sociales" />
+                            <Button
+                                android:id="@+id/btnAgregarRedesSociales3"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                style="@style/btnTap1"
+                                android:text="-"
+                                android:textSize="40dp" />
+                    </LinearLayout>
                 </LinearLayout>
 
 
@@ -119,7 +164,7 @@
                 android:layout_marginTop="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="10"
                 android:weightSum="3">
                 <LinearLayout
                     android:layout_weight="1"
@@ -133,8 +178,9 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:text="Registrar" />
+
             </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
