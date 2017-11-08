@@ -1,21 +1,22 @@
 package com.example.felipearango.appscope;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.ParcelFileDescriptor;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,6 +31,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
 
@@ -41,6 +44,8 @@ public class Settings extends MainActivity implements View.OnClickListener {
     private Object obj;
     private Button btnSendImg;
     private Uri descargarFoto = null;
+    private EditText txtNameCP,txtOcupacionCP,txtEdadCP,txtFraseCP,txtUniversidadCP,txtCelularCP,txtUbicacionCP;
+    private ArrayList<EditText> field = new ArrayList<>();
     protected static final int GALLERY_INTENT= 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,8 @@ public class Settings extends MainActivity implements View.OnClickListener {
         initComponents();
         initializedDR();
         putDataUser();
+
+        chooseDate();
     }
     private void initComponents(){
         iVSettingsPerfil = (ImageView) findViewById(R.id.iVSettingsPerfil);
@@ -61,6 +68,18 @@ public class Settings extends MainActivity implements View.OnClickListener {
 
         btnSendImg.setOnClickListener(this);
         iVSettingsPerfil.setOnClickListener(this);
+
+        txtNameCP = (EditText) findViewById(R.id.txtNameCP);
+        txtFraseCP = (EditText) findViewById(R.id.txtFraseCP);
+        txtOcupacionCP = (EditText) findViewById(R.id.txtOcupacionCP);
+        txtEdadCP = (EditText) findViewById(R.id.txtEdadCP);
+        txtUniversidadCP = (EditText) findViewById(R.id.txtUniversidadCP);
+        txtCelularCP = (EditText) findViewById(R.id.txtCelularCP);
+        txtUbicacionCP = (EditText) findViewById(R.id.txtUbicacionCP);
+
+        field.add(txtNameCP);
+        field.add(txtEdadCP);
+        field.add(txtCelularCP);
     }
 
     @Override
@@ -88,6 +107,41 @@ public class Settings extends MainActivity implements View.OnClickListener {
         }
     }
 
+    private void chooseDate(){
+
+        final Calendar calendar = Calendar.getInstance();
+        final int yy = calendar.get(Calendar.YEAR);
+        final int mm = calendar.get(Calendar.MONTH);
+        final int dd = calendar.get(Calendar.DAY_OF_MONTH);
+        txtEdadCP.setText(dd+"/"+mm+"/"+yy);
+        txtEdadCP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar mcurrentDate=Calendar.getInstance();
+                int mYear=mcurrentDate.get(Calendar.YEAR);
+                int mMonth=mcurrentDate.get(Calendar.MONTH);
+                int mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker=new DatePickerDialog(Settings.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+
+                        actualizarFecha(selectedday+"/"+selectedmonth+"/"+selectedyear);
+
+                    }
+                },mYear, mMonth, mDay);
+
+                mDatePicker.setTitle("Seleccione su fecha de nacimiento");
+                mDatePicker.show();
+            }
+        });
+    }
+
+    private void actualizarFecha(String fecha){
+        txtEdadCP.setText(fecha);
+    }
+
+
+
     public void eventPD(String usChildString){
         databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
             @Override
@@ -102,6 +156,8 @@ public class Settings extends MainActivity implements View.OnClickListener {
                     obj = uE;
                 }
                 putImg(obj);
+                putTxt(obj);
+
                 // putImage(userIn);
             }
             @Override
@@ -142,7 +198,6 @@ public class Settings extends MainActivity implements View.OnClickListener {
 
     private void putImg(Object obj){
         if(obj instanceof UsuarioCorriente){
-
             if(!(((UsuarioCorriente)obj).getFoto().equals(""))){
                 Picasso.with(Settings.this)
                         .load(((UsuarioCorriente)obj).getFoto())
@@ -157,6 +212,26 @@ public class Settings extends MainActivity implements View.OnClickListener {
                         .transform(new CircleTransform())
                         .into(iVSettingsPerfil);
             }
+        }
+    }
+
+    private void putTxt(Object obj){
+        if(obj instanceof UsuarioCorriente){
+          UsuarioCorriente user =  ((UsuarioCorriente)obj);
+            txtNameCP.setText(user.getNombre());
+            //txtOcupacionCP.setText("");
+            txtEdadCP.setText(user.getFechaNacimiento());
+            txtFraseCP.setText(user.getFrase());
+            txtUniversidadCP.setText(user.getUniversidad());
+            txtCelularCP.setText(user.getCelular());
+            txtUbicacionCP.setText("GPS");
+        }else{
+            Empresa user =  ((Empresa)obj);
+            txtNameCP.setText(user.getNombre());
+            //txtOcupacionCP.setText("");
+            txtEdadCP.setText(user.getRazonSocial());
+            txtFraseCP.setText(user.getUrlEmpresa());
+            txtUbicacionCP.setText("GPS");
         }
     }
 

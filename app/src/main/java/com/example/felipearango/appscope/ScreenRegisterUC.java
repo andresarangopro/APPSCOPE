@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickListener{
@@ -35,14 +36,16 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
             txtPass, txtEtiquetaRU, txtPhone;
     private TextView lblDisponibilidad,lblDateBorn;
     private DatabaseReference databaseReference;
-    private ImageButton iBtnSelectDateB;
+    private ImageButton iBtnSelectDateB,btnAddLabelR;
     private RadioGroup rGDisponibilidadViaje;
     private Spinner spOcupation;
-    private Button btnRegister,btnAddLabelR;
+    private Button btnRegister;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
     private int day,monthS,yearS;
-
+    private ArrayList<EditText> field = new ArrayList<>();
+    private ArrayList<EditText> dataEtiquetas = new ArrayList<>();
+    private ArrayList<Button> dataButtons = new ArrayList<>();
     private LinearLayout lLayoutEtiquetas;
     public static final String ESTADO_ACTIVA = "ACTIVA";
 
@@ -70,7 +73,6 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
     private void initializedDR() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
-
     /**
      *
      */
@@ -91,48 +93,79 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
         spOcupation = (Spinner) findViewById(R.id.spOcupacion);
 
         btnRegister = (Button) findViewById(R.id.btnRegistrar);
-        btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
+        btnAddLabelR = (ImageButton) findViewById(R.id.btnAddLabelR);
 
         btnAddLabelR.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
         lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
+
+        field.add(txtName);
+        field.add(txtPrimerA);
+        field.add(txtPhone);
+
+
     }
 
+    private boolean checkEditText() {
+        boolean valido = true;
+        for (EditText et : field) {
+            if (et.getText().toString().equals("")) {
+                et.setError("Ingrese este campo por favor");
+                valido = false;
+            }
+        }
+        return valido;
+    }
     /**
      *
      */
     @Override
     public void onClick(View v) {
         if(v == btnRegister){
-            updateDatesUser();
+            if(checkEditText()){
+                if(dataEtiquetas.size() > 2){
+                    updateDatesUser();
+                }else{
+                    txtEtiquetaRU.setError("Ingrese mínimo tres etiquetas!");
+                }
+
+            }
         }else if(v == btnAddLabelR){
-            addToEtiquetas(getTxtEdit(txtEtiquetaRU));
-            txtEtiquetaRU.setText("");
+            if(!txtEtiquetaRU.equals("")){
+                addToEtiquetas(getTxtEdit(txtEtiquetaRU));
+                txtEtiquetaRU.setText("");
+            } else{
+                txtEtiquetaRU.setError("Campo vacío");
+            }
+
         }
     }
 
 
     private void addToEtiquetas(String lbl){
-
         LinearLayout llrow = new LinearLayout(this);
         LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
-        llrow.setWeightSum(2f);
+        llrow.setWeightSum(1f);
         llrow.setOrientation(LinearLayout.HORIZONTAL);
         llrow.setLayoutParams(llParams);
-
+       // LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+      //  p.weight = 0.5f;
         EditText nET = new EditText(this);
         nET.setEnabled(false);
         nET.setText(lbl);
-        nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1.9f));
+        nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+        //nET.setLayoutParams(p);
         llrow.addView(nET);
-
+        dataEtiquetas.add(nET);
         Button btn = new Button(this);
         btn.setOnClickListener(this);
-        btn.setText("----");
-        btn.setTextSize(12);
-        //btn.setBackgroundResource(R.drawable.mybutton);
+      //  p.weight = 0.8f;
+      //  btn.setLayoutParams(p);
+        //btn.setText("----");
+       // btn.setTextSize(12);
+       // btn.setBackgroundResource(R.drawable.ic_menos);
         llrow.addView(btn);
-
+        dataButtons.add(btn);
         lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
         lLayoutEtiquetas.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
                 lLayoutEtiquetas.getWeightSum()+1));

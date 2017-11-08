@@ -22,6 +22,7 @@
         android:layout_height="0dp">
 
         <EditText
+            android:id="@+id/txtNameCP"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -30,6 +31,7 @@
             android:singleLine="true" />
 
         <EditText
+            android:id="@+id/txtOcupacionCP"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -38,6 +40,9 @@
             android:singleLine="true" />
 
         <EditText
+            android:id="@+id/txtEdadCP"
+            android:datePickerMode="calendar"
+            android:focusable="false"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -46,6 +51,7 @@
             android:singleLine="true" />
 
         <EditText
+            android:id="@+id/txtFraseCP"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -54,6 +60,7 @@
             android:singleLine="true" />
 
         <EditText
+            android:id="@+id/txtUniversidadCP"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -61,6 +68,7 @@
             android:inputType="text|textAutoCorrect|textAutoComplete" />
 
         <EditText
+            android:id="@+id/txtCelularCP"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -68,6 +76,7 @@
             android:inputType="textAutoCorrect|textAutoComplete|number" />
 
         <EditText
+            android:id="@+id/txtUbicacionCP"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
