@@ -15,6 +15,10 @@ public class RecyclerAdapterNotificaciones extends RecyclerView.Adapter<Notifica
 
     private ArrayList<Notificacion> mNotificacion;
 
+    public RecyclerAdapterNotificaciones(ArrayList<Notificacion> mNotificacion) {
+        this.mNotificacion = mNotificacion;
+    }
+
     @Override
     public NotificacionHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View inflatedView = LayoutInflater.from(parent.getContext())
