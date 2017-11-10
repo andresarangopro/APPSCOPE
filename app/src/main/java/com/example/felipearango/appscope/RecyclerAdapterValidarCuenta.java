@@ -13,7 +13,11 @@ import java.util.ArrayList;
 
 public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<ValidarCuentaHolder> {
 
-    private ArrayList<ValidarCuenta> mNotificacion;
+    private ArrayList<ValidarCuenta> mValidarCuenta;
+
+    public RecyclerAdapterValidarCuenta(ArrayList<ValidarCuenta> mValidarCuenta) {
+        this.mValidarCuenta = mValidarCuenta;
+    }
 
     @Override
     public ValidarCuentaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -24,12 +28,12 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<ValidarCu
 
     @Override
     public void onBindViewHolder(ValidarCuentaHolder holder, int position) {
-        ValidarCuenta validarCuenta = mNotificacion.get(position);
+        ValidarCuenta validarCuenta = mValidarCuenta.get(position);
         holder.bindNotificacion(validarCuenta);
     }
 
     @Override
     public int getItemCount() {
-        return mNotificacion.size();
+        return mValidarCuenta.size();
     }
 }

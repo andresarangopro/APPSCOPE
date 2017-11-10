@@ -13,17 +13,39 @@ public class ValidarCuentaHolder extends RecyclerView.ViewHolder implements View
 
     private TextView tvFecha, tvEmpresa;
     private Button aprobar, noAprobar;
+    private int idView;
+
 
     public ValidarCuentaHolder(View itemView) {
         super(itemView);
+        idView = itemView.getId();
+        itemView.setOnClickListener(this);
         tvEmpresa = (TextView)itemView.findViewById(R.id.tvEmpresa);
         tvFecha = (TextView)itemView.findViewById(R.id.tvFecha);
         aprobar = (Button)itemView.findViewById(R.id.btnAprobar);
-        aprobar = (Button)itemView.findViewById(R.id.btnNoAprobar);
+        aprobar.setOnClickListener(this);
+        noAprobar = (Button)itemView.findViewById(R.id.btnNoAprobar);
+        noAprobar.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
+        /////////////////////////
+        //////Acá lo que debe hacer cada botón!
+        ////////////////////////
+        switch (view.getId()){
+            case R.id.btnAprobar:{
+                break;
+            }
+            case R.id.btnNoAprobar:{
+                break;
+            }
+            default:{
+                ///////////////////////
+                // Acá descarga el NIT
+                //////////////////////
+            }
+        }
 
     }
 

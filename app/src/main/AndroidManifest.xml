@@ -36,7 +36,8 @@
         <activity android:name=".Settings" />
         <activity android:name=".CompletarPerfil" />
         <activity android:name=".Activity_Admin" />
-        <activity android:name=".Activity_notificaciones"></activity>
+        <activity android:name=".Activity_notificaciones" />
+        <activity android:name=".Activity_AgregarAdmin"></activity>
     </application>
 
 </manifest>

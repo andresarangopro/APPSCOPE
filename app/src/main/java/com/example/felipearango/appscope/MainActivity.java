@@ -8,6 +8,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuView;
+import android.support.v7.widget.ActivityChooserView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         /////////////////////////
         //////Test!!!!
         //////////////////////
-        // startActivity(new Intent(getApplicationContext(), Perfil.class));
+
     }
     /**
      *
@@ -113,7 +114,8 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.nav_camera) {
-            startActivity(new Intent(getApplicationContext(),Activity_notificaciones.class));
+            startActivity(new Intent(getApplicationContext(), Activity_Admin.class));
+            //startActivity(new Intent(getApplicationContext(),Activity_AgregarAdmin.class));
             finish();
         } else if (id == R.id.nav_gallery) {
             startActivity(new Intent(getApplicationContext(), Oferta.class));
