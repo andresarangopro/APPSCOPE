@@ -131,7 +131,7 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
 
             }
         }else if(v == btnAddLabelR){
-            if(!txtEtiquetaRU.equals("")){
+            if(!txtEtiquetaRU.getText().toString().equals("")){
                 addToEtiquetas(getTxtEdit(txtEtiquetaRU));
                 txtEtiquetaRU.setText("");
             } else{
@@ -163,12 +163,12 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
       //  btn.setLayoutParams(p);
         //btn.setText("----");
        // btn.setTextSize(12);
-       // btn.setBackgroundResource(R.drawable.ic_menos);
+       btn.setBackgroundResource(R.drawable.ic_menos);
         llrow.addView(btn);
         dataButtons.add(btn);
         lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
         lLayoutEtiquetas.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
-                lLayoutEtiquetas.getWeightSum()+1));
+        lLayoutEtiquetas.getWeightSum()+1));
         lLayoutEtiquetas.addView(llrow);
     }
 

@@ -125,39 +125,29 @@
 
         </LinearLayout>
 
-        <LinearLayout
+       <!-- <ScrollView
             android:layout_width="match_parent"
-            android:id="@+id/lLayoutEtiquetas"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:weightSum="1"
-            android:orientation="vertical">
-            <LinearLayout
-                android:paddingLeft="1dp"
+            android:layout_weight="2">
+            <include
+                layout="@layout/etiquetas_boton"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:weightSum="2"
-                android:orientation="horizontal">
-                <EditText
-                    android:id="@+id/txtEtiquetasRU"
-                    android:layout_width="0dp"
-                    android:hint="Trabajos"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.7"/>
+                android:layout_height="match_parent">
+               </include>
 
-                <ImageButton
-                    android:id="@+id/btnAddLabelR"
-                    android:layout_width="0dp"
-                    android:background="@null"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_anadir"
-                    android:layout_weight="0.3" />
+        </ScrollView>-->
 
-            </LinearLayout>
+        <LinearLayout
+            android:id="@+id/lLayoutEtiquetas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:weightSum="1">
 
-        </LinearLayout>
+        <include layout="@layout/etiquetas_boton"></include>
 
+    </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"

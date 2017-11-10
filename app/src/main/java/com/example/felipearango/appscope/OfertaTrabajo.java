@@ -7,6 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -16,15 +20,28 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
 
 public class OfertaTrabajo extends MainActivity implements View.OnClickListener {
 
-    private EditText titulo, detalles, etiquetas;
+    ////////////////////////////
+    //Variables
+    ///////////////////////////
+
+    private EditText titulo, detalles, txtEtiquetaRU;
     private Button btnIngresar;
+    private ImageButton btnAddLabelR;
     private  ArrayList<String> listEtiquetas;
+    private ArrayList<EditText> dataEtiquetas = new ArrayList<>();
+    private ArrayList<Button> dataButtons = new ArrayList<>();
+    private ArrayList<EditText> listEdit = new ArrayList<>();
+    private LinearLayout lLayoutEtiquetas;
+
+
+    ////////////////////////////
+    //onCreate
+    ///////////////////////////
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,28 +50,47 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
         View contentView = inflater.inflate(R.layout.activity_oferta_trabajo, null, false);
         mDrawer.addView(contentView, 0);
         iniciar();
-        getUser();
+        initiComponents();
        // inicializatedFireBase();
     }
 
-    private void getUser(){
+
+    ////////////////////////////
+    //Metodos
+    ///////////////////////////
+
+    private void initiComponents(){
         titulo = (EditText)findViewById(R.id.tvTitulo);
         detalles = (EditText)findViewById(R.id.tvDetalles);
-        etiquetas = (EditText)findViewById(R.id.tvEtiqueta);
+        //etiquetas = (EditText)findViewById(R.id.tvEtiqueta);
         btnIngresar = (Button)findViewById(R.id.btnAgregar);
         btnIngresar.setOnClickListener(this);
+        lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
+        txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
+        btnAddLabelR = (ImageButton) findViewById(R.id.btnAddLabelR);
+        btnAddLabelR.setOnClickListener(this);
+        listEdit.add(titulo);
+        listEdit.add(detalles);
     }
 
     private void iniciar(){
         initializedDR();
     }
 
-    private void addJob(String titulo, String desc, String etiquetas, Object usr){
+    private ArrayList<String> listEtToST(ArrayList<EditText> etiqu){
+        ArrayList<String> listEqtiquetas = new ArrayList<>();
+        for (int i = 0; i < etiqu.size() ; i++) {
+            listEqtiquetas.add(etiqu.get(i).getText().toString());
+        }
+        return  listEqtiquetas;
+    }
+    private void addJob(String titulo, String desc, ArrayList<EditText> etiquetas, Object usr){
 
         String idJob =  databaseReference.push().getKey();
         Etiqueta et ;
         Trabajo t;
-        listEtiquetas = new ArrayList<String>(Arrays.asList(etiquetas.split(",")));
+
+        listEtiquetas = listEtToST(etiquetas);
 
         if(usr instanceof Empresa){
             t = new Trabajo(idJob,0,titulo,desc,"","", ((Empresa) usr).getId());
@@ -65,19 +101,20 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
         if(usr instanceof Empresa){
             for (int i = 0; i < listEtiquetas.size() ; i++) {
                 Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
-                et = new Etiqueta(parametrizacionEtiqueta(listEtiquetas.get(i)),
+                String etiqueta = parametrizacionEtiqueta(listEtiquetas.get(i));
+                et = new Etiqueta(etiqueta,
                         ((Empresa) usr).getId(), t.getId());
                 insertarEtiqFB(et);
             }
         }else{
             for (int i = 0; i < listEtiquetas.size() ; i++) {
                 Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
-                et = new Etiqueta(parametrizacionEtiqueta(listEtiquetas.get(i)),
+                String etiqueta = parametrizacionEtiqueta(listEtiquetas.get(i));
+                et = new Etiqueta(etiqueta,
                         ((UsuarioCorriente) usr).getId(), t.getId());
                 insertarEtiqFB(et);
             }
         }
-
 
 
     }
@@ -89,10 +126,72 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View view) {
-        if(btnIngresar == view){
-           eventPDUA("EmpresaUsers");
+        int vista = view.getId();
+
+        switch (vista){
+            case R.id.btnAgregar:{
+                if(camposVacios()){
+                    if(TIPO_USUARIO == 0){
+                        eventPDUA("CorrientsUsers");
+                    }else{
+                        eventPDUA("EmpresaUsers");
+                    }
+                }
+                break;
+            }
+            case R.id.btnAddLabelR:{
+                    if(!txtEtiquetaRU.getText().toString().equals("")){
+                        addToEtiquetas(getTxtEdit(txtEtiquetaRU));
+                        txtEtiquetaRU.setText("");
+                    } else{
+                        txtEtiquetaRU.setError("Campo vacío");
+                    }
+                break;
+            }
+            default:{}
+
         }
 
+    }
+    private void addToEtiquetas(String lbl){
+        LinearLayout llrow = new LinearLayout(this);
+        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
+        llrow.setWeightSum(1f);
+        llrow.setOrientation(LinearLayout.HORIZONTAL);
+        llrow.setLayoutParams(llParams);
+        // LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        //  p.weight = 0.5f;
+        EditText nET = new EditText(this);
+        nET.setEnabled(false);
+        nET.setText(parametrizacionEtiqueta(lbl));
+        nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1f));
+        //nET.setLayoutParams(p);
+        llrow.addView(nET);
+        dataEtiquetas.add(nET);
+        Button btn = new Button(this);
+        btn.setOnClickListener(this);
+        //  p.weight = 0.8f;
+        //  btn.setLayoutParams(p);
+        //btn.setText("----");
+        // btn.setTextSize(12);
+        // btn.setBackgroundResource(R.drawable.ic_menos);
+        llrow.addView(btn);
+        dataButtons.add(btn);
+        lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
+        lLayoutEtiquetas.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
+                lLayoutEtiquetas.getWeightSum()+1));
+        lLayoutEtiquetas.addView(llrow);
+    }
+
+    private boolean camposVacios(){
+        boolean valido = true;
+        for (int i = 0; i < listEdit.size() ; i++) {
+            if(listEdit.get(i).getText().toString().equals("")){
+                listEdit.get(i).setError("Ingrese este campo por favor");
+                valido = false;
+            }
+        }
+        return valido;
     }
 
     private void insertarJobFB(Trabajo job){
@@ -110,12 +209,13 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(TIPO_USUARIO == 0){
+                    Log.e("TR", dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getNombre() + user.getUid());
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
-                    addJob(titulo.getText().toString(), detalles.getText().toString(), etiquetas.getText().toString(), uC);
+                    addJob(titulo.getText().toString(), detalles.getText().toString(), dataEtiquetas, uC);
                 }else {
 
                     Empresa uE = dataSnapshot.child(user.getUid()).getValue(Empresa.class);
-                    addJob(titulo.getText().toString(), detalles.getText().toString(), etiquetas.getText().toString(), uE);
+                    addJob(titulo.getText().toString(), detalles.getText().toString(),dataEtiquetas, uE);
                 }
             }
             @Override
@@ -126,6 +226,7 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
     }
 
     private String parametrizacionEtiqueta(String etiqueta){
+        etiqueta = etiqueta.trim();
         String sSubCadena = etiqueta;
         String fisrtLetter = etiqueta;
 
@@ -134,6 +235,7 @@ public class OfertaTrabajo extends MainActivity implements View.OnClickListener 
         sSubCadena = sSubCadena.substring(1,sSubCadena.length());
         sSubCadena= sSubCadena.toLowerCase();
 
+        Toast.makeText(this, fisrtLetter+sSubCadena , Toast.LENGTH_LONG).show();
         return fisrtLetter+sSubCadena;
     }
 
