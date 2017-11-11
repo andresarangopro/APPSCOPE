@@ -1,8 +1,10 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.models;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+
+import com.example.felipearango.appscope.R;
 
 /**
  * Created by Sebastian Luna R on 10/29/2017.

@@ -25,13 +25,14 @@
             android:layout_weight="3"
             android:weightSum="4"
             android:gravity="center_horizontal"
+
             android:layout_gravity="center_horizontal"
             android:orientation="horizontal">
             <ImageView
 
-                android:layout_gravity="center_horizontal"
+                android:layout_gravity="left"
                 android:id="@+id/iVNavPerfil"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
                 app:srcCompat="@android:drawable/sym_def_app_icon" />
@@ -44,11 +45,11 @@
             android:layout_height="match_parent">
             <TextView
                 android:textColor="@color/colorAccent"
-                android:textSize="25dp"
+                android:textSize="15dp"
                 android:gravity="center|center_horizontal"
                 android:id="@+id/txtNavName"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 android:text="Android Studio"

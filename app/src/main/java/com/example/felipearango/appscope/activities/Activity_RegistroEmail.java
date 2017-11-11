@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -22,7 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class RegistroEmail extends AppCompatActivity implements View.OnClickListener{
+public class Activity_RegistroEmail extends AppCompatActivity implements View.OnClickListener{
 
     private EditText email, contraseña, confirmar;
     private TextView alreadyRegister;
@@ -69,14 +72,14 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
             int vista = view.getId();
             switch(vista){
                 case R.id.iBtnCompany:{
-                    Login.TIPO_USUARIO = 1;
+                    Activity_Login.TIPO_USUARIO = 1;
                    registerUser(email.getText().toString(), contraseña.getText().toString());
-                   // startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
+                   // startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterUC.class));
                     break;
                 }
                 case R.id.iBtnUser: {
-                    Login.TIPO_USUARIO = 0;
-                    //startActivity(new Intent(getApplicationContext(), ScreenRegisterE.class));
+                    Activity_Login.TIPO_USUARIO = 0;
+                    //startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterE.class));
                     registerUser(email.getText().toString(), contraseña.getText().toString());
                     break;
                 }
@@ -112,16 +115,16 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
         progressDialog.setMessage("Register user, please wait...");
         progressDialog.show();
         firebaseAuth.createUserWithEmailAndPassword(mail, pass)
-                .addOnCompleteListener(RegistroEmail.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(Activity_RegistroEmail.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(RegistroEmail.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Activity_RegistroEmail.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
                             // finish();
-                            //startActivity(new Intent(ScreenRegisterUC.this, MainActivity.class));
-                            loginUser(mail1,pass1,Login.TIPO_USUARIO);
+                            //startActivity(new Intent(Activity_ScreenRegisterUC.this, MainActivity.class));
+                            loginUser(mail1,pass1, Activity_Login.TIPO_USUARIO);
                         } else {
-                            Toast.makeText(RegistroEmail.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Activity_RegistroEmail.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -146,7 +149,7 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
 
                             progressDialog.dismiss();
                         }else{
-                            Toast.makeText(RegistroEmail.this,"Datos errados",Toast.LENGTH_LONG).show();
+                            Toast.makeText(Activity_RegistroEmail.this,"Datos errados",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -213,7 +216,7 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
     private void insertarUsCFireBase(UsuarioCorriente uC,FirebaseUser user){
         databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
         finish();
-        startActivity(new Intent(getApplicationContext(), ScreenRegisterUC.class));
+        startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterUC.class));
     }
 
     /**
@@ -224,6 +227,6 @@ public class RegistroEmail extends AppCompatActivity implements View.OnClickList
     private void insertarUsEmFireBase(Empresa uE,FirebaseUser user){
         databaseReference.child("EmpresaUsers").child(user.getUid()).setValue(uE);
         finish();
-        startActivity(new Intent(getApplicationContext(), ScreenRegisterE.class));
+        startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterE.class));
     }
 }

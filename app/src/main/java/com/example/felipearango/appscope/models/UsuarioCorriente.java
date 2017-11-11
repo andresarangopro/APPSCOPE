@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.models;
 
 import java.util.ArrayList;
 import java.util.Arrays;

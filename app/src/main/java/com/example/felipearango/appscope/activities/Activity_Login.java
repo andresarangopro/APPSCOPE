@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -24,7 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Login extends AppCompatActivity {
+public class Activity_Login extends AppCompatActivity {
 
 
     //////////////////////////
@@ -78,7 +81,7 @@ public class Login extends AppCompatActivity {
     /**
      * Metodo que verifica si hay un usuario loggeado,
      * si lo hay entre directmente al Main activity,
-     * en caso contrario lo deja en el intent Login
+     * en caso contrario lo deja en el intent Activity_Login
      */
     private void verificaSignIn(){
         if(firebaseAuth.getCurrentUser() != null){
@@ -95,7 +98,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
-                startActivity(new Intent(Login.this,RegistroEmail.class));
+                startActivity(new Intent(Activity_Login.this,Activity_RegistroEmail.class));
             }
         });
 
@@ -117,7 +120,7 @@ public class Login extends AppCompatActivity {
      * @param pass
      */
     private void loginUser(String mail, String pass){
-        progressDialog.setMessage("Login user, please wait...");
+        progressDialog.setMessage("Activity_Login user, please wait...");
         progressDialog.show();
 
         firebaseAuth.signInWithEmailAndPassword(mail,pass)
@@ -130,7 +133,7 @@ public class Login extends AppCompatActivity {
                            // finish();
                           //  startActivity(new Intent(getApplicationContext(),MainActivity.class));
                         }else{
-                            Toast.makeText(Login.this,"Datos errados",Toast.LENGTH_LONG).show();
+                            Toast.makeText(Activity_Login.this,"Datos errados",Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -161,11 +164,11 @@ public class Login extends AppCompatActivity {
                 }else if(uC.getEstadoCuenta().equals("NUEVA")){
                   TIPO_USUARIO = 0;
                     finish();
-                    startActivity(new Intent(Login.this,ScreenRegisterUC.class));
+                    startActivity(new Intent(Activity_Login.this,Activity_ScreenRegisterUC.class));
                 }else{
                   TIPO_USUARIO = 0;
                     finish();
-                    startActivity(new Intent(Login.this,Perfil.class));
+                    startActivity(new Intent(Activity_Login.this,Activity_Perfil.class));
                 }
             }
 
@@ -185,16 +188,16 @@ public class Login extends AppCompatActivity {
                 Log.e("DATE",dataSnapshot.child(user.getUid()).toString());
                 if(dataSnapshot.child(user.getUid()).getValue() == null){
                    // finish();
-                   // startActivity(new Intent(Login.this,MiddleLR.class));
+                   // startActivity(new Intent(Activity_Login.this,MiddleLR.class));
                     Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_LONG).show();
                 }else if(uE.getEstadoCuenta().equals("NUEVA")){
                     TIPO_USUARIO = 1;
                     finish();
-                    startActivity(new Intent(Login.this,ScreenRegisterE.class));
+                    startActivity(new Intent(Activity_Login.this,Activity_ScreenRegisterE.class));
                 }else{
                     TIPO_USUARIO = 1;
                     finish();
-                    startActivity(new Intent(Login.this,Perfil.class));
+                    startActivity(new Intent(Activity_Login.this,Activity_Perfil.class));
                 }
             }
 
@@ -217,7 +220,7 @@ public class Login extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent( getApplicationContext(), Perfil.class));
+                startActivity(new Intent( getApplicationContext(), Activity_Perfil.class));
             }
         });
     }

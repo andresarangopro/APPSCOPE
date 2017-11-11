@@ -9,7 +9,7 @@
     android:layout_marginTop="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginLeft="16dp"
-    tools:context="com.example.felipearango.appscope.ScreenRegisterUC">
+    tools:context="com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC">
 
     <TableLayout
         android:layout_width="match_parent"

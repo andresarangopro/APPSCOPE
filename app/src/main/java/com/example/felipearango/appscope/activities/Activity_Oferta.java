@@ -1,4 +1,4 @@
-    package com.example.felipearango.appscope;
+    package com.example.felipearango.appscope.activities;
 
     import android.content.Context;
 import android.os.Bundle;
@@ -13,14 +13,18 @@ import android.widget.LinearLayout;
     import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseUser;
+    import com.example.felipearango.appscope.models.OnSwipeTouchListener;
+    import com.example.felipearango.appscope.R;
+    import com.example.felipearango.appscope.models.Etiqueta;
+    import com.example.felipearango.appscope.models.Trabajo;
+    import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Oferta extends MainActivity implements View.OnClickListener{
+public class Activity_Oferta extends MainActivity implements View.OnClickListener{
 
     private TextView tvTrabajo, tvEmpresa, tvTitulo;
     private Button btnOfertar;
@@ -48,24 +52,24 @@ public class Oferta extends MainActivity implements View.OnClickListener{
         llMove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Oferta.this, "¡Desliza hacia la flecha!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_Oferta.this, "¡Desliza hacia la flecha!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        llMove.setOnTouchListener(new OnSwipeTouchListener(Oferta.this) {
+        llMove.setOnTouchListener(new OnSwipeTouchListener(Activity_Oferta.this) {
             public void onSwipeTop() {
                 showPopUp();
             }
             public void onSwipeRight() {
 
-              //  Toast.makeText(Oferta.this, "right", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(Activity_Oferta.this, "right", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeLeft() {
                 showJob(++counter);
-              //  Toast.makeText(Oferta.this, "left", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(Activity_Oferta.this, "left", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeBottom() {
-              //  Toast.makeText(Oferta.this, "bottom", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(Activity_Oferta.this, "bottom", Toast.LENGTH_SHORT).show();
             }
 
         });

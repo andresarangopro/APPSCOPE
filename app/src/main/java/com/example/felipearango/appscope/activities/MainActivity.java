@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +17,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.CircleTransform;
+import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,8 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
-import static com.example.felipearango.appscope.Login.calledAlready;
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
+import static com.example.felipearango.appscope.activities.Activity_Login.calledAlready;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -101,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_work) {
-            startActivity(new Intent(getApplicationContext(), Oferta.class));
+            startActivity(new Intent(getApplicationContext(), Activity_Oferta.class));
             finish();
         }
 
@@ -119,16 +123,16 @@ public class MainActivity extends AppCompatActivity
             //startActivity(new Intent(getApplicationContext(),Activity_AgregarAdmin.class));
             finish();
         } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(getApplicationContext(), Oferta.class));
+            startActivity(new Intent(getApplicationContext(), Activity_Oferta.class));
             finish();
         } else if (id == R.id.nav_slideshow) {
-            startActivity(new Intent(getApplicationContext(),Perfil.class));
+            startActivity(new Intent(getApplicationContext(),Activity_Perfil.class));
             finish();
         } else if (id == R.id.nav_manage) {
-            startActivity(new Intent(getApplicationContext(),Settings.class));
+            startActivity(new Intent(getApplicationContext(),Activity_Settings.class));
             finish();
         } else if (id == R.id.nav_share) {
-            startActivity(new Intent(getApplicationContext(),OfertaTrabajo.class));
+            startActivity(new Intent(getApplicationContext(),Activity_OfertaTrabajo.class));
             finish();
         } else if (id == R.id.nav_send) {
             signout();
@@ -204,10 +208,9 @@ public class MainActivity extends AppCompatActivity
         }
     }
     private void putDatesUsC(UsuarioCorriente uC){
-        Log.e("USER",TIPO_USUARIO+" ---- "+uC.getId().toString());
+        Log.e("USERNAME",TIPO_USUARIO+" ---- "+uC.getId().toString());
         txtNavName.setText(uC.getNombre()+" "+uC.getApellido());
         txtNavMail.setText(uC.getCorreo());
-
       //  txtNameP.setText(uC.getNombre());
         //putTxt("NOMBRE","MAIL","PROGAMMING");
 
@@ -222,7 +225,7 @@ public class MainActivity extends AppCompatActivity
     private void signout(){
         firebaseAuth.signOut();
         finish();
-        startActivity(new Intent(MainActivity.this, Login.class));
+        startActivity(new Intent(MainActivity.this, Activity_Login.class));
     }
 
     protected String getTxtEdit(EditText txt){

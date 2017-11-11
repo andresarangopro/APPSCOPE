@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -18,6 +18,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.CircleTransform;
+import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -35,9 +39,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
-public class Settings extends MainActivity implements View.OnClickListener {
+public class Activity_Settings extends MainActivity implements View.OnClickListener {
 
 
     private ImageView iVSettingsPerfil;
@@ -124,7 +128,7 @@ public class Settings extends MainActivity implements View.OnClickListener {
                 int mMonth=mcurrentDate.get(Calendar.MONTH);
                 int mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker=new DatePickerDialog(Settings.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog mDatePicker=new DatePickerDialog(Activity_Settings.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
 
                         actualizarFecha(selectedday+"/"+selectedmonth+"/"+selectedyear);
@@ -201,7 +205,7 @@ public class Settings extends MainActivity implements View.OnClickListener {
     private void putImg(Object obj){
         if(obj instanceof UsuarioCorriente){
             if(!(((UsuarioCorriente)obj).getFoto().equals(""))){
-                Picasso.with(Settings.this)
+                Picasso.with(Activity_Settings.this)
                         .load(((UsuarioCorriente)obj).getFoto())
                         .transform(new CircleTransform())
                         .into(iVSettingsPerfil);
@@ -209,7 +213,7 @@ public class Settings extends MainActivity implements View.OnClickListener {
         }else{
             if(!((Empresa)obj).getFoto().equals("")){
                 Log.i("IMGSF",((Empresa)obj).getFoto());
-                Picasso.with(Settings.this)
+                Picasso.with(Activity_Settings.this)
                         .load(((Empresa)obj).getFoto())
                         .transform(new CircleTransform())
                         .into(iVSettingsPerfil);
