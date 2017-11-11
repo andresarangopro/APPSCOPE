@@ -17,6 +17,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
@@ -150,21 +151,16 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         llrow.setWeightSum(1f);
         llrow.setOrientation(LinearLayout.HORIZONTAL);
         llrow.setLayoutParams(llParams);
-       // LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-      //  p.weight = 0.5f;
+
         EditText nET = new EditText(this);
         nET.setEnabled(false);
         nET.setText(lbl);
         nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1f));
-        //nET.setLayoutParams(p);
+
         llrow.addView(nET);
         dataEtiquetas.add(nET);
         Button btn = new Button(this);
         btn.setOnClickListener(this);
-      //  p.weight = 0.8f;
-      //  btn.setLayoutParams(p);
-        //btn.setText("----");
-       // btn.setTextSize(12);
        btn.setBackgroundResource(R.drawable.ic_menos);
         llrow.addView(btn);
         dataButtons.add(btn);
@@ -177,7 +173,6 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
 
 
     private void chooseDate(){
-
         final Calendar calendar = Calendar.getInstance();
         final int yy = calendar.get(Calendar.YEAR);
         final int mm = calendar.get(Calendar.MONTH);
@@ -198,7 +193,6 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
 
                     }
                 },mYear, mMonth, mDay);
-
                 mDatePicker.setTitle("Seleccione su fecha de nacimiento");
                 mDatePicker.show();
             }
@@ -241,7 +235,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         String refEmpleo ="";
         String formacion = "";
         String mail = " ";
-        String etiquetas= "";
+        String etiquetas= arrayEditTxtToStr(dataEtiquetas);
         float rating = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
@@ -267,34 +261,25 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         startActivity(new Intent(getApplicationContext(),Activity_Perfil.class));
     }
 
-    /**
-     *
-     * @param camp
-     * @param camp2
-     * @return
-     */
-    private boolean comprobarPass(String camp, String camp2){
-        return camp.equals(camp2);
-    }
-
-    /**
-     *
-     * @param campo
-     * @return
-     */
     private boolean campEmpty(String campo){
         return TextUtils.isEmpty(campo);
     }
 
-    /**
-     *
-     * @param txt
-     * @return
-     */
     private String getTxtEdit(EditText txt){
         return txt.getText().toString();
     }
 
-
+    private String arrayEditTxtToStr(ArrayList<EditText> etiquetas){
+        String etiq = "";
+        for (int i = 0; i <etiquetas.size() ; i++) {
+            if(i+1 >= etiquetas.size()){
+                etiq += etiquetas.get(i).getText().toString();
+            }else{
+                 etiq += etiquetas.get(i).getText().toString()+",";
+            }
+        }
+        Toast.makeText(this,etiq,Toast.LENGTH_LONG).show();
+        return etiq;
+    }
 
 }

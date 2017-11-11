@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_work) {
-            startActivity(new Intent(getApplicationContext(), Activity_Oferta.class));
+            startActivity(new Intent(getApplicationContext(), Activity_Ofertas.class));
             finish();
         }
 
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity
             //startActivity(new Intent(getApplicationContext(),Activity_AgregarAdmin.class));
             finish();
         } else if (id == R.id.nav_gallery) {
-            startActivity(new Intent(getApplicationContext(), Activity_Oferta.class));
+            startActivity(new Intent(getApplicationContext(), Activity_Ofertas.class));
             finish();
         } else if (id == R.id.nav_slideshow) {
             startActivity(new Intent(getApplicationContext(),Activity_Perfil.class));
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(),Activity_Settings.class));
             finish();
         } else if (id == R.id.nav_share) {
-            startActivity(new Intent(getApplicationContext(),Activity_OfertaTrabajo.class));
+            startActivity(new Intent(getApplicationContext(),Activity_OfertarTrabajo.class));
             finish();
         } else if (id == R.id.nav_send) {
             signout();

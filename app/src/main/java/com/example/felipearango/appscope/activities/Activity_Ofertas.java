@@ -1,30 +1,32 @@
     package com.example.felipearango.appscope.activities;
 
     import android.content.Context;
-import android.os.Bundle;
-import android.util.Log;
+    import android.os.Bundle;
+    import android.util.Log;
     import android.view.Gravity;
     import android.view.LayoutInflater;
     import android.view.MotionEvent;
     import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
+    import android.widget.Button;
+    import android.widget.LinearLayout;
     import android.widget.PopupWindow;
     import android.widget.TextView;
-import android.widget.Toast;
+    import android.widget.Toast;
 
-    import com.example.felipearango.appscope.models.OnSwipeTouchListener;
     import com.example.felipearango.appscope.R;
+    import com.example.felipearango.appscope.models.Empresa;
     import com.example.felipearango.appscope.models.Etiqueta;
+    import com.example.felipearango.appscope.models.OnSwipeTouchListener;
     import com.example.felipearango.appscope.models.Trabajo;
+    import com.example.felipearango.appscope.models.UsuarioCorriente;
     import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
+    import com.google.firebase.database.DataSnapshot;
+    import com.google.firebase.database.DatabaseError;
+    import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+    import java.util.ArrayList;
 
-public class Activity_Oferta extends MainActivity implements View.OnClickListener{
+    public class Activity_Ofertas extends MainActivity implements View.OnClickListener{
 
     private TextView tvTrabajo, tvEmpresa, tvTitulo;
     private Button btnOfertar;
@@ -32,6 +34,8 @@ public class Activity_Oferta extends MainActivity implements View.OnClickListene
     private LinearLayout ll, llMove;
     private ArrayList<Trabajo> trabajos = new ArrayList<>();
     private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
+    private ArrayList<String> listStrEtiq = new ArrayList<>();
+    private Empresa empres = null;
     private int counter = 0;
     private boolean empresa = false;
 
@@ -43,7 +47,8 @@ public class Activity_Oferta extends MainActivity implements View.OnClickListene
         mDrawer.addView(contentView, 0);
 
         iniciarComponentes();
-        startArrayEtiquetas("Ingeniero");
+        inicializatedFireBase();
+        eventETRE("CorrientsUsers");
 
         ll = (LinearLayout) findViewById(R.id.llLayout);
         llMove = (LinearLayout) findViewById(R.id.llMove);
@@ -52,24 +57,24 @@ public class Activity_Oferta extends MainActivity implements View.OnClickListene
         llMove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(Activity_Oferta.this, "¡Desliza hacia la flecha!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_Ofertas.this, "¡Desliza hacia la flecha!", Toast.LENGTH_SHORT).show();
             }
         });
 
-        llMove.setOnTouchListener(new OnSwipeTouchListener(Activity_Oferta.this) {
+        llMove.setOnTouchListener(new OnSwipeTouchListener(Activity_Ofertas.this) {
             public void onSwipeTop() {
                 showPopUp();
             }
             public void onSwipeRight() {
 
-              //  Toast.makeText(Activity_Oferta.this, "right", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(Activity_Ofertas.this, "right", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeLeft() {
                 showJob(++counter);
-              //  Toast.makeText(Activity_Oferta.this, "left", Toast.LENGTH_SHORT).show();
+              // Toast.makeText(Activity_Ofertas.this, "left", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeBottom() {
-              //  Toast.makeText(Activity_Oferta.this, "bottom", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(Activity_Ofertas.this, "bottom", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -78,61 +83,59 @@ public class Activity_Oferta extends MainActivity implements View.OnClickListene
     }
 
     private void showPopUp(){
+        if(trabajos.size() > counter){
+            LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            View popupView = inflater.inflate(R.layout.popup_empresa, null);
+            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            boolean focusable = true;
+            final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
+            //////////////////////////////////////////////////////////////
+            ////////Inicialización de los dos componentes de el pop up
+            //////////////////////////////////////////////////////////////
 
+            TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
+            TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tvDetalles));
+            ((TextView)popupWindow.getContentView().findViewById(R.id.tvDetalles)).setText("hello there");
 
-        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+            //////////////////////////////////////////////////////////////
+            ////Esto muestra el pop Up window
+            ////////////////////////////////////////////////////////////
 
-        View popupView = inflater.inflate(R.layout.popup_empresa, null);
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-        boolean focusable = true;
-        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+            popupWindow.showAtLocation(ll, Gravity.CENTER, 0, 0);
+            //////////////////////////////////////////////////
+            ////////Listener que oculta el pop Up
+            ////////////////////////////////////////////////
+            popupView.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    popupWindow.dismiss();
+                    return true;
+                }
+            });
+        }else{
+            Toast.makeText(this,"No hay empresas que mostrar", Toast.LENGTH_LONG).show();
+        }
 
-        //////////////////////////////////////////////////////////////
-        ////////Inicialización de los dos componentes de el pop up
-        //////////////////////////////////////////////////////////////
-
-        TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
-        TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tvDetalles));
-
-
-        //////////////////////////////////////////////////////////////
-        ////Esto muestra el pop Up window
-        ////////////////////////////////////////////////////////////
-
-        popupWindow.showAtLocation(ll, Gravity.CENTER, 0, 0);
-
-
-
-        //////////////////////////////////////////////////
-        ////////Listener que oculta el pop Up
-        ////////////////////////////////////////////////
-        popupView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                popupWindow.dismiss();
-                return true;
-            }
-        });
     }
 
-    private void showEmpresa(int counter){
+    private void showEmpresa(final String idEmpresa){
         databaseReference.child("EmpresaUsers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Empresa empresa = dataSnapshot.child(trabajos.get(0).getTitulo()).getValue(UsuarioCorriente.class);
+                empres = dataSnapshot.child(idEmpresa).getValue(Empresa.class);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
+
 
     }
 
     private void showJob(int pos){
-        Log.e("pos",pos+" - "+trabajos.size());
+     //   Log.e("pos",pos+" - "+trabajos.size());
         if(trabajos.size() > pos){
             showJob(trabajos.get(pos));
 
@@ -167,7 +170,7 @@ public class Activity_Oferta extends MainActivity implements View.OnClickListene
                         etiquetas.add(etiqueta);
                     }
                 }
-                startArrayJobs();
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -194,6 +197,7 @@ public class Activity_Oferta extends MainActivity implements View.OnClickListene
     }
 
     private void showJob(Trabajo trabajo){
+
         tvEmpresa.setText("");
         tvTrabajo.setText(trabajo.getDescripción());
         tvTitulo.setText(trabajo.getTitulo());
@@ -212,4 +216,30 @@ public class Activity_Oferta extends MainActivity implements View.OnClickListene
                 child("Ofertas").child(user.getUid()).child("Estado").setValue("En espera");
     }
 
+    private void cargarEtiquetas(ArrayList<String> strEtiqueta){
+        for (int i = 0; i < strEtiqueta.size(); i++) {
+            startArrayEtiquetas(strEtiqueta.get(i).toString());
+        }
+        startArrayJobs();
+
+    }
+
+
+        public void eventETRE(String usChildString){
+            databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    FirebaseUser user = firebaseAuth.getCurrentUser();
+                    UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
+                    for (String strE : uC.getEtiquetas()) {
+                        listStrEtiq.add(strE);
+                    }
+                    cargarEtiquetas(listStrEtiq);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 }

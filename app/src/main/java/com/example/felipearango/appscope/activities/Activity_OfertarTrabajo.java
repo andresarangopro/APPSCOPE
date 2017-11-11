@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
-public class Activity_OfertaTrabajo extends MainActivity implements View.OnClickListener {
+public class Activity_OfertarTrabajo extends MainActivity implements View.OnClickListener {
 
     ////////////////////////////
     //Variables

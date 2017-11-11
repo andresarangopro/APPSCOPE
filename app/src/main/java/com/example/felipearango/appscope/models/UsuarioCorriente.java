@@ -59,12 +59,12 @@ public class UsuarioCorriente {
         this.conocimientosInformaticos =  conocimientosInformaticos;
         this.estadoCuenta = estadoCuenta;
         this.rating = rating;
-        this.anexos = new ArrayList<String>(Arrays.asList(anexos.split(" , ")));
-        this.idiomas = new ArrayList<String>(Arrays.asList(idiomas.split(" , ")));
+        this.anexos = new ArrayList<String>(Arrays.asList(anexos.split(",")));
+        this.idiomas = new ArrayList<String>(Arrays.asList(idiomas.split(",")));
         this.experienciasProfesionales = new ArrayList<String>(Arrays.asList(experienciasProfesionales.split(" , ")));
         this.referenciasEmpleo = new ArrayList<String>(Arrays.asList(referenciasEmpleo.split(" , ")));
-        this.formacion = new ArrayList<String>(Arrays.asList(formacion.split(" , ")));
-        this.etiquetas = new ArrayList<String>(Arrays.asList(formacion.split(" , ")));
+        this.formacion = new ArrayList<String>(Arrays.asList(formacion.split(",")));
+        this.etiquetas = new ArrayList<String>(Arrays.asList(etiquetas.split(",")));
     }
 
 
@@ -237,4 +237,6 @@ public class UsuarioCorriente {
     public void setEtiquetas(ArrayList<String> etiquetas) {
         this.etiquetas = etiquetas;
     }
+
+
 }

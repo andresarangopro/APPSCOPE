@@ -31,8 +31,8 @@
             android:name=".activities.Activity_RegistroEmail"
             android:label="@string/title_activity_registro_email"
             android:theme="@style/MyTheme" />
-        <activity android:name=".activities.Activity_OfertaTrabajo" />
-        <activity android:name=".activities.Activity_Oferta" />
+        <activity android:name=".activities.Activity_OfertarTrabajo" />
+        <activity android:name=".activities.Activity_Ofertas" />
         <activity android:name=".activities.Activity_Settings" />
         <activity android:name=".CompletarPerfil" />
         <activity android:name=".activities.Activity_Admin" />
