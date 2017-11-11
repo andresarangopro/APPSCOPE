@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:weightSum="200"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="15"
+            android:text="E-mail:"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/mail"
+            style="@style/txtPoint"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="25"
+            android:background="@drawable/edittextborder"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="15"
+            android:text="Contraseña:"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/contraseña"
+            style="@style/txtPoint"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="25"
+            android:background="@drawable/edittextborder"
+            android:hint="Contraseña: "
+            android:inputType="textPassword" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="15"
+            android:text="Confirmar contraseña:"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/contraseñaC"
+            style="@style/txtPoint"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="25"
+            android:background="@drawable/edittextborder"
+            android:hint="Confirmar contraseña:"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="15"
+            android:text="Pregunta de seguridad:"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/preguntaP"
+            style="@style/txtPoint"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="25"
+            android:background="@drawable/edittextborder"
+            android:hint="Pregunta....:"
+            android:inputType="textPassword" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="15"
+            android:text="Respuesta:"
+            android:textColor="@color/colorAccent" />
+
+        <EditText
+            android:id="@+id/RespuestaP"
+            style="@style/txtPoint"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="25"
+            android:background="@drawable/edittextborder"
+            android:hint="Confirmar contraseña:"
+            android:inputType="textPassword" />
+
+    </LinearLayout>
+</LinearLayout>
