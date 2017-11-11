@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
         <activity
-            android:name=".Login"
+            android:name=".activities.Activity_Login"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,23 +22,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".ScreenRegisterUC" />
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.Activity_ScreenRegisterUC" />
         <activity android:name=".MiddleLR" />
-        <activity android:name=".ScreenRegisterE" />
-        <activity android:name=".Perfil" />
+        <activity android:name=".activities.Activity_ScreenRegisterE" />
+        <activity android:name=".activities.Activity_Perfil" />
         <activity
-            android:name=".RegistroEmail"
+            android:name=".activities.Activity_RegistroEmail"
             android:label="@string/title_activity_registro_email"
             android:theme="@style/MyTheme" />
-        <activity android:name=".OfertaTrabajo" />
-        <activity android:name=".Oferta" />
-        <activity android:name=".Settings" />
+        <activity android:name=".activities.Activity_OfertaTrabajo" />
+        <activity android:name=".activities.Activity_Oferta" />
+        <activity android:name=".activities.Activity_Settings" />
         <activity android:name=".CompletarPerfil" />
-        <activity android:name=".Activity_Admin" />
-        <activity android:name=".Activity_notificaciones" />
-        <activity android:name=".Activity_AgregarAdmin" />
-        <activity android:name=".Activity_Password"></activity>
+        <activity android:name=".activities.Activity_Admin" />
+        <activity android:name=".activities.Activity_notificaciones" />
+        <activity android:name=".activities.Activity_AgregarAdmin" />
+        <activity android:name=".activities.Activity_Password"></activity>
     </application>
 
 </manifest>

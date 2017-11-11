@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.Util;
 
 /**
  * Created by Felipe Arango on 26/10/2017.

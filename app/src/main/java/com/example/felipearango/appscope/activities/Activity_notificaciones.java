@@ -1,13 +1,16 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+
+import com.example.felipearango.appscope.models.Notificacion;
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.RecyclerAdapterNotificaciones;
 
 import java.util.ArrayList;
 

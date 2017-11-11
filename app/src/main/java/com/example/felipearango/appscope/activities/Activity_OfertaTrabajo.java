@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,6 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.Etiqueta;
+import com.example.felipearango.appscope.models.Trabajo;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,9 +26,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
-public class OfertaTrabajo extends MainActivity implements View.OnClickListener {
+public class Activity_OfertaTrabajo extends MainActivity implements View.OnClickListener {
 
     ////////////////////////////
     //Variables

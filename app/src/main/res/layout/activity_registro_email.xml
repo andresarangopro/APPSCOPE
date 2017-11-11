@@ -6,7 +6,7 @@
     android:layout_marginLeft="16dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.felipearango.appscope.RegistroEmail"
+    tools:context="com.example.felipearango.appscope.activities.Activity_RegistroEmail"
     android:orientation="vertical"
     android:weightSum="100">
 

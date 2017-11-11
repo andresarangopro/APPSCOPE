@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickListener{
+public class Activity_ScreenRegisterUC extends AppCompatActivity implements View.OnClickListener{
 
     ///////////////////////////////
     //Variables
@@ -189,7 +191,7 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
                 int mMonth=mcurrentDate.get(Calendar.MONTH);
                 int mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker=new DatePickerDialog(ScreenRegisterUC.this, new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog mDatePicker=new DatePickerDialog(Activity_ScreenRegisterUC.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
 
                         actualizarFecha(selectedday+"/"+selectedmonth+"/"+selectedyear);
@@ -262,7 +264,7 @@ public class ScreenRegisterUC extends AppCompatActivity implements View.OnClickL
         databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
         Log.e("INFO", "SI...");
         finish();
-        startActivity(new Intent(getApplicationContext(),Perfil.class));
+        startActivity(new Intent(getApplicationContext(),Activity_Perfil.class));
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.models;
 
 import android.content.Context;
 import android.view.GestureDetector;

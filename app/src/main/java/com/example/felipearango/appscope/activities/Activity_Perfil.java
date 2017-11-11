@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.CircleTransform;
+import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -16,9 +20,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-import static com.example.felipearango.appscope.Login.TIPO_USUARIO;
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
-public class Perfil extends MainActivity {
+public class Activity_Perfil extends MainActivity {
 
     private ImageView imVPerfil;
     private TabHost tHData;
@@ -85,14 +89,14 @@ public class Perfil extends MainActivity {
     private void putImg(Object obj){
         if(obj instanceof UsuarioCorriente){
             if(!(((UsuarioCorriente)obj).getFoto().equals(""))){
-                Picasso.with(Perfil.this)
+                Picasso.with(Activity_Perfil.this)
                         .load(((UsuarioCorriente)obj).getFoto())
                         .transform(new CircleTransform())
                         .into(imVPerfil);
             }
         }else{
             if(!(((Empresa)obj).getFoto().equals(""))){
-                Picasso.with(Perfil.this)
+                Picasso.with(Activity_Perfil.this)
                         .load(((Empresa)obj).getFoto())
                         .transform(new CircleTransform())
                         .into(imVPerfil);

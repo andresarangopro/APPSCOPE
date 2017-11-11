@@ -9,7 +9,7 @@
     android:layout_marginRight="16dp"
     android:layout_marginLeft="16dp"
     android:layout_marginBottom="16dp"
-    tools:context="com.example.felipearango.appscope.Settings">
+    tools:context="com.example.felipearango.appscope.activities.Activity_Settings">
 
     <LinearLayout
         android:layout_marginTop="16dp"

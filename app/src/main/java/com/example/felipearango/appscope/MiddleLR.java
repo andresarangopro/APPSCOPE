@@ -5,7 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+
+import com.example.felipearango.appscope.activities.Activity_ScreenRegisterE;
+import com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC;
 
 public class MiddleLR extends AppCompatActivity {
 
@@ -35,11 +37,11 @@ public class MiddleLR extends AppCompatActivity {
        public void onClick(View v) {
            if(v == iBtnCompany){
                finish();
-               startActivity(new Intent(MiddleLR.this,ScreenRegisterE.class));
+               startActivity(new Intent(MiddleLR.this,Activity_ScreenRegisterE.class));
            }
            if(v == iBtnUser){
                finish();
-               startActivity(new Intent(MiddleLR.this,ScreenRegisterUC.class));
+               startActivity(new Intent(MiddleLR.this,Activity_ScreenRegisterUC.class));
            }
        }
    };

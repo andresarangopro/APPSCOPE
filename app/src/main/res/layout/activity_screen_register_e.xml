@@ -8,7 +8,7 @@
     android:layout_marginLeft="16dp"
     android:weightSum="100"
     android:orientation="vertical"
-    tools:context="com.example.felipearango.appscope.ScreenRegisterE">
+    tools:context="com.example.felipearango.appscope.activities.Activity_ScreenRegisterE">
 
     <LinearLayout
         android:layout_weight="70"

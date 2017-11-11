@@ -1,26 +1,24 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.activities;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.Empresa;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import static com.example.felipearango.appscope.ScreenRegisterUC.ESTADO_ACTIVA;
+import static com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC.ESTADO_ACTIVA;
 
-public class ScreenRegisterE extends AppCompatActivity implements View.OnClickListener {
+public class Activity_ScreenRegisterE extends AppCompatActivity implements View.OnClickListener {
 
     private EditText txtnameE,txtRazonSoc, txtNIT, txtUrl, txtSocial1, txtSocial2, txtSocial3;
     private Button btnRegisterE, btnAgregarNIT, btnAgregarRedSocial1, btnAgregarRedSocial2, btnAgregarRedSocial3;
@@ -111,7 +109,7 @@ public class ScreenRegisterE extends AppCompatActivity implements View.OnClickLi
     private void insertarUsEFireBase(Empresa uE,FirebaseUser user){
         databaseReference.child("EmpresaUsers").child(user.getUid()).setValue(uE);
         finish();
-        startActivity(new Intent(getApplicationContext(),Perfil.class));
+        startActivity(new Intent(getApplicationContext(),Activity_Perfil.class));
     }
 
     @Override

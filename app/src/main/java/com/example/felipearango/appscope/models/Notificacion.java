@@ -1,4 +1,4 @@
-package com.example.felipearango.appscope;
+package com.example.felipearango.appscope.models;
 
 /**
  * Created by Sebastian Luna R on 10/29/2017.
