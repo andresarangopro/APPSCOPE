@@ -65,11 +65,10 @@
     </LinearLayout>
 
     <TextView
-        style="@style/txtPoint"
         android:id="@+id/tvAlreadyRegister"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
+        android:layout_weight="10"
         android:text="¿Ya estás registrado? Ingresa acá!"
         android:textAlignment="center"
         android:textColor="@color/colorAccent" />

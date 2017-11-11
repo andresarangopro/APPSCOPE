@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
@@ -15,8 +15,8 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="25"
+            android:layout_height="0dp"
+            android:layout_weight="15"
             android:text="E-mail:"
             android:textColor="@color/colorAccent" />
 
@@ -24,7 +24,7 @@
             android:id="@+id/mail"
             style="@style/txtPoint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="25"
             android:background="@drawable/edittextborder"
             android:hint="E-mail"
@@ -32,7 +32,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="20dp"
             android:layout_weight="15"
             android:text="Contraseña:"
@@ -42,7 +42,7 @@
             android:id="@+id/contraseña"
             style="@style/txtPoint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="25"
             android:background="@drawable/edittextborder"
             android:hint="Contraseña: "
@@ -50,7 +50,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="20dp"
             android:layout_weight="15"
             android:text="Confirmar contraseña:"
@@ -60,7 +60,7 @@
             android:id="@+id/contraseñaC"
             style="@style/txtPoint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="25"
             android:background="@drawable/edittextborder"
             android:hint="Confirmar contraseña:"
@@ -68,7 +68,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="20dp"
             android:layout_weight="15"
             android:text="Pregunta de seguridad:"
@@ -78,7 +78,7 @@
             android:id="@+id/preguntaP"
             style="@style/txtPoint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="25"
             android:background="@drawable/edittextborder"
             android:hint="Pregunta....:"
@@ -86,7 +86,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginTop="20dp"
             android:layout_weight="15"
             android:text="Respuesta:"
@@ -96,11 +96,11 @@
             android:id="@+id/RespuestaP"
             style="@style/txtPoint"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_weight="25"
             android:background="@drawable/edittextborder"
             android:hint="Confirmar contraseña:"
             android:inputType="textPassword" />
 
     </LinearLayout>
-</ScrollView>
+</LinearLayout>
