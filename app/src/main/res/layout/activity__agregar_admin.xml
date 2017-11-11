@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:weightSum="100"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -25,43 +25,76 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"></LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_weight="45"
-            android:weightSum="4"
+        <ScrollView
+            android:background="@drawable/edittextborder"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
-            <TextView
-                android:textSize="25dp"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:layout_weight="1"
-                android:textColor="@color/textoSecundario"
-                android:text="Agregar admin"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" />
-            <EditText
-                android:id="@+id/etEmailAgregar"
-                android:hint="E-mail"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" />
-            <Button
-                android:text="Agregar"
-                style="@style/btnTap1"
-                android:layout_weight="1"
-                android:layout_width="match_parent"
-                android:layout_height="0dp" />
+            android:layout_height="0dp"
+            android:layout_weight="45">
 
-        </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:text="Agregar admin"
+                    android:textColor="@color/textoSecundario"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/etEmailAgregar"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:hint="E-mail"
+                    android:inputType="textEmailAddress" />
+
+                <EditText
+                    android:id="@+id/etContraseña"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:hint="Contraseña"
+                    android:inputType="textPassword" />
+
+                <EditText
+
+                    android:id="@+id/etConfirmarContraseña"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:hint="Confirmar contraseña"
+                    android:inputType="textPassword" />
+
+                <Button
+
+                    android:layout_marginTop="10dp"
+                    style="@style/btnTap1"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:text="Agregar" />
+
+            </LinearLayout>
+        </ScrollView>
         <LinearLayout
+            android:layout_marginTop="25dp"
             android:orientation="vertical"
             android:layout_weight="45"
-            android:weightSum="4"
+            android:weightSum="5"
             android:layout_width="match_parent"
             android:layout_height="0dp">
             <TextView
-                android:textSize="25dp"
+                android:paddingTop="10dp"
+                android:textSize="25sp"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:layout_weight="1"
@@ -69,19 +102,24 @@
                 android:text="Eliminar admin"
                 android:layout_width="match_parent"
                 android:layout_height="0dp" />
+
             <EditText
                 android:id="@+id/etEmailEliminar"
-                android:hint="E-mail"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:hint="E-mail"
+                android:inputType="textEmailAddress" />
+
             <Button
                 android:id="@+id/eliminar"
-                android:text="Eliminar"
                 style="@style/btnTap1"
-                android:layout_weight="1"
                 android:layout_width="match_parent"
-                android:layout_height="0dp" />
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="Eliminar" />
 
         </LinearLayout>
     </LinearLayout>
