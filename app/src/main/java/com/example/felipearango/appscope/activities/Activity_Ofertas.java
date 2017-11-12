@@ -105,6 +105,8 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
 
             TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
              TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tVNameP));
+             TextView tVFrase= ((TextView)popupWindow.getContentView().findViewById(R.id.tVFrase));
+             tVFrase.setVisibility(View.INVISIBLE);
             ImageView imVPerfil = ((ImageView) popupWindow.getContentView().findViewById(R.id.imVPerfil));
             //  tVOcupacionP
             //tVFrase
