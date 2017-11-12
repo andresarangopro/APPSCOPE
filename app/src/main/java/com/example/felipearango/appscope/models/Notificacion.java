@@ -12,16 +12,25 @@ public class Notificacion {
     private final String nombreTrabajo;
     private final String nombreEmpresa;
     private final String estado;
-
+    private final String idTrabajo;
+    private final String idEmpresa;
+    private final String idOfertante;
+    private final String nombreOfertante;
     /////////////////////////////////
     /////Constructor
     //////////////////////////////////
 
-    public Notificacion(String nombreTrabajo, String nombreEmpresa, String estado) {
+    public Notificacion(String nombreTrabajo, String nombreEmpresa, String estado, String idTrabajo,
+                        String idEmpresa, String idOfertante, String nombreOfertante) {
         this.nombreTrabajo = nombreTrabajo;
         this.nombreEmpresa = nombreEmpresa;
         this.estado = estado;
+        this.idTrabajo = idTrabajo;
+        this.idEmpresa = idEmpresa;
+        this.idOfertante = idOfertante;
+        this.nombreOfertante = nombreOfertante;
     }
+
 
     //////////////////////////////////
     /////////Getters
@@ -37,5 +46,21 @@ public class Notificacion {
 
     public String getEstado() {
         return estado;
+    }
+
+    public String getIdTrabajo() {
+        return idTrabajo;
+    }
+
+    public String getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public String getIdOfertante() {
+        return idOfertante;
+    }
+
+    public String getNombreOfertante() {
+        return nombreOfertante;
     }
 }
