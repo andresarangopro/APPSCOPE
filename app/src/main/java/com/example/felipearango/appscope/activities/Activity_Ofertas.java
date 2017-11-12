@@ -84,6 +84,7 @@
 
     private void showPopUp(){
         if(trabajos.size() > counter){
+
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_empresa, null);
             int width = LinearLayout.LayoutParams.WRAP_CONTENT;
