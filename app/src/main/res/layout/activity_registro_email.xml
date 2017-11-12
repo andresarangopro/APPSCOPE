@@ -3,17 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
-=======
-    tools:context="com.example.felipearango.appscope.activities.Activity_RegistroEmail"
->>>>>>> 3048bed6e5de2757d1fb9838ff16516fbef4ac41
     android:orientation="vertical"
     android:weightSum="100"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="16dp"
     android:fillViewport="false"
-    tools:context="com.example.felipearango.appscope.RegistroEmail">
+    tools:context="com.example.felipearango.appscope.activities.Activity_RegistroEmail">
 
     <LinearLayout
         android:layout_width="match_parent"

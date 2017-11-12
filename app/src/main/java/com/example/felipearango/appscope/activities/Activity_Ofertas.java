@@ -98,7 +98,6 @@
             TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
             TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tvDetalles));
             ((TextView)popupWindow.getContentView().findViewById(R.id.tvDetalles)).setText("hello there");
-
             //////////////////////////////////////////////////////////////
             ////Esto muestra el pop Up window
             ////////////////////////////////////////////////////////////
@@ -242,4 +241,5 @@
                 }
             });
         }
+
 }
