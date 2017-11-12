@@ -157,8 +157,8 @@ public class Activity_Login extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
-                Log.e("DATE",dataSnapshot.child(user.getUid()).toString());
+               uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
+               // Log.e("DATE",dataSnapshot.child(user.getUid()).toString());
               if(dataSnapshot.child(user.getUid()).getValue() == null){
                     existIsEmpres();
                 }else if(uC.getEstadoCuenta().equals("NUEVA")){

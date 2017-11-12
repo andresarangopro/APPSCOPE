@@ -80,6 +80,7 @@ public class Activity_Perfil extends MainActivity {
         if(obj instanceof UsuarioCorriente){
             tVNamep.setText(((UsuarioCorriente)obj).getNombre());
             tVOcupacion.setText(((UsuarioCorriente) obj).getOcupacion());
+            tVFrase.setText("Frase: "+((UsuarioCorriente) obj).getFrase());
         }else{
             tVNamep.setText(((Empresa)obj).getNombre());
             tVOcupacion.setText(((Empresa)obj).getMail());
