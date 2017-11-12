@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.EmpresaSolicitud;
 import com.example.felipearango.appscope.models.Notificacion;
+import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
 import com.example.felipearango.appscope.models.RecyclerAdapterNotificaciones;
 import com.example.felipearango.appscope.models.Trabajo;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,8 +27,10 @@ import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_U
 public class Activity_notificaciones extends MainActivity {
 
     private RecyclerAdapterNotificaciones mAdapter;
+    private RecyclerAdapterEmpresa mAdapterEmp;
     private RecyclerView mRecyclerAccounts;
     private ArrayList<Notificacion> notificacion = new ArrayList<>();
+    private ArrayList<EmpresaSolicitud> notificaciones = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private ArrayList<String> idJobs = new ArrayList<>();
 
@@ -53,6 +57,7 @@ public class Activity_notificaciones extends MainActivity {
         mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Noti);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
+       // mAdapterEmp = new RecyclerAdapterEmpresa(notificaciones);
         mAdapter = new RecyclerAdapterNotificaciones(notificacion);
         mRecyclerAccounts.setAdapter(mAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
@@ -68,7 +73,6 @@ public class Activity_notificaciones extends MainActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(TIPO_USUARIO == 0){
-
                 }else{
                     for (DataSnapshot etiquetasChild: dataSnapshot.getChildren()) {
                         for (DataSnapshot empresasChild: etiquetasChild.getChildren() ) {
@@ -98,13 +102,13 @@ public class Activity_notificaciones extends MainActivity {
                     for(String idOfJob: strIdJob){
                         if(idOfJob.equals(jobsChild.getKey())){
                             tb = jobsChild.getValue(Trabajo.class);
-                            for (DataSnapshot ofertChild: jobsChild.child("Ofertas").getChildren()) {
-                                Log.e("ETERZ",ofertChild.getKey());
-                                Notificacion noti = new Notificacion(tb.getTitulo(), "Nombre empresa",
-                                        ofertChild.child("Estado").getValue(Object.class).toString(),tb.getId()
-                                ,tb.getIdEmpresa(),ofertChild.getKey(),"Nombre ofertante");
-                                notificacion.add(noti);
-                            }
+                            Log.e("ETERZ",tb.getId());
+                            Notificacion noti = new Notificacion(tb.getTitulo(),
+                                    tb.getId(),jobsChild.child("Ofertas").getChildrenCount());
+                            //EmpresaSolicitud emp = new EmpresaSolicitud("Nombre");
+                            //notificaciones.add(emp);
+                            notificacion.add(noti);
+
 
                         }
                     }
@@ -118,14 +122,5 @@ public class Activity_notificaciones extends MainActivity {
         });
     }
 
-    private ArrayList<String> quitarRepetidos(ArrayList<String> strRe){
-        for (int i = 0; i < strRe.size() ; i++) {
-            for (int j = 0; j <strRe.size() ; j++) {
-                if(strRe.get(i).toString().equals(strRe.get(j).toString()) && i != j){
-                    strRe.set(j,"");
-                }
-            }
-        }
-        return strRe;
-    }
+
 }

@@ -1,10 +1,14 @@
 package com.example.felipearango.appscope.models;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.activities.Activity_Notificaciones_S;
 
 /**
  * Created by Sebastian Luna R on 10/29/2017.
@@ -28,12 +32,18 @@ public class NotificacionHolder extends RecyclerView.ViewHolder implements View.
     /////////////////////////
     @Override
     public void onClick(View view) {
-
+        Context context = view.getContext();
+       // context.startActivity(new Intent(context,Activity_Notificaciones_S.class));
+        Intent  intent=new Intent(new Intent(context,Activity_Notificaciones_S.class));
+        Bundle bundle=new Bundle();
+        bundle.putString("idJob", tvEmpresa.getText().toString());
+        intent.putExtras(bundle);
+        context.startActivity(intent);
     }
 
     public void bindNotificacion(Notificacion notificacion){
         tvTitulo.setText(notificacion.getNombreTrabajo());
-        tvEmpresa.setText(notificacion.getNombreEmpresa());
-        tvEstado.setText(notificacion.getEstado());
+        tvEmpresa.setText(notificacion.getIdTrabajo());
+        tvEstado.setText("Ofertantes: "+notificacion.getNumOfertantes());
     }
 }

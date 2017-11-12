@@ -30,6 +30,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 import static com.example.felipearango.appscope.activities.Activity_Login.calledAlready;
 
@@ -105,8 +107,10 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_work) {
-            startActivity(new Intent(getApplicationContext(), Activity_Ofertas.class));
-            finish();
+            if(TIPO_USUARIO == 0){
+                startActivity(new Intent(getApplicationContext(), Activity_Ofertas.class));
+                finish();
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -117,6 +121,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
         if (id == R.id.nav_camera) {
             startActivity(new Intent(getApplicationContext(), Activity_notificaciones.class));
             //startActivity(new Intent(getApplicationContext(), Activity_Admin.class));
@@ -150,8 +155,12 @@ public class MainActivity extends AppCompatActivity
         txtNavMail = (TextView) headerView.findViewById(R.id.txtNavMail);
         txtNavName = (TextView) headerView.findViewById(R.id.txtNavName);
         iVNavPerfil = (ImageView) headerView.findViewById(R.id.iVNavPerfil);
+      // android.view.View action_work = (android.view.View) headerView.findViewById(R.id.action_work);
         if(TIPO_USUARIO == 1){
             nav_Menu.findItem(R.id.nav_gallery).setVisible(false);
+
+        //    action_work.setVisibility(headerView.INVISIBLE);
+         //   nav_Menu.findItem(R.id.action_work).setVisible(false);
         }
 
     }
@@ -226,6 +235,16 @@ public class MainActivity extends AppCompatActivity
         firebaseAuth.signOut();
         finish();
         startActivity(new Intent(MainActivity.this, Activity_Login.class));
+    }
+    protected ArrayList<String> quitarRepetidos(ArrayList<String> strRe){
+        for (int i = 0; i < strRe.size() ; i++) {
+            for (int j = 0; j <strRe.size() ; j++) {
+                if(strRe.get(i).toString().equals(strRe.get(j).toString()) && i != j){
+                    strRe.set(j,"");
+                }
+            }
+        }
+        return strRe;
     }
 
     protected String getTxtEdit(EditText txt){
