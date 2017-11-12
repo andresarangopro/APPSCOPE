@@ -36,6 +36,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:hint="Ocupación"
+            android:maxLength="25"
             android:inputType="text|textAutoCorrect|textAutoComplete"
             android:singleLine="true" />
 
@@ -56,6 +57,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:hint="Frase "
+            android:maxLength="50"
             android:inputType="text|textAutoCorrect|textAutoComplete|textLongMessage"
             android:singleLine="true" />
 
@@ -73,6 +75,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:hint="Celular"
+            android:maxLength="10"
             android:inputType="textAutoCorrect|textAutoComplete|number" />
 
         <EditText

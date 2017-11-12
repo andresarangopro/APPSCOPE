@@ -8,4 +8,5 @@
     <string name="title_activity_perfil">perfil</string>
     <string name="title_activity_registro_email">RegistroEmail</string>
     <string name="mi_mensaje"><b>+</b></string>
+    <string name="empty_camp">"Ingrese este campo por favor"</string>
 </resources>

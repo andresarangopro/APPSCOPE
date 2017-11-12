@@ -1,32 +1,35 @@
-    package com.example.felipearango.appscope.activities;
+package com.example.felipearango.appscope.activities;
 
-    import android.content.Context;
-    import android.os.Bundle;
-    import android.util.Log;
-    import android.view.Gravity;
-    import android.view.LayoutInflater;
-    import android.view.MotionEvent;
-    import android.view.View;
-    import android.widget.Button;
-    import android.widget.LinearLayout;
-    import android.widget.PopupWindow;
-    import android.widget.TextView;
-    import android.widget.Toast;
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
-    import com.example.felipearango.appscope.R;
-    import com.example.felipearango.appscope.models.Empresa;
-    import com.example.felipearango.appscope.models.Etiqueta;
-    import com.example.felipearango.appscope.models.OnSwipeTouchListener;
-    import com.example.felipearango.appscope.models.Trabajo;
-    import com.example.felipearango.appscope.models.UsuarioCorriente;
-    import com.google.firebase.auth.FirebaseUser;
-    import com.google.firebase.database.DataSnapshot;
-    import com.google.firebase.database.DatabaseError;
-    import com.google.firebase.database.ValueEventListener;
+import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.CircleTransform;
+import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.Etiqueta;
+import com.example.felipearango.appscope.models.OnSwipeTouchListener;
+import com.example.felipearango.appscope.models.Trabajo;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
-    import java.util.ArrayList;
+import java.util.ArrayList;
 
-    public class Activity_Ofertas extends MainActivity implements View.OnClickListener{
+public class Activity_Ofertas extends MainActivity implements View.OnClickListener{
 
     private TextView tvTrabajo, tvEmpresa, tvTitulo;
     private Button btnOfertar;
@@ -63,18 +66,22 @@
 
         llMove.setOnTouchListener(new OnSwipeTouchListener(Activity_Ofertas.this) {
             public void onSwipeTop() {
+                if(counter == 0){
+                    showEmpresa(trabajos.get(counter).getIdEmpresa());
+                }
                 showPopUp();
             }
             public void onSwipeRight() {
 
-            //  Toast.makeText(Activity_Ofertas.this, "right", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(Activity_Ofertas.this, "right", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeLeft() {
                 showJob(++counter);
-              // Toast.makeText(Activity_Ofertas.this, "left", Toast.LENGTH_SHORT).show();
+                showEmpresa(trabajos.get(counter).getIdEmpresa());
+                // Toast.makeText(Activity_Ofertas.this, "left", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeBottom() {
-              //  Toast.makeText(Activity_Ofertas.this, "bottom", Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(Activity_Ofertas.this, "bottom", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -97,8 +104,18 @@
             //////////////////////////////////////////////////////////////
 
             TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
-            TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tvDetalles));
-            ((TextView)popupWindow.getContentView().findViewById(R.id.tvDetalles)).setText("hello there");
+             TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tVNameP));
+            ImageView imVPerfil = ((ImageView) popupWindow.getContentView().findViewById(R.id.imVPerfil));
+            //  tVOcupacionP
+            //tVFrase
+             //TextView  = ((TextView)popupWindow.getContentView().findViewById(R.id.tVNameP));
+            tvDetalles.setText(empres.getNombre());
+            if(!empres.getFoto().equals("")){
+                Picasso.with(this)
+                        .load(empres.getFoto())
+                        .transform(new CircleTransform())
+                        .into(imVPerfil);
+            }
 
             //////////////////////////////////////////////////////////////
             ////Esto muestra el pop Up window
@@ -112,6 +129,7 @@
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     popupWindow.dismiss();
+
                     return true;
                 }
             });
@@ -136,12 +154,12 @@
     }
 
     private void showJob(int pos){
-     //   Log.e("pos",pos+" - "+trabajos.size());
+        //   Log.e("pos",pos+" - "+trabajos.size());
         if(trabajos.size() > pos){
             showJob(trabajos.get(pos));
 
         }else{
-           // tvEmpresa.setText(":'c");
+            // tvEmpresa.setText(":'c");
             tvTrabajo.setText("Sin trabajo!");
             tvTitulo.setText("Se han agotado los trabajos");
         }
@@ -185,8 +203,8 @@
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (int i = 0; i < etiquetas.size(); i++) {
-                   Trabajo job =  dataSnapshot.child(etiquetas.get(i).getIdTrabajo()).getValue(Trabajo.class);
-                   trabajos.add(job);
+                    Trabajo job =  dataSnapshot.child(etiquetas.get(i).getIdTrabajo()).getValue(Trabajo.class);
+                    trabajos.add(job);
                 }
                 showJob(counter);
             }
@@ -226,21 +244,22 @@
     }
 
 
-        public void eventETRE(String usChildString){
-            databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    FirebaseUser user = firebaseAuth.getCurrentUser();
-                    UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
-                    for (String strE : uC.getEtiquetas()) {
-                        listStrEtiq.add(strE);
-                    }
-                    cargarEtiquetas(listStrEtiq);
+    public void eventETRE(String usChildString){
+        databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
+                for (String strE : uC.getEtiquetas()) {
+                    listStrEtiq.add(strE);
                 }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
+                cargarEtiquetas(listStrEtiq);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-                }
-            });
-        }
+            }
+        });
+    }
+
 }

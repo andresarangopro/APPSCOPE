@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
+import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -65,7 +66,6 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         initComponents();
         initializedDR();
         putDataUser();
-
         chooseDate();
     }
     private void initComponents(){
@@ -83,9 +83,11 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         txtCelularCP = (EditText) findViewById(R.id.txtCelularCP);
         txtUbicacionCP = (EditText) findViewById(R.id.txtUbicacionCP);
 
-        field.add(txtNameCP);
-        field.add(txtEdadCP);
-        field.add(txtCelularCP);
+        if(TIPO_USUARIO == 1){
+            txtUbicacionCP.setVisibility(View.INVISIBLE);
+            txtCelularCP.setVisibility(View.INVISIBLE);
+            txtUniversidadCP.setHint("Celular");
+        }
     }
 
     @Override
@@ -95,13 +97,25 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             intentGallery.setType("image/*");
             startActivityForResult(intentGallery,GALLERY_INTENT);
         }else if(v == btnSendImg){
-           if(descargarFoto != null){
-               if(TIPO_USUARIO == 0){
-                   updateFoto("CorrientsUsers",obj,descargarFoto+"");
-               }else{
-                   updateFoto("EmpresaUsers",obj,descargarFoto+"");
-               }
-           }
+            if(TIPO_USUARIO == 0){
+                if(!Util.emptyCampMSG(txtNameCP,getString(R.string.empty_camp)) &&
+                        !Util.emptyCampMSG(txtEdadCP,getString(R.string.empty_camp)) &&
+                        !Util.emptyCampMSG(txtCelularCP,getString(R.string.empty_camp))){
+                         if( descargarFoto != null){
+                             updateFoto("CorrientsUsers",obj,descargarFoto+"");
+                         }
+                    updateData("CorrientsUsers",obj);
+                }
+            }else{
+                if(!Util.emptyCampMSG(txtNameCP,getString(R.string.empty_camp)) ){
+                    if(descargarFoto != null){
+                        updateFoto("EmpresaUsers",obj,descargarFoto+"");
+                    }
+                  //  updateData("EmpresaUsers",obj);
+                }
+
+            }
+
         }
     }
 
@@ -115,23 +129,20 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
 
     private void chooseDate(){
 
-        final Calendar calendar = Calendar.getInstance();
-        final int yy = calendar.get(Calendar.YEAR);
-        final int mm = calendar.get(Calendar.MONTH);
-        final int dd = calendar.get(Calendar.DAY_OF_MONTH);
-        txtEdadCP.setText(dd+"/"+mm+"/"+yy);
+       // txtEdadCP.setText(dtStart);
         txtEdadCP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Calendar mcurrentDate=Calendar.getInstance();
                 int mYear=mcurrentDate.get(Calendar.YEAR);
-                int mMonth=mcurrentDate.get(Calendar.MONTH);
+                int mMonth =mcurrentDate.get(Calendar.MONTH);
                 int mDay=mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog mDatePicker=new DatePickerDialog(Activity_Settings.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
 
-                        actualizarFecha(selectedday+"/"+selectedmonth+"/"+selectedyear);
+                        actualizarFecha(selectedday+"/"+(selectedmonth+1)+"/"+selectedyear);
 
                     }
                 },mYear, mMonth, mDay);
@@ -202,6 +213,21 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         }
     }
 
+    private void updateData(String kindUser,Object obj){
+        if(obj instanceof UsuarioCorriente){
+            UsuarioCorriente uC =((UsuarioCorriente)obj);
+            databaseReference.child(kindUser).child(uC.getId()).child("nombre").setValue(Util.getTxt(txtNameCP));
+            databaseReference.child(kindUser).child(uC.getId()).child("frase").setValue(Util.getTxt(txtFraseCP));
+            databaseReference.child(kindUser).child(uC.getId()).child("ocupacion").setValue(Util.getTxt(txtOcupacionCP));
+            databaseReference.child(kindUser).child(uC.getId()).child("universidad").setValue(Util.getTxt(txtUniversidadCP));
+            databaseReference.child(kindUser).child(uC.getId()).child("celular").setValue(Util.getTxt(txtCelularCP));
+
+        }else{
+            Empresa uE =((Empresa)obj);
+            //databaseReference.child("EmpresaUsers").child(uE.getId()).child("foto").setValue(img);
+        }
+    }
+
     private void putImg(Object obj){
         if(obj instanceof UsuarioCorriente){
             if(!(((UsuarioCorriente)obj).getFoto().equals(""))){
@@ -225,7 +251,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         if(obj instanceof UsuarioCorriente){
           UsuarioCorriente user =  ((UsuarioCorriente)obj);
             txtNameCP.setText(user.getNombre());
-            //txtOcupacionCP.setText("");
+            txtOcupacionCP.setText(user.getOcupacion());
             txtEdadCP.setText(user.getFechaNacimiento());
             txtFraseCP.setText(user.getFrase());
             txtUniversidadCP.setText(user.getUniversidad());

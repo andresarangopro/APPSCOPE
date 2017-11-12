@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.felipearango.appscope.activities.Activity_RegistroEmail"
     android:orientation="vertical"
     android:weightSum="100"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginTop="16dp"
-    android:fillViewport="false">
+    android:fillViewport="false"
+    tools:context="com.example.felipearango.appscope.activities.Activity_RegistroEmail">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,111 +25,19 @@
             android:textSize="25dp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_weight="60"
-        android:weightSum="200"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:layout_weight="60">
 
-        <TextView
-            android:layout_marginBottom="5dp"
+        <include
+            layout="@layout/register_content"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="15"
-            android:text="E-mail:"
-            android:textColor="@color/colorAccent" />
+            android:layout_height="match_parent" />
+    </ScrollView>
 
-        <EditText
-            android:id="@+id/mail"
-            style="@style/txtPoint"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="25"
-            android:background="@drawable/edittextborder"
-            android:hint="E-mail"
-            android:inputType="textEmailAddress" />
-
-        <TextView
-            android:layout_marginBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="15"
-            android:text="Contraseña:"
-            android:textColor="@color/colorAccent" />
-
-        <EditText
-            android:id="@+id/contraseña"
-            style="@style/txtPoint"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="25"
-            android:background="@drawable/edittextborder"
-            android:hint="Contraseña: "
-            android:inputType="textPassword" />
-
-        <TextView
-            android:layout_marginBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="15"
-            android:text="Confirmar contraseña:"
-            android:textColor="@color/colorAccent" />
-
-        <EditText
-            android:id="@+id/contraseñaC"
-            style="@style/txtPoint"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="25"
-            android:background="@drawable/edittextborder"
-            android:hint="Confirmar contraseña:"
-            android:inputType="textPassword" />
-
-        <TextView
-            android:layout_marginBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="15"
-            android:text="Pregunta de seguridad:"
-            android:textColor="@color/colorAccent" />
-
-        <EditText
-            android:id="@+id/preguntaP"
-            style="@style/txtPoint"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="25"
-            android:background="@drawable/edittextborder"
-            android:hint="Pregunta....:"
-            android:inputType="textPassword" />
-
-        <TextView
-            android:layout_marginBottom="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="20dp"
-            android:layout_weight="15"
-            android:text="Respuesta:"
-            android:textColor="@color/colorAccent" />
-
-        <EditText
-            android:id="@+id/RespuestaP"
-            style="@style/txtPoint"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="25"
-            android:background="@drawable/edittextborder"
-            android:hint="Confirmar contraseña:"
-            android:inputType="textPassword" />
-
-    </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="20dp"
         android:elevation="5dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
