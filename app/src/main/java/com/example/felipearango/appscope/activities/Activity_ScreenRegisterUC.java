@@ -3,6 +3,8 @@ package com.example.felipearango.appscope.activities;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -39,7 +41,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
             txtPass, txtEtiquetaRU, txtPhone;
     private TextView lblDisponibilidad,lblDateBorn;
     private DatabaseReference databaseReference;
-    private ImageButton iBtnSelectDateB,btnAddLabelR;
+    private Button btnAddLabelR;
     private RadioGroup rGDisponibilidadViaje;
     private Spinner spOcupation;
     private Button btnRegister;
@@ -96,7 +98,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         spOcupation = (Spinner) findViewById(R.id.spOcupacion);
 
         btnRegister = (Button) findViewById(R.id.btnRegistrar);
-        btnAddLabelR = (ImageButton) findViewById(R.id.btnAddLabelR);
+        btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
 
         btnAddLabelR.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
@@ -161,7 +163,14 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         dataEtiquetas.add(nET);
         Button btn = new Button(this);
         btn.setOnClickListener(this);
-       btn.setBackgroundResource(R.drawable.ic_menos);
+        btn.setBackgroundColor(Color.WHITE);
+        Drawable img = this.getResources().getDrawable( R.mipmap.ic_minus);
+
+        img.setBounds( 0, 0, 120, 120 );
+
+        btn.setCompoundDrawables(null, null, img, null );
+
+
         llrow.addView(btn);
         dataButtons.add(btn);
         lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);

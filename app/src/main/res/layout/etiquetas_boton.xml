@@ -13,13 +13,13 @@
             android:layout_weight="0.7"
             android:hint="Trabajos" />
 
-        <ImageButton
+        <Button
             android:id="@+id/btnAddLabelR"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
             android:background="@null"
-            android:src="@drawable/ic_anadir" />
+            android:drawableRight="@mipmap/ic_plus" />
 
     </LinearLayout>
 

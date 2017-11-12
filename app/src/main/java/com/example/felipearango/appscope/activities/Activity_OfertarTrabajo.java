@@ -1,6 +1,8 @@
 package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -36,7 +38,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
 
     private EditText titulo, detalles, txtEtiquetaRU;
     private Button btnIngresar;
-    private ImageButton btnAddLabelR;
+    private Button btnAddLabelR;
     private  ArrayList<String> listEtiquetas;
     private ArrayList<EditText> dataEtiquetas = new ArrayList<>();
     private ArrayList<Button> dataButtons = new ArrayList<>();
@@ -72,7 +74,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         btnIngresar.setOnClickListener(this);
         lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
         txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
-        btnAddLabelR = (ImageButton) findViewById(R.id.btnAddLabelR);
+        btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
         btnAddLabelR.setOnClickListener(this);
         listEdit.add(titulo);
         listEdit.add(detalles);
@@ -156,30 +158,32 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
             default:{}
 
         }
-
     }
+
     private void addToEtiquetas(String lbl){
         LinearLayout llrow = new LinearLayout(this);
         LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
         llrow.setWeightSum(1f);
         llrow.setOrientation(LinearLayout.HORIZONTAL);
         llrow.setLayoutParams(llParams);
-        // LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        //  p.weight = 0.5f;
+
         EditText nET = new EditText(this);
         nET.setEnabled(false);
-        nET.setText(parametrizacionEtiqueta(lbl));
+        nET.setText(lbl);
         nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1f));
-        //nET.setLayoutParams(p);
+
         llrow.addView(nET);
         dataEtiquetas.add(nET);
         Button btn = new Button(this);
         btn.setOnClickListener(this);
-        //  p.weight = 0.8f;
-        //  btn.setLayoutParams(p);
-        //btn.setText("----");
-        // btn.setTextSize(12);
-        // btn.setBackgroundResource(R.drawable.ic_menos);
+        btn.setBackgroundColor(Color.WHITE);
+        Drawable img = this.getResources().getDrawable( R.mipmap.ic_minus);
+
+        img.setBounds( 0, 0, 120, 120 );
+
+        btn.setCompoundDrawables(null, null, img, null );
+
+
         llrow.addView(btn);
         dataButtons.add(btn);
         lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
