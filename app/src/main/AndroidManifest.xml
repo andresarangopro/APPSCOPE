@@ -39,7 +39,8 @@
         <activity android:name=".activities.Activity_notificaciones" />
         <activity android:name=".activities.Activity_AgregarAdmin" />
         <activity android:name=".activities.Activity_Password" />
-        <activity android:name=".activities.SolicitudEmpresa"></activity>
+        <activity android:name=".activities.SolicitudEmpresa" />
+        <activity android:name=".activities.Activity_Notificaciones_S"></activity>
     </application>
 
 </manifest>

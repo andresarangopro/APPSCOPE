@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="20"
-    android:orientation="vertical"
-    tools:context="com.example.felipearango.appscope.activities.Activity_notificaciones">
+    tools:context="com.example.felipearango.appscope.activities.Activity_Notificaciones_S">
 
     <include layout="@layout/content_notificaciones"></include>
 

@@ -25,7 +25,7 @@ public class Activity_Admin extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity__admin, null, false);
+        View contentView = inflater.inflate(R.layout.activity_admin, null, false);
         mDrawer.addView(contentView, 0);
 
         ValidarCuenta va1 = new ValidarCuenta("Empresa 1", "22/02/02");

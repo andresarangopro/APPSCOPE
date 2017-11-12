@@ -13,7 +13,7 @@ public class Activity_Password extends MainActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View contentView = inflater.inflate(R.layout.activity__password, null, false);
+        View contentView = inflater.inflate(R.layout.activity_password, null, false);
         mDrawer.addView(contentView, 0);
 
 
