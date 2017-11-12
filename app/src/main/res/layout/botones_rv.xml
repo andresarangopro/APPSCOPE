@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:background="@drawable/border_set"
+    android:orientation="horizontal"
+    android:weightSum="100">
+
+
+    <TextView
+        android:id="@+id/tvNombre"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="50"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Acá va el nombre!"
+        android:textColor="@color/colorAccent"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:layout_weight="50"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btnAceptar"
+            style="@style/btnTap1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginRight="8dp"
+            android:layout_weight="1"
+            android:drawableBottom="@mipmap/ic_checked"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" />
+
+        <Button
+            android:id="@+id/btnRechazar"
+            style="@style/btnTap1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:drawableBottom="@mipmap/ic_delete"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp" />
+    </LinearLayout>
+</LinearLayout>
