@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingLeft="1dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingLeft="1dp">
-
         <EditText
             android:id="@+id/txtEtiquetasRU"
             android:layout_width="0dp"
@@ -20,6 +25,67 @@
             android:layout_weight="0.3"
             android:background="@null"
             android:drawableRight="@mipmap/ic_plus" />
-
     </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="1dp">
+
+        <EditText
+            android:id="@+id/txtEtiquetasRU1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:hint="Trabajos" />
+
+        <Button
+            android:id="@+id/btnAddLabelR1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:background="@null"
+            android:drawableRight="@mipmap/ic_minus" />
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="1dp">
+        <EditText
+            android:id="@+id/txtEtiquetasRU2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:hint="Trabajos" />
+
+        <Button
+            android:id="@+id/btnAddLabelR2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:background="@null"
+            android:drawableRight="@mipmap/ic_minus" />
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="1dp">
+        <EditText
+            android:id="@+id/txtEtiquetasRU3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:hint="Trabajos" />
+
+        <Button
+            android:id="@+id/btnAddLabelR3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:background="@null"
+            android:drawableRight="@mipmap/ic_minus" />
+    </LinearLayout>
+</LinearLayout>
 
