@@ -1,6 +1,8 @@
 package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,9 +36,9 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
     //Variables
     ///////////////////////////
 
-    private EditText titulo, detalles, txtEtiquetaRU;
+    private EditText titulo, detalles, txtEtiquetaRU,txtEtiquetaRU1,txtEtiquetaRU2,txtEtiquetaRU3;
+    private Button btnAddLabelR, btnAddLabelR1, btnAddLabelR2, btnAddLabelR3;
     private Button btnIngresar;
-    private ImageButton btnAddLabelR;
     private  ArrayList<String> listEtiquetas;
     private ArrayList<EditText> dataEtiquetas = new ArrayList<>();
     private ArrayList<Button> dataButtons = new ArrayList<>();
@@ -72,10 +74,32 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         btnIngresar.setOnClickListener(this);
         lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
         txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
-        btnAddLabelR = (ImageButton) findViewById(R.id.btnAddLabelR);
+        btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
+        txtEtiquetaRU1 = (EditText) findViewById(R.id.txtEtiquetasRU1);
+        btnAddLabelR1 = (Button) findViewById(R.id.btnAddLabelR1);
+        txtEtiquetaRU2 = (EditText) findViewById(R.id.txtEtiquetasRU2);
+        btnAddLabelR2 = (Button) findViewById(R.id.btnAddLabelR2);
+        txtEtiquetaRU3 = (EditText) findViewById(R.id.txtEtiquetasRU3);
+        btnAddLabelR3 = (Button) findViewById(R.id.btnAddLabelR3);
         btnAddLabelR.setOnClickListener(this);
+        btnAddLabelR1.setOnClickListener(this);
+        btnAddLabelR2.setOnClickListener(this);
+        btnAddLabelR3.setOnClickListener(this);
+        dataEtiquetas.add(txtEtiquetaRU1);
+        dataEtiquetas.add(txtEtiquetaRU2);
+        dataEtiquetas.add(txtEtiquetaRU3);
         listEdit.add(titulo);
         listEdit.add(detalles);
+        setInvisible();
+    }
+
+    private void setInvisible(){
+        txtEtiquetaRU1.setVisibility(View.GONE);
+        txtEtiquetaRU2.setVisibility(View.GONE);
+        txtEtiquetaRU3.setVisibility(View.GONE);
+        btnAddLabelR1.setVisibility(View.GONE);
+        btnAddLabelR2.setVisibility(View.GONE);
+        btnAddLabelR3.setVisibility(View.GONE);
     }
 
     private void iniciar(){
@@ -153,40 +177,67 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
                     }
                 break;
             }
+            case R.id.btnAddLabelR1:{
+                txtEtiquetaRU1.setText("");
+                txtEtiquetaRU1.setVisibility(View.GONE);
+                break;
+            }
+            case R.id.btnAddLabelR2:{
+                txtEtiquetaRU2.setText("");
+                txtEtiquetaRU2.setVisibility(View.GONE);
+                break;
+            }
+            case R.id.btnAddLabelR3:{
+                txtEtiquetaRU3.setText("");
+                txtEtiquetaRU3.setVisibility(View.GONE);
+                break;
+            }
             default:{}
 
         }
-
     }
+
+    private void addToEtiquetas(String lbl){
+        for (EditText et: dataEtiquetas) {
+            if(et.getVisibility() == View.GONE){
+                et.setText(lbl);
+                et.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+    }
+    /*
     private void addToEtiquetas(String lbl){
         LinearLayout llrow = new LinearLayout(this);
         LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
         llrow.setWeightSum(1f);
         llrow.setOrientation(LinearLayout.HORIZONTAL);
         llrow.setLayoutParams(llParams);
-        // LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        //  p.weight = 0.5f;
+
         EditText nET = new EditText(this);
         nET.setEnabled(false);
-        nET.setText(parametrizacionEtiqueta(lbl));
+        nET.setText(lbl);
         nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1f));
-        //nET.setLayoutParams(p);
+
         llrow.addView(nET);
         dataEtiquetas.add(nET);
         Button btn = new Button(this);
         btn.setOnClickListener(this);
-        //  p.weight = 0.8f;
-        //  btn.setLayoutParams(p);
-        //btn.setText("----");
-        // btn.setTextSize(12);
-        // btn.setBackgroundResource(R.drawable.ic_menos);
+        btn.setBackgroundColor(Color.WHITE);
+        Drawable img = this.getResources().getDrawable( R.mipmap.ic_minus);
+
+        img.setBounds( 0, 0, 120, 120 );
+
+        btn.setCompoundDrawables(null, null, img, null );
+
+
         llrow.addView(btn);
         dataButtons.add(btn);
         lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
         lLayoutEtiquetas.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
                 lLayoutEtiquetas.getWeightSum()+1));
         lLayoutEtiquetas.addView(llrow);
-    }
+    }*/
 
     private boolean camposVacios(){
         boolean valido = true;

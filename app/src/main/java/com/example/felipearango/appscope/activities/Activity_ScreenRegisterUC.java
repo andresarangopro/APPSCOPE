@@ -3,6 +3,8 @@ package com.example.felipearango.appscope.activities;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -36,10 +38,12 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
     //////////////////////////////
 
     private EditText txtName,txtSNombre, txtPrimerA, txtSegundoA,txtUniversidad,
-            txtPass, txtEtiquetaRU, txtPhone;
+            txtPass, txtPhone;
+    private EditText titulo, detalles, txtEtiquetaRU,txtEtiquetaRU1,txtEtiquetaRU2,txtEtiquetaRU3;
+    private Button btnAddLabelR1, btnAddLabelR2, btnAddLabelR3;
     private TextView lblDisponibilidad,lblDateBorn;
     private DatabaseReference databaseReference;
-    private ImageButton iBtnSelectDateB,btnAddLabelR;
+    private Button btnAddLabelR;
     private RadioGroup rGDisponibilidadViaje;
     private Spinner spOcupation;
     private Button btnRegister;
@@ -96,7 +100,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         spOcupation = (Spinner) findViewById(R.id.spOcupacion);
 
         btnRegister = (Button) findViewById(R.id.btnRegistrar);
-        btnAddLabelR = (ImageButton) findViewById(R.id.btnAddLabelR);
+        btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
 
         btnAddLabelR.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
@@ -105,6 +109,21 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         field.add(txtName);
         field.add(txtPrimerA);
         field.add(txtPhone);
+
+        txtEtiquetaRU1 = (EditText) findViewById(R.id.txtEtiquetasRU1);
+        btnAddLabelR1 = (Button) findViewById(R.id.btnAddLabelR1);
+        txtEtiquetaRU2 = (EditText) findViewById(R.id.txtEtiquetasRU2);
+        btnAddLabelR2 = (Button) findViewById(R.id.btnAddLabelR2);
+        txtEtiquetaRU3 = (EditText) findViewById(R.id.txtEtiquetasRU3);
+        btnAddLabelR3 = (Button) findViewById(R.id.btnAddLabelR3);
+        btnAddLabelR.setOnClickListener(this);
+        btnAddLabelR1.setOnClickListener(this);
+        btnAddLabelR2.setOnClickListener(this);
+        btnAddLabelR3.setOnClickListener(this);
+        dataEtiquetas.add(txtEtiquetaRU1);
+        dataEtiquetas.add(txtEtiquetaRU2);
+        dataEtiquetas.add(txtEtiquetaRU3);
+        setInvisible();
 
 
     }
@@ -142,9 +161,46 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
             }
 
         }
+
+        switch (v.getId()){
+            case R.id.btnAddLabelR1:{
+                txtEtiquetaRU1.setText("");
+                txtEtiquetaRU1.setVisibility(View.GONE);
+                break;
+            }
+            case R.id.btnAddLabelR2:{
+                txtEtiquetaRU2.setText("");
+                txtEtiquetaRU2.setVisibility(View.GONE);
+                break;
+            }
+            case R.id.btnAddLabelR3:{
+                txtEtiquetaRU3.setText("");
+                txtEtiquetaRU3.setVisibility(View.GONE);
+                break;
+            }
+        }
+
     }
 
+    private void setInvisible(){
+        txtEtiquetaRU1.setVisibility(View.GONE);
+        txtEtiquetaRU2.setVisibility(View.GONE);
+        txtEtiquetaRU3.setVisibility(View.GONE);
+        btnAddLabelR1.setVisibility(View.GONE);
+        btnAddLabelR2.setVisibility(View.GONE);
+        btnAddLabelR3.setVisibility(View.GONE);
+    }
 
+    private void addToEtiquetas(String lbl){
+        for (EditText et: dataEtiquetas) {
+            if(et.getVisibility() == View.GONE){
+                et.setText(lbl);
+                et.setVisibility(View.VISIBLE);
+                break;
+            }
+        }
+    }
+    /*
     private void addToEtiquetas(String lbl){
         LinearLayout llrow = new LinearLayout(this);
         LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
@@ -161,14 +217,21 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         dataEtiquetas.add(nET);
         Button btn = new Button(this);
         btn.setOnClickListener(this);
-       btn.setBackgroundResource(R.drawable.ic_menos);
+        btn.setBackgroundColor(Color.WHITE);
+        Drawable img = this.getResources().getDrawable( R.mipmap.ic_minus);
+
+        img.setBounds( 0, 0, 120, 120 );
+
+        btn.setCompoundDrawables(null, null, img, null );
+
+
         llrow.addView(btn);
         dataButtons.add(btn);
         lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
         lLayoutEtiquetas.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
-        lLayoutEtiquetas.getWeightSum()+1));
+                lLayoutEtiquetas.getWeightSum()+1));
         lLayoutEtiquetas.addView(llrow);
-    }
+    }*/
 
 
 
