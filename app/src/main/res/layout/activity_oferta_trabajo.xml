@@ -59,7 +59,7 @@
 
 
 
-        <ScrollView
+        <LinearLayout
             android:layout_marginTop="10dp"
             android:id="@+id/lLayoutEtiquetas"
             android:layout_width="match_parent"
@@ -70,7 +70,7 @@
 
             <include layout="@layout/etiquetas_boton"/>
 
-        </ScrollView>
+        </LinearLayout>
 
         <LinearLayout
              android:layout_marginTop="20dp"
