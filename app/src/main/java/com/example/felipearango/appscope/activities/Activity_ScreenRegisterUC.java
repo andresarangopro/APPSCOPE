@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,8 +42,8 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
 
     private EditText txtName,txtSNombre, txtPrimerA, txtSegundoA,txtUniversidad,
             txtPass, txtPhone;
-    private EditText titulo, detalles, txtEtiquetaRU,txtEtiquetaRU1,txtEtiquetaRU2,txtEtiquetaRU3;
-    private Button btnAddLabelR1, btnAddLabelR2, btnAddLabelR3;
+    private EditText txtEtiquetaRU;
+
     private TextView lblDisponibilidad,lblDateBorn;
     private DatabaseReference databaseReference;
     private Button btnAddLabelR;
@@ -49,11 +52,15 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
     private Button btnRegister;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
-    private int day,monthS,yearS;
+
     private ArrayList<EditText> field = new ArrayList<>();
-    private ArrayList<EditText> dataEtiquetas = new ArrayList<>();
-    private ArrayList<Button> dataButtons = new ArrayList<>();
+    private ArrayList<String> dataEtiquetas = new ArrayList<>();
+
     private LinearLayout lLayoutEtiquetas;
+    private RecyclerView rvEtiquetas;
+    private RecyclerAddRemoveAdapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
+
     public static final String ESTADO_ACTIVA = "ACTIVA";
 
     ////////////////////////////////
@@ -106,25 +113,17 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         btnRegister.setOnClickListener(this);
         lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
 
+
         field.add(txtName);
         field.add(txtPrimerA);
         field.add(txtPhone);
 
-        txtEtiquetaRU1 = (EditText) findViewById(R.id.txtEtiquetasRU1);
-        btnAddLabelR1 = (Button) findViewById(R.id.btnAddLabelR1);
-        txtEtiquetaRU2 = (EditText) findViewById(R.id.txtEtiquetasRU2);
-        btnAddLabelR2 = (Button) findViewById(R.id.btnAddLabelR2);
-        txtEtiquetaRU3 = (EditText) findViewById(R.id.txtEtiquetasRU3);
-        btnAddLabelR3 = (Button) findViewById(R.id.btnAddLabelR3);
-        btnAddLabelR.setOnClickListener(this);
-        btnAddLabelR1.setOnClickListener(this);
-        btnAddLabelR2.setOnClickListener(this);
-        btnAddLabelR3.setOnClickListener(this);
-        dataEtiquetas.add(txtEtiquetaRU1);
-        dataEtiquetas.add(txtEtiquetaRU2);
-        dataEtiquetas.add(txtEtiquetaRU3);
-        setInvisible();
 
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        rvEtiquetas = (RecyclerView)findViewById(R.id.rv_add);
+        rvEtiquetas.setLayoutManager(mLinearLayoutManager);
+        mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetas);
+        rvEtiquetas.setAdapter(mAdapter);
 
     }
 
@@ -159,79 +158,20 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
             } else{
                 txtEtiquetaRU.setError("Campo vacío");
             }
-
         }
-
-        switch (v.getId()){
-            case R.id.btnAddLabelR1:{
-                txtEtiquetaRU1.setText("");
-                txtEtiquetaRU1.setVisibility(View.GONE);
-                break;
-            }
-            case R.id.btnAddLabelR2:{
-                txtEtiquetaRU2.setText("");
-                txtEtiquetaRU2.setVisibility(View.GONE);
-                break;
-            }
-            case R.id.btnAddLabelR3:{
-                txtEtiquetaRU3.setText("");
-                txtEtiquetaRU3.setVisibility(View.GONE);
-                break;
-            }
-        }
-
     }
 
-    private void setInvisible(){
-        txtEtiquetaRU1.setVisibility(View.GONE);
-        txtEtiquetaRU2.setVisibility(View.GONE);
-        txtEtiquetaRU3.setVisibility(View.GONE);
-        btnAddLabelR1.setVisibility(View.GONE);
-        btnAddLabelR2.setVisibility(View.GONE);
-        btnAddLabelR3.setVisibility(View.GONE);
-    }
 
     private void addToEtiquetas(String lbl){
-        for (EditText et: dataEtiquetas) {
-            if(et.getVisibility() == View.GONE){
-                et.setText(lbl);
-                et.setVisibility(View.VISIBLE);
-                break;
-            }
-        }
+        int position = 0;
+
+        dataEtiquetas.add(position,lbl);
+        mAdapter.notifyItemInserted(position);
+        mAdapter.notifyDataSetChanged();
+        rvEtiquetas.scrollToPosition(position);
+        Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
+
     }
-    /*
-    private void addToEtiquetas(String lbl){
-        LinearLayout llrow = new LinearLayout(this);
-        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
-        llrow.setWeightSum(1f);
-        llrow.setOrientation(LinearLayout.HORIZONTAL);
-        llrow.setLayoutParams(llParams);
-
-        EditText nET = new EditText(this);
-        nET.setEnabled(false);
-        nET.setText(lbl);
-        nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1f));
-
-        llrow.addView(nET);
-        dataEtiquetas.add(nET);
-        Button btn = new Button(this);
-        btn.setOnClickListener(this);
-        btn.setBackgroundColor(Color.WHITE);
-        Drawable img = this.getResources().getDrawable( R.mipmap.ic_minus);
-
-        img.setBounds( 0, 0, 120, 120 );
-
-        btn.setCompoundDrawables(null, null, img, null );
-
-
-        llrow.addView(btn);
-        dataButtons.add(btn);
-        lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
-        lLayoutEtiquetas.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
-                lLayoutEtiquetas.getWeightSum()+1));
-        lLayoutEtiquetas.addView(llrow);
-    }*/
 
 
 
@@ -332,13 +272,13 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         return txt.getText().toString();
     }
 
-    private String arrayEditTxtToStr(ArrayList<EditText> etiquetas){
+    private String arrayEditTxtToStr(ArrayList<String> etiquetas){
         String etiq = "";
         for (int i = 0; i <etiquetas.size() ; i++) {
             if(i+1 >= etiquetas.size()){
-                etiq += etiquetas.get(i).getText().toString();
+                etiq += etiquetas.get(i);
             }else{
-                 etiq += etiquetas.get(i).getText().toString()+",";
+                 etiq += etiquetas.get(i)+",";
             }
         }
         Toast.makeText(this,etiq,Toast.LENGTH_LONG).show();

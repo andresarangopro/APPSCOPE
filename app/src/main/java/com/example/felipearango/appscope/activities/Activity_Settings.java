@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,11 +19,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,7 +57,15 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     private Uri descargarFoto = null;
     private EditText txtNameCP,txtOcupacionCP,txtEdadCP,txtFraseCP,txtUniversidadCP,txtCelularCP,txtUbicacionCP;
     private ArrayList<EditText> field = new ArrayList<>();
+    private ArrayList<String> dataEtiquetas = new ArrayList<>();
+
     protected static final int GALLERY_INTENT= 1;
+
+    private LinearLayout lLayoutEtiquetas;
+    private RecyclerView rvEtiquetas;
+    private RecyclerAddRemoveAdapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -67,6 +80,13 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         initializedDR();
         putDataUser();
         chooseDate();
+
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        rvEtiquetas = (RecyclerView)findViewById(R.id.rv_add);
+        rvEtiquetas.setLayoutManager(mLinearLayoutManager);
+        mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetas);
+        rvEtiquetas.setAdapter(mAdapter);
+
     }
     private void initComponents(){
         iVSettingsPerfil = (ImageView) findViewById(R.id.iVSettingsPerfil);
@@ -92,7 +112,10 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(v == iVSettingsPerfil){
+
+        if(v.getId() == R.id.btnAddFile){
+            addToEtiquetas(getTxtEdit((EditText)findViewById(R.id.et_doc)));
+        }else if(v == iVSettingsPerfil){
             Intent intentGallery = new Intent(Intent.ACTION_PICK);
             intentGallery.setType("image/*");
             startActivityForResult(intentGallery,GALLERY_INTENT);
@@ -115,8 +138,20 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
                 }
 
             }
-
         }
+
+
+    }
+
+    private void addToEtiquetas(String lbl){
+        int position = 0;
+
+        dataEtiquetas.add(position,lbl);
+        mAdapter.notifyItemInserted(position);
+        mAdapter.notifyDataSetChanged();
+        rvEtiquetas.scrollToPosition(position);
+        Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
+
     }
 
     protected void putDataUser(){
@@ -260,7 +295,6 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         }else{
             Empresa user =  ((Empresa)obj);
             txtNameCP.setText(user.getNombre());
-            //txtOcupacionCP.setText("");
             txtEdadCP.setText(user.getRazonSocial());
             txtFraseCP.setText(user.getUrlEmpresa());
             txtUbicacionCP.setText("GPS");

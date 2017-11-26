@@ -36,8 +36,7 @@ public class SolicitudEmpresa extends MainActivity {
         mDrawer.addView(contentView, 0);
 
         ll = (LinearLayout) findViewById(R.id.llLayout);
-        EmpresaSolicitud.setLl(ll);
-        EmpresaSolicitud.setCtn(this);
+
         EmpresaSolicitud n1 = new EmpresaSolicitud("Nombre 1");
         EmpresaSolicitud n2 = new EmpresaSolicitud("Nombre 2");
         EmpresaSolicitud n3 = new EmpresaSolicitud("Nombre 3");
@@ -52,10 +51,8 @@ public class SolicitudEmpresa extends MainActivity {
         mRecyclerSolicitudes = (RecyclerView) findViewById(R.id.rv_solicitudes);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerSolicitudes.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new RecyclerAdapterEmpresa(solicitud);
+        mAdapter = new RecyclerAdapterEmpresa(solicitud, this, ll);
         mRecyclerSolicitudes.setAdapter(mAdapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerSolicitudes.getContext(),
-                mLinearLayoutManager.getOrientation());
-        mRecyclerSolicitudes.addItemDecoration(dividerItemDecoration);
+
     }
 }

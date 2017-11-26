@@ -33,14 +33,13 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
 
     private TextView tvTrabajo, tvEmpresa, tvTitulo;
     private Button btnOfertar;
-    private LinearLayout llPrincipal;
     private LinearLayout ll, llMove;
     private ArrayList<Trabajo> trabajos = new ArrayList<>();
     private ArrayList<Etiqueta> etiquetas = new ArrayList<>();
     private ArrayList<String> listStrEtiq = new ArrayList<>();
     private Empresa empres = null;
     private int counter = 0;
-    private boolean empresa = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,18 +52,8 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
         inicializatedFireBase();
         eventETRE("CorrientsUsers");
 
-        ll = (LinearLayout) findViewById(R.id.llLayout);
-        llMove = (LinearLayout) findViewById(R.id.llMove);
 
-
-        llMove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(Activity_Ofertas.this, "¡Desliza hacia la flecha!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        llMove.setOnTouchListener(new OnSwipeTouchListener(Activity_Ofertas.this) {
+        (findViewById(R.id.llMove)).setOnTouchListener(new OnSwipeTouchListener(Activity_Ofertas.this) {
             public void onSwipeTop() {
                 if(counter == 0){
                     showEmpresa(trabajos.get(counter).getIdEmpresa());
@@ -172,9 +161,10 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
         tvTrabajo = (TextView)findViewById(R.id.tvDetalles);
         tvTitulo = (TextView)findViewById(R.id.tvTitulo);
         tvEmpresa = (TextView)findViewById(R.id.tvEmpresa);
-        llPrincipal = (LinearLayout)findViewById(R.id.llPopUp);
         ll = (LinearLayout)findViewById(R.id.llPrincipal);
         btnOfertar = (Button)findViewById(R.id.btnAplicar);
+        ll = (LinearLayout) findViewById(R.id.llLayout);
+        llMove = (LinearLayout) findViewById(R.id.llMove);
         btnOfertar.setOnClickListener(this);
     }
 
@@ -244,7 +234,6 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
         startArrayJobs();
 
     }
-
 
     public void eventETRE(String usChildString){
         databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {

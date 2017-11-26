@@ -75,19 +75,9 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
         txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
         btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
-        txtEtiquetaRU1 = (EditText) findViewById(R.id.txtEtiquetasRU1);
-        btnAddLabelR1 = (Button) findViewById(R.id.btnAddLabelR1);
-        txtEtiquetaRU2 = (EditText) findViewById(R.id.txtEtiquetasRU2);
-        btnAddLabelR2 = (Button) findViewById(R.id.btnAddLabelR2);
-        txtEtiquetaRU3 = (EditText) findViewById(R.id.txtEtiquetasRU3);
-        btnAddLabelR3 = (Button) findViewById(R.id.btnAddLabelR3);
+
         btnAddLabelR.setOnClickListener(this);
-        btnAddLabelR1.setOnClickListener(this);
-        btnAddLabelR2.setOnClickListener(this);
-        btnAddLabelR3.setOnClickListener(this);
-        dataEtiquetas.add(txtEtiquetaRU1);
-        dataEtiquetas.add(txtEtiquetaRU2);
-        dataEtiquetas.add(txtEtiquetaRU3);
+
         listEdit.add(titulo);
         listEdit.add(detalles);
         setInvisible();
@@ -177,19 +167,9 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
                     }
                 break;
             }
-            case R.id.btnAddLabelR1:{
+            case R.id.btnAddLabelR1: {
                 txtEtiquetaRU1.setText("");
                 txtEtiquetaRU1.setVisibility(View.GONE);
-                break;
-            }
-            case R.id.btnAddLabelR2:{
-                txtEtiquetaRU2.setText("");
-                txtEtiquetaRU2.setVisibility(View.GONE);
-                break;
-            }
-            case R.id.btnAddLabelR3:{
-                txtEtiquetaRU3.setText("");
-                txtEtiquetaRU3.setVisibility(View.GONE);
                 break;
             }
             default:{}
