@@ -164,7 +164,6 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
 
     private void addToEtiquetas(String lbl){
         int position = 0;
-
         dataEtiquetas.add(position,lbl);
         mAdapter.notifyItemInserted(position);
         mAdapter.notifyDataSetChanged();

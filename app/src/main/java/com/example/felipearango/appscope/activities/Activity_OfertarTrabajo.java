@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.Etiqueta;
+import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 import com.example.felipearango.appscope.models.Trabajo;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +46,11 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
     private ArrayList<EditText> dataEtiquetas = new ArrayList<>();
     private ArrayList<Button> dataButtons = new ArrayList<>();
     private ArrayList<EditText> listEdit = new ArrayList<>();
+    private ArrayList<String> dataEtiquetasS = new ArrayList<>();
     private LinearLayout lLayoutEtiquetas;
+    private RecyclerView rvEtiquetas;
+    private RecyclerAddRemoveAdapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
 
 
     ////////////////////////////
@@ -80,17 +87,14 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
 
         listEdit.add(titulo);
         listEdit.add(detalles);
-        setInvisible();
+
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        rvEtiquetas = (RecyclerView)findViewById(R.id.rv_add);
+        rvEtiquetas.setLayoutManager(mLinearLayoutManager);
+        mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetasS);
+        rvEtiquetas.setAdapter(mAdapter);
     }
 
-    private void setInvisible(){
-        txtEtiquetaRU1.setVisibility(View.GONE);
-        txtEtiquetaRU2.setVisibility(View.GONE);
-        txtEtiquetaRU3.setVisibility(View.GONE);
-        btnAddLabelR1.setVisibility(View.GONE);
-        btnAddLabelR2.setVisibility(View.GONE);
-        btnAddLabelR3.setVisibility(View.GONE);
-    }
 
     private void iniciar(){
         initializedDR();
@@ -167,57 +171,21 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
                     }
                 break;
             }
-            case R.id.btnAddLabelR1: {
-                txtEtiquetaRU1.setText("");
-                txtEtiquetaRU1.setVisibility(View.GONE);
-                break;
-            }
+
             default:{}
 
         }
     }
 
     private void addToEtiquetas(String lbl){
-        for (EditText et: dataEtiquetas) {
-            if(et.getVisibility() == View.GONE){
-                et.setText(lbl);
-                et.setVisibility(View.VISIBLE);
-                break;
-            }
-        }
+        int position = 0;
+        dataEtiquetasS.add(position,lbl);
+        mAdapter.notifyItemInserted(position);
+        mAdapter.notifyDataSetChanged();
+        rvEtiquetas.scrollToPosition(position);
+        Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
     }
-    /*
-    private void addToEtiquetas(String lbl){
-        LinearLayout llrow = new LinearLayout(this);
-        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0, 1);
-        llrow.setWeightSum(1f);
-        llrow.setOrientation(LinearLayout.HORIZONTAL);
-        llrow.setLayoutParams(llParams);
 
-        EditText nET = new EditText(this);
-        nET.setEnabled(false);
-        nET.setText(lbl);
-        nET.setLayoutParams(new TableLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT, 1f));
-
-        llrow.addView(nET);
-        dataEtiquetas.add(nET);
-        Button btn = new Button(this);
-        btn.setOnClickListener(this);
-        btn.setBackgroundColor(Color.WHITE);
-        Drawable img = this.getResources().getDrawable( R.mipmap.ic_minus);
-
-        img.setBounds( 0, 0, 120, 120 );
-
-        btn.setCompoundDrawables(null, null, img, null );
-
-
-        llrow.addView(btn);
-        dataButtons.add(btn);
-        lLayoutEtiquetas.setWeightSum(lLayoutEtiquetas.getWeightSum()+1);
-        lLayoutEtiquetas.setLayoutParams(new TableLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,0,
-                lLayoutEtiquetas.getWeightSum()+1));
-        lLayoutEtiquetas.addView(llrow);
-    }*/
 
     private boolean camposVacios(){
         boolean valido = true;
