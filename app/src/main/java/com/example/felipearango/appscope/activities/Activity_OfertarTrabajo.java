@@ -130,6 +130,8 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
                 insertarEtiqFB(et);
             }
         }else{
+
+
             for (int i = 0; i < listEtiquetas.size() ; i++) {
                 Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
                 String etiqueta = parametrizacionEtiqueta(listEtiquetas.get(i));
