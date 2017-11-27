@@ -2,6 +2,9 @@ package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +14,9 @@ import android.widget.TextView;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.EmpresaSolicitud;
+import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
+import com.example.felipearango.appscope.models.RecyclerShowInfo;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -20,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
 public class Activity_Perfil extends MainActivity {
@@ -28,7 +36,10 @@ public class Activity_Perfil extends MainActivity {
     private TabHost tHData;
     private Object obj;
     private TextView  tVNamep, tVOcupacion, tVFrase;
-    private int[] listTabs = {R.id.tab1,R.id.tab2,R.id.tab3,R.id.tab4,R.id.tab5};
+    private RecyclerView mRecyclerAccounts;
+    private ArrayList<String> notificaciones = new ArrayList<>();
+    private LinearLayoutManager mLinearLayoutManager;
+    private RecyclerShowInfo mAdapterInf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +51,7 @@ public class Activity_Perfil extends MainActivity {
         initializedDR();
         startComponents();
         datosUser();
-        tabmade(listTabs);
+
         putDataUser();
     }
 
@@ -106,27 +117,27 @@ public class Activity_Perfil extends MainActivity {
     }
 
     private void startComponents(){
-        tHData = (TabHost) findViewById(R.id.tHData);
+
         tVNamep = (TextView) findViewById(R.id.tVNameP);
         tVOcupacion = (TextView) findViewById(R.id.tVOcupacionP);
         tVFrase = (TextView) findViewById(R.id.tVFrase);
         imVPerfil = (ImageView) findViewById(R.id.imVPerfil);
+
+
+        mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Info);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
+        mAdapterInf = new RecyclerShowInfo( this, notificaciones);
+
+        mRecyclerAccounts.setAdapter(mAdapterInf);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
+                mLinearLayoutManager.getOrientation());
+        mRecyclerAccounts.addItemDecoration(dividerItemDecoration);
     }
 
 
-    private void tabmade(int[] list){
-        tHData.setup();
-        for (int i = 0; i < list.length; i++) {
-            tHData.addTab(tabSpecMade("tab"+(i+1),"DATA"+(i+1),list[i]));
-        }
-    }
 
-    private TabHost.TabSpec tabSpecMade(String data, String indicador, int rId){
-        TabHost.TabSpec ts = tHData.newTabSpec(data);
-        ts.setIndicator(indicador);
-        ts.setContent(rId);
-        return ts;
-    }
+
 
     private void initializedDR() {
         databaseReference = FirebaseDatabase.getInstance().getReference();

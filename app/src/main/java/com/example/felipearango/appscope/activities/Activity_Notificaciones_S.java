@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.models.EmpresaSolicitud;
@@ -24,6 +25,7 @@ public class Activity_Notificaciones_S extends MainActivity {
     private RecyclerView mRecyclerAccounts;
     private ArrayList<EmpresaSolicitud> notificaciones = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
+    private LinearLayout ll;
     private ArrayList<String> idWorkers = new ArrayList<>();
 
     @Override
@@ -34,13 +36,14 @@ public class Activity_Notificaciones_S extends MainActivity {
         mDrawer.addView(contentView, 0);
 
         iniciar();
+        ll = (LinearLayout)findViewById(R.id.llLayout);
     }
 
     private void iniciar(){
         mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Noti);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
-        mAdapterEmp = new RecyclerAdapterEmpresa(notificaciones);
+        mAdapterEmp = new RecyclerAdapterEmpresa( notificaciones,this, ll);
 
         mRecyclerAccounts.setAdapter(mAdapterEmp);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),

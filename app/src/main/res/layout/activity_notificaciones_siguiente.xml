@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/llLayout"
+
+
     tools:context="com.example.felipearango.appscope.activities.Activity_Notificaciones_S">
 
     <include layout="@layout/content_notificaciones"></include>

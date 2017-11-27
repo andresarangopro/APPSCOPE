@@ -112,108 +112,12 @@
         </LinearLayout>
 
         <!--Weigth: 3-->
-        <LinearLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_Info"
+            android:layout_weight="50"
+            android:scrollbars="vertical"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="50">
-            <TabHost
-                android:id="@+id/tHData"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TabWidget
-                        android:id="@android:id/tabs"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <FrameLayout
-                        android:id="@android:id/tabcontent"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <LinearLayout
-                            android:id="@+id/tab1"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tV1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:hint="Hola1"/>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/tab2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tV2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:hint="Hola2"/>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/tab3"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tV3"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:hint="Hola3"/>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/tab4"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tV4"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:hint="Hola4"/>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/tab5"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tV5"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:hint="Hola5"/>
-
-
-                        </LinearLayout>
-                    </FrameLayout>
-                </LinearLayout>
-            </TabHost>
-
-        </LinearLayout>
+            android:layout_height="0dp">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 </LinearLayout>
