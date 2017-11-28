@@ -39,8 +39,8 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
     //Variables
     ///////////////////////////
 
-    private EditText titulo, detalles, txtEtiquetaRU,txtEtiquetaRU1,txtEtiquetaRU2,txtEtiquetaRU3;
-    private Button btnAddLabelR, btnAddLabelR1, btnAddLabelR2, btnAddLabelR3;
+    private EditText titulo, detalles, txtEtiquetaRU;
+    private Button btnAddLabelR;
     private Button btnIngresar;
     private  ArrayList<String> listEtiquetas;
     private ArrayList<EditText> dataEtiquetas = new ArrayList<>();
@@ -81,6 +81,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         btnIngresar.setOnClickListener(this);
         lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
         txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
+        txtEtiquetaRU.setHint("Etiquetas");
         btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
 
         btnAddLabelR.setOnClickListener(this);
