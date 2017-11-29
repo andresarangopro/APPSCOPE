@@ -1,8 +1,6 @@
 package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,9 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
@@ -43,10 +39,10 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
     private Button btnAddLabelR;
     private Button btnIngresar;
     private  ArrayList<String> listEtiquetas;
-    private ArrayList<EditText> dataEtiquetas = new ArrayList<>();
+   // private ArrayList<String> dataEtiquetas = new ArrayList<>();
     private ArrayList<Button> dataButtons = new ArrayList<>();
     private ArrayList<EditText> listEdit = new ArrayList<>();
-    private ArrayList<String> dataEtiquetasS = new ArrayList<>();
+    private ArrayList<String> dataEtiquetas = new ArrayList<>();
     private LinearLayout lLayoutEtiquetas;
     private RecyclerView rvEtiquetas;
     private RecyclerAddRemoveAdapter mAdapter;
@@ -63,8 +59,8 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_oferta_trabajo, null, false);
         mDrawer.addView(contentView, 0);
-        iniciar();
         initiComponents();
+        initializedDR();
        // inicializatedFireBase();
     }
 
@@ -92,13 +88,8 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         mLinearLayoutManager = new LinearLayoutManager(this);
         rvEtiquetas = (RecyclerView)findViewById(R.id.rv_add);
         rvEtiquetas.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetasS);
+        mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetas);
         rvEtiquetas.setAdapter(mAdapter);
-    }
-
-
-    private void iniciar(){
-        initializedDR();
     }
 
     private ArrayList<String> listEtToST(ArrayList<EditText> etiqu){
@@ -108,14 +99,14 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         }
         return  listEqtiquetas;
     }
-    private void addJob(String titulo, String desc, ArrayList<EditText> etiquetas, Object usr){
+
+    private void addJob(String titulo, String desc, ArrayList<String> etiquetas, Object usr){
 
         String idJob =  databaseReference.push().getKey();
         Etiqueta et ;
         Trabajo t;
 
-        listEtiquetas = listEtToST(etiquetas);
-
+        listEtiquetas = etiquetas;
         if(usr instanceof Empresa){
             t = new Trabajo(idJob,0,titulo,desc,"","", ((Empresa) usr).getId());
         }else{
@@ -125,14 +116,12 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         if(usr instanceof Empresa){
             for (int i = 0; i < listEtiquetas.size() ; i++) {
                 Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
-                String etiqueta = parametrizacionEtiqueta(listEtiquetas.get(i));
+                String etiqueta = listEtiquetas.get(i);
                 et = new Etiqueta(etiqueta,
                         ((Empresa) usr).getId(), t.getId());
                 insertarEtiqFB(et);
             }
         }else{
-
-
             for (int i = 0; i < listEtiquetas.size() ; i++) {
                 Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
                 String etiqueta = parametrizacionEtiqueta(listEtiquetas.get(i));
@@ -141,8 +130,6 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
                 insertarEtiqFB(et);
             }
         }
-
-
     }
 
     private void initializedDR() {
@@ -157,17 +144,14 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         switch (vista){
             case R.id.btnAgregar:{
                 if(camposVacios()){
-                    if(TIPO_USUARIO == 0){
-                        eventPDUA("CorrientsUsers");
-                    }else{
-                        eventPDUA("EmpresaUsers");
-                    }
+                        eventPD("CorrientsUsers");
                 }
                 break;
             }
             case R.id.btnAddLabelR:{
                     if(!txtEtiquetaRU.getText().toString().equals("")){
-                        addToEtiquetas(getTxtEdit(txtEtiquetaRU));
+                        String etPara = parametrizacionEtiqueta(getTxtEdit(txtEtiquetaRU));
+                        addToEtiquetas(etPara);
                         txtEtiquetaRU.setText("");
                     } else{
                         txtEtiquetaRU.setError("Campo vacío");
@@ -182,11 +166,11 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
 
     private void addToEtiquetas(String lbl){
         int position = 0;
-        dataEtiquetasS.add(position,lbl);
+        dataEtiquetas.add(lbl);
         mAdapter.notifyItemInserted(position);
         mAdapter.notifyDataSetChanged();
         rvEtiquetas.scrollToPosition(position);
-        Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Etiqueta Agregada" +dataEtiquetas, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -210,7 +194,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
                 .child(etiqueta.getIdEmpresa()).child(etiqueta.getIdTrabajo()).setValue(etiqueta);
     }
 
-    public void eventPDUA(String usChildString){
+    private void eventPD(String usChildString){
         databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -219,10 +203,17 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
                     Log.e("TR", dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getNombre() + user.getUid());
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                     addJob(titulo.getText().toString(), detalles.getText().toString(), dataEtiquetas, uC);
+                        vaciasCampos();
                 }else {
+                    if(!titulo.getText().toString().equals("")){
 
-                    Empresa uE = dataSnapshot.child(user.getUid()).getValue(Empresa.class);
-                    addJob(titulo.getText().toString(), detalles.getText().toString(),dataEtiquetas, uE);
+                        Empresa uE = dataSnapshot.child(user.getUid()).getValue(Empresa.class);
+                        Log.e("TR", dataEtiquetas.size()+"");
+                        addJob(titulo.getText().toString(), detalles.getText().toString(),dataEtiquetas, uE);
+                        vaciasCampos();
+                    }else{
+                       // Toast.makeText(Activity_OfertarTrabajo.this,"No entro",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
             @Override
@@ -244,6 +235,15 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
 
         Toast.makeText(this, fisrtLetter+sSubCadena , Toast.LENGTH_LONG).show();
         return fisrtLetter+sSubCadena;
+    }
+
+    private void vaciasCampos(){
+        for (int i = 0; i < listEdit.size() ; i++) {
+            listEdit.get(i).setText("");
+            dataEtiquetas = new ArrayList<>();
+            mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetas);
+            rvEtiquetas.setAdapter(mAdapter);
+        }
     }
 
 }

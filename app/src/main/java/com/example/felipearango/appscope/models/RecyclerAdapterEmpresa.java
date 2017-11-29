@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -28,7 +27,7 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
     private ArrayList<EmpresaSolicitud> mEmpresaSolicitud;
     private Context mContext;
     private LinearLayout ll;
-    public RecyclerAdapterEmpresa(ArrayList<EmpresaSolicitud> mEmpresaSolicitud, Context context, LinearLayout linearLayout) {
+    public RecyclerAdapterEmpresa(Context context, LinearLayout linearLayout,ArrayList<EmpresaSolicitud> mEmpresaSolicitud) {
         this.mEmpresaSolicitud = mEmpresaSolicitud;
         mContext = context;
         ll = linearLayout;

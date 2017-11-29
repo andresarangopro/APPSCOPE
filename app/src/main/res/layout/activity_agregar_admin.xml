@@ -47,6 +47,15 @@
                     android:textSize="25sp" />
 
                 <EditText
+                    android:id="@+id/etNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:hint="Nombre Completo"
+                    android:inputType="textPassword" />
+
+                <EditText
                     android:id="@+id/etEmailAgregar"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
@@ -75,7 +84,7 @@
                     android:inputType="textPassword" />
 
                 <Button
-
+                    android:id="@+id/btnAddadmin"
                     android:layout_marginTop="10dp"
                     style="@style/btnTap1"
                     android:layout_width="match_parent"
@@ -113,7 +122,7 @@
                 android:inputType="textEmailAddress" />
 
             <Button
-                android:id="@+id/eliminar"
+                android:id="@+id/btneliminar"
                 style="@style/btnTap1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

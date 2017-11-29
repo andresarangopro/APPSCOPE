@@ -25,6 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.cuenta_espera_certif;
+import static com.example.felipearango.appscope.Util.Util.usuario_corriente;
+import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
+
 public class Activity_RegistroEmail extends AppCompatActivity implements View.OnClickListener{
 
     private EditText email, contraseña, confirmar;
@@ -72,13 +77,13 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
             int vista = view.getId();
             switch(vista){
                 case R.id.iBtnCompany:{
-                    Activity_Login.TIPO_USUARIO = 1;
-                   registerUser(email.getText().toString(), contraseña.getText().toString());
+                    TIPO_USUARIO = 1;
+                    registerUser(email.getText().toString(), contraseña.getText().toString());
                    // startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterUC.class));
                     break;
                 }
                 case R.id.iBtnUser: {
-                    Activity_Login.TIPO_USUARIO = 0;
+                    TIPO_USUARIO = 0;
                     //startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterE.class));
                     registerUser(email.getText().toString(), contraseña.getText().toString());
                     break;
@@ -122,7 +127,7 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
                             Toast.makeText(Activity_RegistroEmail.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
                             // finish();
                             //startActivity(new Intent(Activity_ScreenRegisterUC.this, MainActivity.class));
-                            loginUser(mail1,pass1, Activity_Login.TIPO_USUARIO);
+                            loginUser(mail1,pass1, TIPO_USUARIO);
                         } else {
                             Toast.makeText(Activity_RegistroEmail.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
                         }
@@ -179,10 +184,10 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
         id = user.getUid();
         mail = user.getEmail();
         UsuarioCorriente uC = new UsuarioCorriente(id,name,apellido,ocupacion,dateBorn,universidad
-                ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,rating,
+                ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,rating,usuario_corriente,
                 anexos,idiomas,expProfesionaless,refEmpleo,formacion, etiquetas);
         if(uC != null){
-            insertarUsCFireBase(uC,user);
+            insertarUs(uC,user);
         }
     }
 
@@ -202,9 +207,10 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
-        Empresa uE = new Empresa(id,nombre,razonSocial,urlEmpresa,nit,mail,ESTADO_NUEVA,foto,rating,redesSociales);
+        Empresa uE = new Empresa(id,nombre,razonSocial,urlEmpresa,nit,mail,ESTADO_NUEVA,foto,rating,
+                usuario_empresa, cuenta_espera_certif,redesSociales);
         if(uE != null){
-            insertarUsEmFireBase(uE,user);
+            insertarUs(uE,user);
         }
     }
 
@@ -213,20 +219,16 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
      * @param uC
      * @param user
      */
-    private void insertarUsCFireBase(UsuarioCorriente uC,FirebaseUser user){
+    private void insertarUs(Object uC,FirebaseUser user){
         databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uC);
         finish();
-        startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterUC.class));
+        if(TIPO_USUARIO == 0){
+            startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterUC.class));
+        }else{
+            startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterE.class));
+        }
+
     }
 
-    /**
-     *
-     * @param uE
-     * @param user
-     */
-    private void insertarUsEmFireBase(Empresa uE,FirebaseUser user){
-        databaseReference.child("EmpresaUsers").child(user.getUid()).setValue(uE);
-        finish();
-        startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterE.class));
-    }
+
 }

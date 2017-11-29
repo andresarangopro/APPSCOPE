@@ -22,6 +22,8 @@ public class Empresa {
     private String estadoCuenta;
     private String foto;
     private float rating;
+    private int tipoUser;
+    private int certificacion;
     private ArrayList<String> redesSociales = new ArrayList<>();
     /*
     Es importante recalcar que para publicar ofertas de trabajo se requiere el lugar, una descripción del empleo
@@ -33,9 +35,9 @@ public class Empresa {
     /////////////////////////////
 
 
-    public Empresa(String id, String nombre, String razonSocial, String urlEmpresa,
-                   String nit, String mail, String estadoCuenta, String foto, float rating,
-                   String redesSociales) {
+    public Empresa(String id, String nombre, String razonSocial, String urlEmpresa, String nit,
+                   String mail, String estadoCuenta, String foto, float rating, int
+                           tipoUser, int certificacion, String redesSociales) {
         this.id = id;
         this.nombre = nombre;
         this.razonSocial = razonSocial;
@@ -45,6 +47,8 @@ public class Empresa {
         this.estadoCuenta = estadoCuenta;
         this.foto = foto;
         this.rating = rating;
+        this.tipoUser = tipoUser;
+        this.certificacion = certificacion;
         this.redesSociales = new ArrayList<String>(Arrays.asList(redesSociales.split(" , ")));
     }
 
@@ -125,5 +129,29 @@ public class Empresa {
 
     public void setRedesSociales(ArrayList<String> redesSociales) {
         this.redesSociales = redesSociales;
+    }
+
+    public int getTipoUser() {
+        return tipoUser;
+    }
+
+    public void setTipoUser(int tipoUser) {
+        this.tipoUser = tipoUser;
+    }
+
+    public float getRating() {
+        return rating;
+    }
+
+    public void setRating(float rating) {
+        this.rating = rating;
+    }
+
+    public int getCertificacion() {
+        return certificacion;
+    }
+
+    public void setCertificacion(int certificacion) {
+        this.certificacion = certificacion;
     }
 }

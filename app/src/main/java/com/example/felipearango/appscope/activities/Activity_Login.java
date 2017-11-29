@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.ManejoUsers;
+import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,30 +40,24 @@ public class Activity_Login extends AppCompatActivity {
     private TextView lblForgotPass, lblRegister;
     private Button signIn;
     private ProgressDialog progressDialog;
-    private DatabaseReference databaseReference;
-    private FirebaseDatabase firebaseDatabase;
-    private FirebaseAuth firebaseAuth;
     public static boolean calledAlready = false;
-    private UsuarioCorriente uC = null;
-    public static int TIPO_USUARIO = 0;
+    private ManejoUsers mn = new ManejoUsers();
+    public static int TIPO_USUARIO = 1;
 
     //////////////////////////
     //Oncreate
+    ///////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         instances();
         onclickList();
-        firebaseAuth = FirebaseAuth.getInstance();
+        mn.inicializatedFireBase();
         progressDialog = new ProgressDialog(this);
-        inicializatedFireBase();
         verificaSignIn();
-
        // btnTest();
     }
-
-    /////////////////////////
 
     ////////////////////////
     //Metodos
@@ -84,10 +80,8 @@ public class Activity_Login extends AppCompatActivity {
      * en caso contrario lo deja en el intent Activity_Login
      */
     private void verificaSignIn(){
-        if(firebaseAuth.getCurrentUser() != null){
-            //finish();
-           // startActivity(new Intent(getApplicationContext(),MainActivity.class));
-           existIsCorrientU();
+        if(mn.firebaseAuth.getCurrentUser() != null){
+            mn.account(Activity_Login.this);
         }
     }
     /**
@@ -105,9 +99,9 @@ public class Activity_Login extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mail = getTxtEdit(txtMail);
-                String pass = getTxtEdit(txtPass);
-                if(!campEmpty(mail) && !campEmpty(pass)){
+                String mail = Util.getTxt(txtMail);
+                String pass = Util.getTxt(txtPass);
+                if(!Util.emptyCampMSG(txtMail,"Correo vacío") && !Util.emptyCampMSG(txtPass, "Contraseña vacía")){
                     loginUser(mail, pass);
                 }
             }
@@ -123,15 +117,14 @@ public class Activity_Login extends AppCompatActivity {
         progressDialog.setMessage("Activity_Login user, please wait...");
         progressDialog.show();
 
-        firebaseAuth.signInWithEmailAndPassword(mail,pass)
+        mn.firebaseAuth.signInWithEmailAndPassword(mail,pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         progressDialog.dismiss();
                         if(task.isSuccessful()){
-                            existIsCorrientU();
-                           // finish();
-                          //  startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                            mn.account(Activity_Login.this);
+                            finish();
                         }else{
                             Toast.makeText(Activity_Login.this,"Datos errados",Toast.LENGTH_LONG).show();
                         }
@@ -139,90 +132,5 @@ public class Activity_Login extends AppCompatActivity {
                 });
     }
 
-    /**
-     *
-     */
-    private void inicializatedFireBase(){
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        if (!calledAlready) {
-            firebaseDatabase.setPersistenceEnabled(true);
-            calledAlready = true;
-        }
-        databaseReference = firebaseDatabase.getReference();
-    }
-
-
-    private void existIsCorrientU(){
-        databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-               uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
-               // Log.e("DATE",dataSnapshot.child(user.getUid()).toString());
-              if(dataSnapshot.child(user.getUid()).getValue() == null){
-                    existIsEmpres();
-                }else if(uC.getEstadoCuenta().equals("NUEVA")){
-                  TIPO_USUARIO = 0;
-                    finish();
-                    startActivity(new Intent(Activity_Login.this,Activity_ScreenRegisterUC.class));
-                }else{
-                  TIPO_USUARIO = 0;
-                    finish();
-                    startActivity(new Intent(Activity_Login.this,Activity_Perfil.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private void existIsEmpres(){
-        databaseReference.child("EmpresaUsers").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                Empresa uE = dataSnapshot.child(user.getUid()).getValue(Empresa.class);
-                Log.e("DATE",dataSnapshot.child(user.getUid()).toString());
-                if(dataSnapshot.child(user.getUid()).getValue() == null){
-                   // finish();
-                   // startActivity(new Intent(Activity_Login.this,MiddleLR.class));
-                    Toast.makeText(getApplicationContext(),"ERROR",Toast.LENGTH_LONG).show();
-                }else if(uE.getEstadoCuenta().equals("NUEVA")){
-                    TIPO_USUARIO = 1;
-                    finish();
-                    startActivity(new Intent(Activity_Login.this,Activity_ScreenRegisterE.class));
-                }else{
-                    TIPO_USUARIO = 1;
-                    finish();
-                    startActivity(new Intent(Activity_Login.this,Activity_Perfil.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    private boolean campEmpty(String campo){
-       return TextUtils.isEmpty(campo);
-    }
-
-    private String getTxtEdit(EditText txt){
-        return txt.getText().toString();
-    }
-
-    private void btnTest(){
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent( getApplicationContext(), Activity_Perfil.class));
-            }
-        });
-    }
 
 }

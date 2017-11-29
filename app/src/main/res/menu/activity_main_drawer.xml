@@ -3,33 +3,42 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_notificaciones"
             android:icon="@drawable/ic_notifications_button"
             android:title="Notificaciones" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_trabajos"
             android:icon="@drawable/ic_employee"
-            android:title="Ofertas de trabajo" />
+            android:title="Ofertas " />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_perfil"
             android:icon="@drawable/ic_male"
             android:title="Perfil" />
         <item
-            android:id="@+id/nav_share"
-            android:icon="@drawable/ic_work_calendar"
-            android:title="Ofertar trabajo" />
+        android:id="@+id/nav_ofertar_trabajo"
+        android:icon="@drawable/ic_work_calendar"
+        android:title="Ofertar trabajo" />
+        <item
+            android:id="@+id/nav_notificaciones_admin"
+            android:icon="@drawable/ic_notifications_button"
+            android:title="Notificaciones" />
+
+        <item
+            android:id="@+id/nav_add_admin"
+            android:icon="@drawable/ic_admin_with_cogwheels"
+            android:title="Edición administradores" />
 
     </group>
 
     <item android:title="Cuenta">
         <menu>
             <item
-                android:id="@+id/nav_manage"
+                android:id="@+id/nav_configuracion"
                 android:icon="@drawable/ic_menu_manage"
                 android:title="Configuracion de cuenta" />
 
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_turn_off"
                 android:title="Cerrar Sesion" />
         </menu>

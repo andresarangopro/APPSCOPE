@@ -1,20 +1,13 @@
 package com.example.felipearango.appscope.activities;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
@@ -27,22 +20,19 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.cuenta_espera_certif;
+import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
 import static com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC.ESTADO_ACTIVA;
 
 public class Activity_ScreenRegisterE extends AppCompatActivity implements View.OnClickListener {
 
     private EditText txtnameE,txtRazonSoc, txtNIT, txtUrl, txtSocial1;
     private Button btnRegisterE, btnAgregarNIT, btnAgregarRedSocial1;
-    private EditText titulo, detalles, txtEtiquetaRU;
+    private EditText txtEtiquetaRU;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private ArrayList<String> dataEtiquetas = new ArrayList<>();
-    private ArrayList<Button> dataButtons = new ArrayList<>();
-    private ArrayList<LinearLayout> dataLinear = new ArrayList<>();
-    private LinearLayout llRedesSociales;
-    private LinearLayout linearLayout;
 
-    private LinearLayout lLayoutEtiquetas;
     private RecyclerView rvEtiquetas;
     private RecyclerAddRemoveAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
@@ -70,7 +60,7 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         txtRazonSoc = (EditText) findViewById(R.id.txtRazonSoc);
         txtNIT = (EditText) findViewById(R.id.txtNIT);
         txtUrl = (EditText) findViewById(R.id.txtUrl);
-        linearLayout = (LinearLayout) findViewById(R.id.llLayout);
+        //linearLayout = (LinearLayout) findViewById(R.id.llLayout);
 
         btnRegisterE = (Button) findViewById(R.id.btnRegisterE);
         btnRegisterE.setOnClickListener(this);
@@ -109,7 +99,7 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         id = user.getUid();
         mail = user.getEmail();
         Empresa uE = new Empresa(id, nombre, razonSocial, urlEmpresa,nitEmpresa,
-                mail,ESTADO_ACTIVA,foto,rating,redesSociales);
+                mail,ESTADO_ACTIVA,foto,rating,usuario_empresa, cuenta_espera_certif,redesSociales);
         if(uE != null){
             insertarUsEFireBase(uE,user);
         }
@@ -120,7 +110,7 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
     }
 
     private void insertarUsEFireBase(Empresa uE,FirebaseUser user){
-        databaseReference.child("EmpresaUsers").child(user.getUid()).setValue(uE);
+        databaseReference.child("CorrientsUsers").child(user.getUid()).setValue(uE);
         finish();
         startActivity(new Intent(getApplicationContext(),Activity_Perfil.class));
     }
@@ -171,17 +161,6 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         }
         Toast.makeText(this,etiq,Toast.LENGTH_LONG).show();
         return etiq;
-    }
-
-
-
-    /**
-     *
-     * @param campo
-     * @return
-     */
-    private boolean campEmpty(String campo){
-        return TextUtils.isEmpty(campo);
     }
 
     /**

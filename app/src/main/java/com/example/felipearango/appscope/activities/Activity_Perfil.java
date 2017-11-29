@@ -60,7 +60,7 @@ public class Activity_Perfil extends MainActivity {
         if(TIPO_USUARIO == 0){
             eventPD("CorrientsUsers");
         }else{
-            eventPD("EmpresaUsers");
+            eventPD("CorrientsUsers");
         }
     }
 

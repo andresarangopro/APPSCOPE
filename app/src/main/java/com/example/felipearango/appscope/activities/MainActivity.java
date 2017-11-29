@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
+import com.example.felipearango.appscope.models.Administrador;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +33,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.usuario_administrador;
+import static com.example.felipearango.appscope.Util.Util.usuario_corriente;
+import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 import static com.example.felipearango.appscope.activities.Activity_Login.calledAlready;
 
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,7 +99,10 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        if(TIPO_USUARIO == 0){
+            getMenuInflater().inflate(R.menu.main, menu);
+        }
+
         return true;
     }
 
@@ -122,24 +130,30 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_notificaciones) {
             startActivity(new Intent(getApplicationContext(), Activity_notificaciones.class));
             //startActivity(new Intent(getApplicationContext(), Activity_Admin.class));
             //startActivity(new Intent(getApplicationContext(),Activity_AgregarAdmin.class));
             finish();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_trabajos) {
             startActivity(new Intent(getApplicationContext(), Activity_Ofertas.class));
             finish();
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_perfil) {
             startActivity(new Intent(getApplicationContext(),Activity_Perfil.class));
             finish();
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_configuracion) {
             startActivity(new Intent(getApplicationContext(),Activity_Settings.class));
             finish();
-        } else if (id == R.id.nav_share) {
+        }else if (id == R.id.nav_notificaciones_admin) {
+            startActivity(new Intent(getApplicationContext(),Activity_Admin.class));
+            finish();
+        }else if (id == R.id.nav_add_admin) {
+            startActivity(new Intent(getApplicationContext(),Activity_AgregarAdmin.class));
+            finish();
+        } else if (id == R.id.nav_ofertar_trabajo) {
             startActivity(new Intent(getApplicationContext(),Activity_OfertarTrabajo.class));
             finish();
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_logout) {
             signout();
         }
 
@@ -149,6 +163,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void inicializatedComponents(){
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
         Menu nav_Menu = navigationView.getMenu();
@@ -156,21 +171,28 @@ public class MainActivity extends AppCompatActivity
         txtNavName = (TextView) headerView.findViewById(R.id.txtNavName);
         iVNavPerfil = (ImageView) headerView.findViewById(R.id.iVNavPerfil);
       // android.view.View action_work = (android.view.View) headerView.findViewById(R.id.action_work);
-        if(TIPO_USUARIO == 1){
-            nav_Menu.findItem(R.id.nav_gallery).setVisible(false);
-
-        //    action_work.setVisibility(headerView.INVISIBLE);
+        if(TIPO_USUARIO == usuario_corriente){
+            nav_Menu.findItem(R.id.nav_add_admin).setVisible(false);
+            nav_Menu.findItem(R.id.nav_notificaciones_admin).setVisible(false);
+        }
+        if(TIPO_USUARIO == usuario_empresa){
+            nav_Menu.findItem(R.id.nav_trabajos).setVisible(false);
+            nav_Menu.findItem(R.id.nav_add_admin).setVisible(false);
+            nav_Menu.findItem(R.id.nav_notificaciones_admin).setVisible(false);
          //   nav_Menu.findItem(R.id.action_work).setVisible(false);
+        }
+        if(TIPO_USUARIO == usuario_administrador){
+            nav_Menu.findItem(R.id.nav_trabajos).setVisible(false);
+            nav_Menu.findItem(R.id.nav_notificaciones).setVisible(false);
+            nav_Menu.findItem(R.id.nav_perfil).setVisible(false);
+            nav_Menu.findItem(R.id.nav_ofertar_trabajo).setVisible(false);
+            nav_Menu.findItem(R.id.nav_configuracion).setVisible(false);
         }
 
     }
 
     protected void datosUser(){
-        if(TIPO_USUARIO == 0){
             eventPDU("CorrientsUsers");
-        }else{
-            eventPDU("EmpresaUsers");
-        }
     }
 
     public void eventPDU(String usChildString){
@@ -178,18 +200,19 @@ public class MainActivity extends AppCompatActivity
         databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //listUsers.clear();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(TIPO_USUARIO == 0){
+                if(TIPO_USUARIO == usuario_corriente){
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                     putDatesUsC(uC);
                     putImg(uC);
-                }else{
+                }else if(TIPO_USUARIO == usuario_empresa){
                     Empresa uE =  dataSnapshot.child(user.getUid()).getValue(Empresa.class);
                     putDatesUsE(uE);
                     putImg(uE);
+                }else{
+                    Administrador admin =dataSnapshot.child(user.getUid()).getValue(Administrador.class);
+                    putDatesAdmin(admin);
                 }
-                // putImage(userIn);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -217,19 +240,20 @@ public class MainActivity extends AppCompatActivity
         }
     }
     private void putDatesUsC(UsuarioCorriente uC){
-        Log.e("USERNAME",TIPO_USUARIO+" ---- "+uC.getId().toString());
         txtNavName.setText(uC.getNombre()+" "+uC.getApellido());
         txtNavMail.setText(uC.getCorreo());
-      //  txtNameP.setText(uC.getNombre());
-        //putTxt("NOMBRE","MAIL","PROGAMMING");
-
     }
 
     private void putDatesUsE(Empresa uE){
-        Log.e("USER",TIPO_USUARIO+" ---- "+uE.getId().toString());
         txtNavName.setText(uE.getNombre());
         txtNavMail.setText(uE.getMail());
     }
+
+    private void putDatesAdmin(Administrador admin){
+        txtNavName.setText(admin.getNombre()+" "+admin.getApellido());
+        txtNavMail.setText(admin.getCorreo());
+    }
+
 
     private void signout(){
         firebaseAuth.signOut();

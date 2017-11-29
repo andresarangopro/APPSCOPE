@@ -43,7 +43,7 @@ public class Activity_Notificaciones_S extends MainActivity {
         mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Noti);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
-        mAdapterEmp = new RecyclerAdapterEmpresa( notificaciones,this, ll);
+        mAdapterEmp = new RecyclerAdapterEmpresa(this, ll, notificaciones);
 
         mRecyclerAccounts.setAdapter(mAdapterEmp);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),

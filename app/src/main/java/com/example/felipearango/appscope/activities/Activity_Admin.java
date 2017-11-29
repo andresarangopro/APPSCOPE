@@ -1,18 +1,30 @@
 package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.RecyclerAdapterValidarCuenta;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.example.felipearango.appscope.models.ValidarCuenta;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+
+import static com.example.felipearango.appscope.Util.Util.cuenta_espera_certif;
+import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
 public class Activity_Admin extends MainActivity {
 
@@ -27,15 +39,7 @@ public class Activity_Admin extends MainActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_admin, null, false);
         mDrawer.addView(contentView, 0);
-
-        ValidarCuenta va1 = new ValidarCuenta("Empresa 1", "22/02/02");
-        ValidarCuenta va2 = new ValidarCuenta("Empresa 2", "22/01/04");
-        ValidarCuenta va3 = new ValidarCuenta("Empresa 3", "22/07/29");
-
-        mValidarCuenta.add(va1);
-        mValidarCuenta.add(va2);
-        mValidarCuenta.add(va3);
-
+        listENoCertificadas();
         iniciar();
     }
 
@@ -48,6 +52,29 @@ public class Activity_Admin extends MainActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
                 mLinearLayoutManager.getOrientation());
         mRecyclerAccounts.addItemDecoration(dividerItemDecoration);
+    }
+
+    public void listENoCertificadas(){
+        databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot objetos : dataSnapshot.getChildren()) {
+                    int tipoUser = dataSnapshot.child(objetos.getKey()).getValue(UsuarioCorriente.class).getTipoUser();
+                    if(tipoUser == usuario_empresa){
+                        Empresa empresa = objetos.getValue(Empresa.class);
+                        if(empresa.getCertificacion() == cuenta_espera_certif){
+                            mValidarCuenta.add(new ValidarCuenta(empresa.getNombre(),"fecha de algo",empresa.getId()));
+                            Log.e("TIPOU",empresa.getNombre()+"  "+ tipoUser);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
 }

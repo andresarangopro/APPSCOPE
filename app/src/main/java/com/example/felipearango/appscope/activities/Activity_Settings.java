@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -58,7 +59,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     private EditText txtNameCP,txtOcupacionCP,txtEdadCP,txtFraseCP,txtUniversidadCP,txtCelularCP,txtUbicacionCP;
     private ArrayList<EditText> field = new ArrayList<>();
     private ArrayList<String> dataEtiquetas = new ArrayList<>();
-
+    private  FirebaseAuth.AuthStateListener listener;
     protected static final int GALLERY_INTENT= 1;
 
     private LinearLayout lLayoutEtiquetas;
@@ -132,7 +133,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             }else{
                 if(!Util.emptyCampMSG(txtNameCP,getString(R.string.empty_camp)) ){
                     if(descargarFoto != null){
-                        updateFoto("EmpresaUsers",obj,descargarFoto+"");
+                       updateFoto("CorrientsUsers",obj,descargarFoto+"");
                     }
                   //  updateData("EmpresaUsers",obj);
                 }
@@ -155,11 +156,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     }
 
     protected void putDataUser(){
-        if(TIPO_USUARIO == 0){
             eventPD("CorrientsUsers");
-        }else{
-            eventPD("EmpresaUsers");
-        }
     }
 
     private void chooseDate(){
@@ -218,8 +215,6 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             }
         });
     }
-
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -331,4 +326,5 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         parcelFileDescriptor.close();
         return bitmap;
     }
+
 }
