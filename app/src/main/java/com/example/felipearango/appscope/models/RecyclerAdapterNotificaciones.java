@@ -7,12 +7,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.activities.Activity_Notificaciones_S;
 
 import java.util.ArrayList;
+
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
 /**
  * Created by Sebastian Luna R on 10/29/2017.
@@ -22,6 +25,7 @@ public class RecyclerAdapterNotificaciones extends RecyclerView.Adapter<Recycler
 
     private ArrayList<Notificacion> mNotificacion;
     private Context mContext;
+
 
     public RecyclerAdapterNotificaciones(Context context, ArrayList<Notificacion> mNotificacion) {
         this.mNotificacion = mNotificacion;
@@ -37,7 +41,10 @@ public class RecyclerAdapterNotificaciones extends RecyclerView.Adapter<Recycler
             tvTitulo = (TextView)itemView.findViewById(R.id.tvEmpresa);
             tvEmpresa = (TextView)itemView.findViewById(R.id.tvTrabajo);
             tvEstado = (TextView)itemView.findViewById(R.id.tvEstado);
-            itemView.setOnClickListener(this);
+            if(TIPO_USUARIO == 1){
+                itemView.setOnClickListener(this);
+            }
+
         }
 
 

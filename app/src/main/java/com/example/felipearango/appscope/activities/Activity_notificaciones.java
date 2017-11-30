@@ -8,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.ManejoUsers;
 import com.example.felipearango.appscope.models.EmpresaSolicitud;
 import com.example.felipearango.appscope.models.Notificacion;
 import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
@@ -27,11 +29,11 @@ import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_U
 public class Activity_notificaciones extends MainActivity {
 
     private RecyclerAdapterNotificaciones mAdapter;
-    private RecyclerAdapterEmpresa mAdapterEmp;
+
     private RecyclerView mRecyclerAccounts;
     private ArrayList<Notificacion> notificacion = new ArrayList<>();
-    private ArrayList<EmpresaSolicitud> notificaciones = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
+    private LinearLayout ll;
     private ArrayList<String> idJobs = new ArrayList<>();
 
     @Override
@@ -41,23 +43,24 @@ public class Activity_notificaciones extends MainActivity {
         View contentView = inflater.inflate(R.layout.activity_notificaciones, null, false);
         mDrawer.addView(contentView, 0);
 
-      //  Notificacion noti = new Notificacion("Trabajo 1", "Empresa 1", "Validado");
-      //  Notificacion noti2 = new Notificacion("Trabajo 2", "Empresa 2", "Validado");
-      //  Notificacion noti3 = new Notificacion("Trabajo 3", "Empresa 3", "Validado");
+        Notificacion noti = new Notificacion("Trabajo 1", "Empresa 1", 3);
+       Notificacion noti2 = new Notificacion("Trabajo 2", "Empresa 2", 4);
+        Notificacion noti3 = new Notificacion("Trabajo 3", "Empresa 3", 5);
 
-      //  notificacion.add(noti);
-      //  notificacion.add(noti2);
-       // notificacion.add(noti3);
+        notificacion.add(noti);
+        notificacion.add(noti2);
+        notificacion.add(noti3);
 
         iniciar();
         inicializatedFireBase();
     }
 
     private void iniciar(){
+
         mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Noti);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
-       // mAdapterEmp = new RecyclerAdapterEmpresa(notificaciones);
+
         mAdapter = new RecyclerAdapterNotificaciones(this,notificacion);
         mRecyclerAccounts.setAdapter(mAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
