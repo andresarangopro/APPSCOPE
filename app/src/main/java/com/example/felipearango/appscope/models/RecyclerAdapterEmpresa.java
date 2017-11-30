@@ -27,6 +27,7 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
     private ArrayList<EmpresaSolicitud> mEmpresaSolicitud;
     private Context mContext;
     private LinearLayout ll;
+
     public RecyclerAdapterEmpresa(Context context, LinearLayout linearLayout,ArrayList<EmpresaSolicitud> mEmpresaSolicitud) {
         this.mEmpresaSolicitud = mEmpresaSolicitud;
         mContext = context;
