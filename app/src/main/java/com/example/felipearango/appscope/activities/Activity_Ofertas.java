@@ -92,21 +92,23 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
             ////////Inicialización de los dos componentes de el pop up
             //////////////////////////////////////////////////////////////
 
-            TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
-             TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tVNameP));
-             TextView tVFrase= ((TextView)popupWindow.getContentView().findViewById(R.id.tVFrase));
-             tVFrase.setVisibility(View.INVISIBLE);
-            ImageView imVPerfil = ((ImageView) popupWindow.getContentView().findViewById(R.id.imVPerfil));
+        // TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
+           //  TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tVNameP));
+            // TextView tVFrase= ((TextView)popupWindow.getContentView().findViewById(R.id.tVFrase));
+           //  tVFrase.setVisibility(View.INVISIBLE);
+           /* ImageView imVPerfil = ((ImageView) popupWindow.getContentView().findViewById(R.id.imVPerfil));
             //  tVOcupacionP
             //tVFrase
              //TextView  = ((TextView)popupWindow.getContentView().findViewById(R.id.tVNameP));
-            tvDetalles.setText(empres.getNombre());
-            if(!empres.getFoto().equals("")){
+           // tvDetalles.setText(empres.getNombre());
+              if(!empres.getFoto().equals("")){
                 Picasso.with(this)
                         .load(empres.getFoto())
                         .transform(new CircleTransform())
                         .into(imVPerfil);
-            }
+           }*/
+            TextView textView = (TextView)popupView.findViewById(R.id.tVNameP);
+            textView.setText("HOLA!!");
 
             //////////////////////////////////////////////////////////////
             ////Esto muestra el pop Up window

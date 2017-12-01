@@ -1,6 +1,5 @@
 package com.example.felipearango.appscope.Util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -24,8 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.concurrent.Executor;
-
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 import static com.example.felipearango.appscope.activities.Activity_Login.calledAlready;
 
@@ -41,7 +38,7 @@ public class ManejoUsers {
 
 
     public void account(final Context context){
-        // TIPO_USUARIO  = 0;
+       // TIPO_USUARIO  = 0;
         databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

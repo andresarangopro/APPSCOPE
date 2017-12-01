@@ -59,7 +59,7 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
 
     @Override
     public void onBindViewHolder(SolicitudAEmpresaHolder holder, final int position) {
-        EmpresaSolicitud empresaSolicitud = mEmpresaSolicitud.get(position);
+        final EmpresaSolicitud empresaSolicitud = mEmpresaSolicitud.get(position);
         holder.tvNombre.setText(empresaSolicitud.getNombre());
         holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,12 +82,12 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         holder.thisView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showPopUp();
+                showPopUp(mEmpresaSolicitud.get(position));
             }
         });
     }
 
-    private void showPopUp() {
+    private void showPopUp(EmpresaSolicitud empresaSolicitud) {
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_empresa, null);
@@ -100,10 +100,13 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         ////////Inicialización de los dos componentes de el pop up
         //////////////////////////////////////////////////////////////
 
-        // TextView tvEmpresa = ((TextView) popupWindow.getContentView().findViewById(R.id.tvEmpresa));
-        //TextView tvDetalles = ((TextView) popupWindow.getContentView().findViewById(R.id.tvDetalles));
+       //  TextView tvEmpresa = ((TextView) popupWindow.getContentView().findViewById(R.id.tvEmpresa));
+       // TextView tvDetalles = ((TextView) popupWindow.getContentView().findViewById(R.id.tvDetalles));
         //  ((TextView) popupWindow.getContentView().findViewById(R.id.tvDetalles)).setText("hello there");
 
+
+
+        //tvEmpresa.setText("AS");
         //////////////////////////////////////////////////////////////
         ////Esto muestra el pop Up window
         ////////////////////////////////////////////////////////////

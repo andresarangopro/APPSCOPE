@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void eventPDU(String usChildString){
-        final Object obj = null;
+
         databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -250,8 +250,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void putDatesAdmin(Administrador admin){
-        txtNavName.setText(admin.getNombre()+" "+admin.getApellido());
-        txtNavMail.setText(admin.getCorreo());
+       if(admin != null){
+           txtNavName.setText(admin.getNombre()+" "+admin.getApellido());
+           txtNavMail.setText(admin.getCorreo());
+       }
     }
 
 

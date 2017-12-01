@@ -43,13 +43,13 @@ public class Activity_notificaciones extends MainActivity {
         View contentView = inflater.inflate(R.layout.activity_notificaciones, null, false);
         mDrawer.addView(contentView, 0);
 
-        Notificacion noti = new Notificacion("Trabajo 1", "Empresa 1", 3);
+      /*  Notificacion noti = new Notificacion("Trabajo 1", "Empresa 1", 3);
        Notificacion noti2 = new Notificacion("Trabajo 2", "Empresa 2", 4);
         Notificacion noti3 = new Notificacion("Trabajo 3", "Empresa 3", 5);
 
         notificacion.add(noti);
         notificacion.add(noti2);
-        notificacion.add(noti3);
+        notificacion.add(noti3);*/
 
         iniciar();
         inicializatedFireBase();
