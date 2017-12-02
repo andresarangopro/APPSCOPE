@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.models.UsuariosSolicitudEnEM;
 import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
-import com.example.felipearango.appscope.models.UsuarioCorriente;
 
 import java.util.ArrayList;
 
@@ -40,7 +39,7 @@ public class SolicitudEmpresa extends MainActivity {
         mRecyclerSolicitudes = (RecyclerView) findViewById(R.id.rv_solicitudes);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerSolicitudes.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new RecyclerAdapterEmpresa(SolicitudEmpresa.this, ll , solicitud);
+        mAdapter = new RecyclerAdapterEmpresa(SolicitudEmpresa.this,ll,solicitud);
         mRecyclerSolicitudes.setAdapter(mAdapter);
 
     }

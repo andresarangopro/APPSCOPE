@@ -46,7 +46,6 @@ public class Activity_Notificaciones_S extends MainActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_notificaciones_siguiente, null, false);
         mDrawer.addView(contentView, 0);
-
         ll = (LinearLayout)findViewById(R.id.llLayout);
         iniciar();
 
@@ -65,7 +64,6 @@ public class Activity_Notificaciones_S extends MainActivity {
         Bundle b = getIntent().getExtras();
         String index = b.getString("idJob");
         startnotifiOferts(index);
-
     }
     private void startnotifiOferts(final String strIdJob){
         databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {

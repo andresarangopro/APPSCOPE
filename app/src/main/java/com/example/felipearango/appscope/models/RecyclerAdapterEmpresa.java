@@ -36,7 +36,6 @@ import static com.example.felipearango.appscope.activities.Activity_Login.called
 
 public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapterEmpresa.SolicitudAEmpresaHolder> {
 
-
     private ArrayList<UsuariosSolicitudEnEM> mUsuariosSolicitudEnEM;
     private Context mContext;
     private LinearLayout ll;
@@ -46,17 +45,6 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         this.mUsuariosSolicitudEnEM = mUsuariosSolicitudEnEM;
         mContext = context;
         ll = linearLayout;
-    }
-
-    private void clonarListaEmpresa(ArrayList<Object> mEmpresa){
-
-        for (Object obj : mEmpresa) {
-            if(obj instanceof UsuarioCorriente){
-                usuario.add((UsuarioCorriente)obj);
-            }else if(obj instanceof Empresa){
-                empresa.add((Empresa)obj);
-            }
-        }
     }
 
     public static class SolicitudAEmpresaHolder extends RecyclerView.ViewHolder {
@@ -87,6 +75,22 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
 
     @Override
     public void onBindViewHolder(SolicitudAEmpresaHolder holder, final int position) {
+        final UsuariosSolicitudEnEM usuariosSolicitudEnEM = mUsuariosSolicitudEnEM.get(position);
+        holder.tvNombre.setText("NOMBRE: "+usuariosSolicitudEnEM.getNombre());
+        holder.tvApellido.setText("APELLIDO: "+usuariosSolicitudEnEM.getApellido());
+        holder.tvCedula.setText("CELULAR: "+usuariosSolicitudEnEM.getCedula());
+        holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                inicializatedFireBase();
+               insertarUs(notificacion_oferta_aceptada,mUsuariosSolicitudEnEM.get(position).getIdJob()
+                       ,mUsuariosSolicitudEnEM.get(position).getId() );
+                mUsuariosSolicitudEnEM.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mUsuariosSolicitudEnEM.size());
+            }
+        });
 
         final UsuariosSolicitudEnEM usuariosSolicitudEnEM = mUsuariosSolicitudEnEM.get(position);
         holder.tvNombre.setText("NOMBRE: "+usuariosSolicitudEnEM.getNombre());
@@ -130,7 +134,6 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
 
     public void showPopUp( UsuariosSolicitudEnEM usuariosSolicitudEnEM) {
 
-
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_empresa, null);
         int width = LinearLayout.LayoutParams.WRAP_CONTENT;
@@ -138,34 +141,16 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         boolean focusable = true;
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
-        ImageView imPerfil = (ImageView)popupWindow.getContentView().findViewById(R.id.imVPerfil);
-        TextView tvNombre = ((TextView) popupWindow.getContentView().findViewById(R.id.tVNameP));
-        TextView tvOcupacion = ((TextView) popupWindow.getContentView().findViewById(R.id.tVOcupacionP));
-        TextView tvFrase = ((TextView) popupWindow.getContentView().findViewById(R.id.tVFrase));
 
+        ImageView imageView = (ImageView)popupWindow.getContentView().findViewById(R.id.imVPerfil);
+        TextView tvNombre = (TextView)popupWindow.getContentView().findViewById(R.id.tVNameP);
+        TextView tvOcupacion = (TextView)popupWindow.getContentView().findViewById(R.id.tVOcupacionP);
+        TextView tvFrase = (TextView)popupWindow.getContentView().findViewById(R.id.tVFrase);
 
-
-        if(user instanceof UsuarioCorriente){
-            UsuarioCorriente usuarioCorriente = (UsuarioCorriente) user;
-            tvNombre.setText(usuarioCorriente.getNombre());
-            tvOcupacion.setText(usuarioCorriente.getOcupacion());
-            tvFrase.setText(usuarioCorriente.getFrase());
-        }else{
-            Empresa empresa = (Empresa) user;
-            tvNombre.setText(empresa.getNombre());
-            tvOcupacion.setText(empresa.getMail());
-            tvFrase.setText(empresa.getEstadoCuenta());
-        }
-
-
-
-
-
-
-
-        //Falta la foto!!
-
-
+        
+        tvNombre.setText(usuariosSolicitudEnEM.getNombre());
+        tvOcupacion.setText(usuariosSolicitudEnEM.getApellido());
+        tvFrase.setText(usuariosSolicitudEnEM.getCedula());
 
         //////////////////////////////////////////////////////////////
         ////Esto muestra el pop Up window
@@ -202,4 +187,5 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
     public int getItemCount() {
         return mUsuariosSolicitudEnEM.size();
     }
+
 }
