@@ -124,12 +124,17 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         boolean focusable = true;
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
-        //////////////////////////////////////////////////////////////
-        ////////Inicialización de los dos componentes de el pop up
-        //////////////////////////////////////////////////////////////
 
-        TextView tvDetalles = ((TextView) popupView.findViewById(R.id.tvDetalles));
-        ImageView imVPerfil = ((ImageView) popupView.findViewById(R.id.imVPerfil));
+        ImageView imageView = (ImageView)popupWindow.getContentView().findViewById(R.id.imVPerfil);
+        TextView tvNombre = (TextView)popupWindow.getContentView().findViewById(R.id.tVNameP);
+        TextView tvOcupacion = (TextView)popupWindow.getContentView().findViewById(R.id.tVOcupacionP);
+        TextView tvFrase = (TextView)popupWindow.getContentView().findViewById(R.id.tVFrase);
+
+
+        tvNombre.setText(usuariosSolicitudEnEM.getNombre());
+        tvOcupacion.setText(usuariosSolicitudEnEM.getApellido());
+        tvFrase.setText(usuariosSolicitudEnEM.getCedula());
+
 
 //        tvDetalles.setText("AS");
         //////////////////////////////////////////////////////////////
