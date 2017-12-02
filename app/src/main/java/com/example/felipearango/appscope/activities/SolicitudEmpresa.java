@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.models.EmpresaSolicitud;
 import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
+import com.example.felipearango.appscope.models.UsuarioCorriente;
 
 import java.util.ArrayList;
 
@@ -18,7 +19,10 @@ public class SolicitudEmpresa extends MainActivity {
 
     private RecyclerAdapterEmpresa mAdapter;
     private RecyclerView mRecyclerSolicitudes;
-    private ArrayList<EmpresaSolicitud> solicitud = new ArrayList<>();
+    /**
+     * Este arraylist será de empresas!!
+     */
+    private ArrayList<Object> solicitud = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private LinearLayout ll;
     @Override
@@ -32,13 +36,6 @@ public class SolicitudEmpresa extends MainActivity {
 
         ll = (LinearLayout) findViewById(R.id.llLayout);
 
-        EmpresaSolicitud n1 = new EmpresaSolicitud("Nombre 1");
-        EmpresaSolicitud n2 = new EmpresaSolicitud("Nombre 2");
-        EmpresaSolicitud n3 = new EmpresaSolicitud("Nombre 3");
-        solicitud.add(n1);
-        solicitud.add(n2);
-        solicitud.add(n3);
-
         iniciarRv();
     }
 
@@ -46,7 +43,7 @@ public class SolicitudEmpresa extends MainActivity {
         mRecyclerSolicitudes = (RecyclerView) findViewById(R.id.rv_solicitudes);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerSolicitudes.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new RecyclerAdapterEmpresa(SolicitudEmpresa.this,ll,solicitud);
+        mAdapter = new RecyclerAdapterEmpresa(SolicitudEmpresa.this, ll , solicitud);
         mRecyclerSolicitudes.setAdapter(mAdapter);
 
     }

@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -24,14 +25,28 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapterEmpresa.SolicitudAEmpresaHolder> {
 
-    private ArrayList<EmpresaSolicitud> mEmpresaSolicitud;
+    private ArrayList<UsuarioCorriente> usuario = new ArrayList<>();
+    private ArrayList<Empresa> empresa = new ArrayList<>();
     private Context mContext;
     private LinearLayout ll;
 
-    public RecyclerAdapterEmpresa(Context context, LinearLayout linearLayout,ArrayList<EmpresaSolicitud> mEmpresaSolicitud) {
-        this.mEmpresaSolicitud = mEmpresaSolicitud;
+    public RecyclerAdapterEmpresa(Context context, LinearLayout linearLayout,ArrayList<Object> mEmpresaSolicitud) {
+
+        clonarListaEmpresa(mEmpresaSolicitud);
+
         mContext = context;
         ll = linearLayout;
+    }
+
+    private void clonarListaEmpresa(ArrayList<Object> mEmpresa){
+
+        for (Object obj : mEmpresa) {
+            if(obj instanceof UsuarioCorriente){
+                usuario.add((UsuarioCorriente)obj);
+            }else if(obj instanceof Empresa){
+                empresa.add((Empresa)obj);
+            }
+        }
     }
 
     public static class SolicitudAEmpresaHolder extends RecyclerView.ViewHolder {
@@ -59,35 +74,65 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
 
     @Override
     public void onBindViewHolder(SolicitudAEmpresaHolder holder, final int position) {
-        final EmpresaSolicitud empresaSolicitud = mEmpresaSolicitud.get(position);
-        holder.tvNombre.setText(empresaSolicitud.getNombre());
-        holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                /*
-                Acá pasa lo de aceptar
-                 */
-            }
-        });
 
-        holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mEmpresaSolicitud.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, mEmpresaSolicitud.size());
-            }
-        });
+        if(empresa.isEmpty()){
+            final UsuarioCorriente empresaSolicitud = usuario.get(position);
+            holder.tvNombre.setText(empresaSolicitud.getNombre());
+            holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    /*
+                    Acá pasa lo de aceptar
+                     */
+                }
+            });
 
-        holder.thisView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showPopUp(mEmpresaSolicitud.get(position));
-            }
-        });
+            holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    usuario.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, usuario.size());
+                }
+            });
+
+            holder.thisView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopUp(usuario.get(position));
+                }
+            });
+        }else{
+            final Empresa empresaSolicitud = empresa.get(position);
+            holder.tvNombre.setText(empresaSolicitud.getNombre());
+            holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    /*
+                    Acá pasa lo de aceptar
+                     */
+                }
+            });
+
+            holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    empresa.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, empresa.size());
+                }
+            });
+
+            holder.thisView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showPopUp(empresa.get(position));
+                }
+            });
+        }
     }
 
-    private void showPopUp(EmpresaSolicitud empresaSolicitud) {
+    private void showPopUp(Object user) {
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_empresa, null);
@@ -96,17 +141,33 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         boolean focusable = true;
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
-        //////////////////////////////////////////////////////////////
-        ////////Inicialización de los dos componentes de el pop up
-        //////////////////////////////////////////////////////////////
-
-       //  TextView tvEmpresa = ((TextView) popupWindow.getContentView().findViewById(R.id.tvEmpresa));
-       // TextView tvDetalles = ((TextView) popupWindow.getContentView().findViewById(R.id.tvDetalles));
-        //  ((TextView) popupWindow.getContentView().findViewById(R.id.tvDetalles)).setText("hello there");
+        ImageView imPerfil = (ImageView)popupWindow.getContentView().findViewById(R.id.imVPerfil);
+        TextView tvNombre = ((TextView) popupWindow.getContentView().findViewById(R.id.tVNameP));
+        TextView tvOcupacion = ((TextView) popupWindow.getContentView().findViewById(R.id.tVOcupacionP));
+        TextView tvFrase = ((TextView) popupWindow.getContentView().findViewById(R.id.tVFrase));
 
 
 
-        //tvEmpresa.setText("AS");
+        if(user instanceof UsuarioCorriente){
+            UsuarioCorriente usuarioCorriente = (UsuarioCorriente) user;
+            tvNombre.setText(usuarioCorriente.getNombre());
+            tvOcupacion.setText(usuarioCorriente.getOcupacion());
+            tvFrase.setText(usuarioCorriente.getFrase());
+        }else{
+            Empresa empresa = (Empresa) user;
+            tvNombre.setText(empresa.getNombre());
+            tvOcupacion.setText(empresa.getMail());
+            tvFrase.setText(empresa.getEstadoCuenta());
+        }
+
+
+
+
+
+
+
+        //Falta la foto!!
+
         //////////////////////////////////////////////////////////////
         ////Esto muestra el pop Up window
         ////////////////////////////////////////////////////////////
@@ -126,7 +187,10 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
 
     @Override
     public int getItemCount() {
-        return mEmpresaSolicitud.size();
+        if(!usuario.isEmpty()){
+            return usuario.size();
+        }else{
+            return empresa.size();
+        }
     }
-
 }

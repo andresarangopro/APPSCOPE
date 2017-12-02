@@ -23,7 +23,10 @@ public class Activity_Notificaciones_S extends MainActivity {
 
     private RecyclerAdapterEmpresa mAdapterEmp;
     private RecyclerView mRecyclerAccounts;
-    private ArrayList<EmpresaSolicitud> notificaciones = new ArrayList<>();
+    /**
+     * Este arraylist será de usuarios!!
+     */
+    private ArrayList<Object> notificaciones = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private LinearLayout ll;
     private ArrayList<String> idWorkers = new ArrayList<>();
@@ -34,9 +37,6 @@ public class Activity_Notificaciones_S extends MainActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_notificaciones_siguiente, null, false);
         mDrawer.addView(contentView, 0);
-       /* notificaciones.add(new EmpresaSolicitud("Nombre 1"));
-        notificaciones.add(new EmpresaSolicitud("Nombre 2"));
-        notificaciones.add(new EmpresaSolicitud("Nombre 3"));*/
 
         ll = (LinearLayout)findViewById(R.id.llLayout);
         iniciar();
@@ -56,6 +56,7 @@ public class Activity_Notificaciones_S extends MainActivity {
         Bundle b = getIntent().getExtras();
         String index = b.getString("idJob");
         startnotifiOferts(index);
+
     }
     private void startnotifiOferts(final String strIdJob){
         databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
@@ -79,8 +80,7 @@ public class Activity_Notificaciones_S extends MainActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (String idOfert : idWorkers) {
                     UsuarioCorriente us = dataSnapshot.child(idOfert).getValue(UsuarioCorriente.class);
-                    EmpresaSolicitud emp = new EmpresaSolicitud(us.getNombre());
-                    notificaciones.add(emp);
+                    notificaciones.add(us);
                 }
             }
 
