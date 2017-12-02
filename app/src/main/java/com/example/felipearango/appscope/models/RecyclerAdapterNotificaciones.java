@@ -2,12 +2,12 @@ package com.example.felipearango.appscope.models;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.felipearango.appscope.R;
@@ -15,6 +15,9 @@ import com.example.felipearango.appscope.activities.Activity_Notificaciones_S;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_aceptada;
+import static com.example.felipearango.appscope.Util.Util.usuario_corriente;
+import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
 /**
@@ -72,9 +75,17 @@ public class RecyclerAdapterNotificaciones extends RecyclerView.Adapter<Recycler
     @Override
     public void onBindViewHolder(NotificacionHolder holder, int position) {
         Notificacion notificacion = mNotificacion.get(position);
-        holder.tvTitulo.setText(notificacion.getNombreTrabajo());
-        holder.tvEmpresa.setText(notificacion.getIdTrabajo());
-        holder.tvEstado.setText("Ofertantes: "+notificacion.getNumOfertantes());
+        if(TIPO_USUARIO == usuario_empresa){
+            holder.tvTitulo.setText(notificacion.getNombreTrabajo());
+            holder.tvEmpresa.setText(notificacion.getIdTrabajo());
+            holder.tvEstado.setText("Aspirantes: "+notificacion.getNumOfertantes());
+        }else if(TIPO_USUARIO == usuario_corriente){
+            holder.tvTitulo.setText(notificacion.getNombreEmpresa());
+            holder.tvTitulo.setTextColor((Color.parseColor("#017580")));
+            holder.tvEmpresa.setText(notificacion.getNombreTrabajo());
+            holder.tvEmpresa.setTextColor((Color.parseColor("#000000")));
+            holder.tvEstado.setText("Resultado : "+ (notificacion.getNumOfertantes() == notificacion_oferta_aceptada ? "ACEPTADA":"RECHAZADA"));
+        }
 
     }
 

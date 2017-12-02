@@ -29,6 +29,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_enEspera;
+
 public class Activity_Ofertas extends MainActivity implements View.OnClickListener{
 
     private TextView tvTrabajo, tvEmpresa, tvTitulo;
@@ -59,9 +61,9 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
                     showEmpresa(trabajos.get(counter).getIdEmpresa());
                 }
                 showPopUp();
+
             }
             public void onSwipeRight() {
-
                 //  Toast.makeText(Activity_Ofertas.this, "right", Toast.LENGTH_SHORT).show();
             }
             public void onSwipeLeft() {
@@ -92,23 +94,18 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
             ////////Inicialización de los dos componentes de el pop up
             //////////////////////////////////////////////////////////////
 
-        // TextView tvEmpresa = ((TextView)popupWindow.getContentView().findViewById(R.id.tvEmpresa));
-           //  TextView tvDetalles = ((TextView)popupWindow.getContentView().findViewById(R.id.tVNameP));
-            // TextView tVFrase= ((TextView)popupWindow.getContentView().findViewById(R.id.tVFrase));
-           //  tVFrase.setVisibility(View.INVISIBLE);
-           /* ImageView imVPerfil = ((ImageView) popupWindow.getContentView().findViewById(R.id.imVPerfil));
-            //  tVOcupacionP
-            //tVFrase
-             //TextView  = ((TextView)popupWindow.getContentView().findViewById(R.id.tVNameP));
-           // tvDetalles.setText(empres.getNombre());
+             TextView tvDetalles = ((TextView)popupView.findViewById(R.id.tVNameP));
+             TextView tVFrase= ((TextView)popupView.findViewById(R.id.tVFrase));
+            tVFrase.setVisibility(View.INVISIBLE);
+            ImageView imVPerfil = ((ImageView) popupView.findViewById(R.id.imVPerfil));
+
+           tvDetalles.setText(empres.getNombre());
               if(!empres.getFoto().equals("")){
                 Picasso.with(this)
                         .load(empres.getFoto())
                         .transform(new CircleTransform())
                         .into(imVPerfil);
-           }*/
-            TextView textView = (TextView)popupView.findViewById(R.id.tVNameP);
-            textView.setText("HOLA!!");
+           }
 
             //////////////////////////////////////////////////////////////
             ////Esto muestra el pop Up window
@@ -133,7 +130,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     }
 
     private void showEmpresa(final String idEmpresa){
-        databaseReference.child("EmpresaUsers").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 empres = dataSnapshot.child(idEmpresa).getValue(Empresa.class);
@@ -196,9 +193,12 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
         databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
                 for (int i = 0; i < etiquetas.size(); i++) {
                     Trabajo job =  dataSnapshot.child(etiquetas.get(i).getIdTrabajo()).getValue(Trabajo.class);
-                    trabajos.add(job);
+                    if(!job.getIdEmpresa().equals(user.getUid())){
+                        trabajos.add(job);
+                    }
                 }
                 showJob(counter);
             }
@@ -219,14 +219,17 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if(view == btnOfertar){
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            insertarOferta(trabajos.get(counter), user);
+            if(trabajos.size() > counter) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                insertarOferta(trabajos.get(counter), user);
+                showJob(++counter);
+            }
         }
     }
 
     private void insertarOferta(Trabajo job, FirebaseUser user){
         databaseReference.child("Jobs").child(job.getId()).
-                child("Ofertas").child(user.getUid()).child("Estado").setValue("En espera");
+                child("Ofertas").child(user.getUid()).child("Estado").setValue(notificacion_oferta_enEspera);
     }
 
     private void cargarEtiquetas(ArrayList<String> strEtiqueta){

@@ -72,11 +72,6 @@ public class Activity_AgregarAdmin extends MainActivity implements View.OnClickL
         }
     }
 
-    public static String castMailToKey(String mail){
-        String [] sd = mail.split("@");
-        return sd[0];
-    }
-
     private void registerUser(final Object obj,String mail, String pass,final String key) {
         final String mail1 = mail;
         final String pass1 = pass;
@@ -97,7 +92,7 @@ public class Activity_AgregarAdmin extends MainActivity implements View.OnClickL
         String correo = Util.getTxt(etEmailAgregar);
         String nombre = Util.getTxt(etNombre);
         String pass = Util.getTxt(etContraseña);
-        String key = castMailToKey(correo);
+        String key = Util.castMailToKey(correo);
         Administrador admin = new Administrador(nombre,nombre,correo,usuario_administrador);
         registerUser(admin,correo,pass, key);
     }

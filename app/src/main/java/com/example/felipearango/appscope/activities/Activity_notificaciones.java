@@ -11,10 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.felipearango.appscope.R;
-import com.example.felipearango.appscope.Util.ManejoUsers;
-import com.example.felipearango.appscope.models.EmpresaSolicitud;
 import com.example.felipearango.appscope.models.Notificacion;
-import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
 import com.example.felipearango.appscope.models.RecyclerAdapterNotificaciones;
 import com.example.felipearango.appscope.models.Trabajo;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.usuario_corriente;
+import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
 public class Activity_notificaciones extends MainActivity {
@@ -43,13 +42,6 @@ public class Activity_notificaciones extends MainActivity {
         View contentView = inflater.inflate(R.layout.activity_notificaciones, null, false);
         mDrawer.addView(contentView, 0);
 
-       Notificacion noti = new Notificacion("Trabajo 1", "Empresa 1", 3);
-       Notificacion noti2 = new Notificacion("Trabajo 2", "Empresa 2", 4);
-        Notificacion noti3 = new Notificacion("Trabajo 3", "Empresa 3", 5);
-
-        notificacion.add(noti);
-        notificacion.add(noti2);
-        notificacion.add(noti3);
 
         iniciar();
         inicializatedFireBase();
@@ -66,8 +58,13 @@ public class Activity_notificaciones extends MainActivity {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
                 mLinearLayoutManager.getOrientation());
         mRecyclerAccounts.addItemDecoration(dividerItemDecoration);
-        startArrayJobs();
-        startnotifiOferts(idJobs);
+        if(TIPO_USUARIO == usuario_empresa){
+            startArrayJobs();
+            startnotifiOferts(idJobs);
+        }else if(TIPO_USUARIO == usuario_corriente){
+            notifiersUser();
+        }
+
     }
 
     private void startArrayJobs(){
@@ -75,19 +72,18 @@ public class Activity_notificaciones extends MainActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(TIPO_USUARIO == 0){
-                }else{
-                    for (DataSnapshot etiquetasChild: dataSnapshot.getChildren()) {
-                        for (DataSnapshot empresasChild: etiquetasChild.getChildren() ) {
-                            if(user.getUid().equals(empresasChild.getKey())){
-                                for (DataSnapshot jobsEtiqueta: empresasChild.getChildren()) {
+
+                    for (DataSnapshot etiquetasChild : dataSnapshot.getChildren()) {
+                        for (DataSnapshot empresasChild : etiquetasChild.getChildren()) {
+                            if (user.getUid().equals(empresasChild.getKey())) {
+                                for (DataSnapshot jobsEtiqueta : empresasChild.getChildren()) {
                                     idJobs.add(jobsEtiqueta.getKey());
                                 }
                             }
                         }
                     }
                     idJobs = quitarRepetidos(idJobs);
-                }
+
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -105,14 +101,9 @@ public class Activity_notificaciones extends MainActivity {
                     for(String idOfJob: strIdJob){
                         if(idOfJob.equals(jobsChild.getKey())){
                             tb = jobsChild.getValue(Trabajo.class);
-                            Log.e("ETERZ",tb.getId());
                             Notificacion noti = new Notificacion(tb.getTitulo(),
-                                    tb.getId(),jobsChild.child("Ofertas").getChildrenCount());
-                            //EmpresaSolicitud emp = new EmpresaSolicitud("Nombre");
-                            //notificaciones.add(emp);
+                                    tb.getId(),"", jobsChild.child("Ofertas").getChildrenCount());
                             notificacion.add(noti);
-
-
                         }
                     }
 
@@ -125,5 +116,33 @@ public class Activity_notificaciones extends MainActivity {
         });
     }
 
+
+    private void notifiersUser(){
+        databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Trabajo tb = null;
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                for (DataSnapshot jobs : dataSnapshot.getChildren()) {
+                   if(jobs.child("Ofertas") != null){
+                       for (DataSnapshot  ofertantes : jobs.child("Ofertas").getChildren()) {
+                           int estado = Integer.parseInt(ofertantes.child("Estado").getValue().toString());
+                           if(ofertantes.getKey().equals(user.getUid()) && estado >= 1){
+                               tb = jobs.getValue(Trabajo.class);
+                               Notificacion noti = new Notificacion(tb.getTitulo(),
+                                       tb.getIdEmpresa(), tb.getNameEmpresa(), estado);
+                               notificacion.add(noti);
+                           }
+                       }
+                   }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 }

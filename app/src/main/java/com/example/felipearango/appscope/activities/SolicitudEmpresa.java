@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.felipearango.appscope.R;
-import com.example.felipearango.appscope.models.EmpresaSolicitud;
+import com.example.felipearango.appscope.models.UsuariosSolicitudEnEM;
 import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 
@@ -19,10 +19,7 @@ public class SolicitudEmpresa extends MainActivity {
 
     private RecyclerAdapterEmpresa mAdapter;
     private RecyclerView mRecyclerSolicitudes;
-    /**
-     * Este arraylist será de empresas!!
-     */
-    private ArrayList<Object> solicitud = new ArrayList<>();
+    private ArrayList<UsuariosSolicitudEnEM> solicitud = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private LinearLayout ll;
     @Override

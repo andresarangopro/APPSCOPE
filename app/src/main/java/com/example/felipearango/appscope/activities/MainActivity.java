@@ -2,6 +2,7 @@ package com.example.felipearango.appscope.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
+import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Administrador;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
@@ -210,7 +212,7 @@ public class MainActivity extends AppCompatActivity
                     putDatesUsE(uE);
                     putImg(uE);
                 }else{
-                    Administrador admin =dataSnapshot.child(user.getUid()).getValue(Administrador.class);
+                    Administrador admin =dataSnapshot.child(Util.castMailToKey(user.getEmail())).getValue(Administrador.class);
                     putDatesAdmin(admin);
                 }
             }
@@ -253,9 +255,24 @@ public class MainActivity extends AppCompatActivity
        if(admin != null){
            txtNavName.setText(admin.getNombre()+" "+admin.getApellido());
            txtNavMail.setText(admin.getCorreo());
+
        }
     }
 
+    private void quitarAUth(){
+        FirebaseAuth.AuthStateListener mauthListenr;
+        mauthListenr = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // Sign in logic here.
+                }
+            }
+        };
+
+        firebaseAuth.removeAuthStateListener(mauthListenr);
+    }
 
     private void signout(){
         firebaseAuth.signOut();

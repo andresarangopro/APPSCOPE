@@ -13,9 +13,10 @@ public class Trabajo {
     private String localizacion;
     private String estado;
     private String idEmpresa;
+    private String nameEmpresa;
 
     public Trabajo(String id, int aspirantes, String titulo, String descripción, String localizacion,
-                   String estado, String idEmpresa) {
+                   String estado, String idEmpresa, String nameEmpresa) {
         this.id = id;
         this.aspirantes = aspirantes;
         this.titulo = titulo;
@@ -23,6 +24,7 @@ public class Trabajo {
         this.localizacion = localizacion;
         this.estado = estado;
         this.idEmpresa = idEmpresa;
+        this.nameEmpresa = nameEmpresa;
     }
 
     public Trabajo(){}
@@ -81,5 +83,13 @@ public class Trabajo {
 
     public void setIdEmpresa(String idEmpresa) {
         this.idEmpresa = idEmpresa;
+    }
+
+    public String getNameEmpresa() {
+        return nameEmpresa;
+    }
+
+    public void setNameEmpresa(String nameEmpresa) {
+        this.nameEmpresa = nameEmpresa;
     }
 }

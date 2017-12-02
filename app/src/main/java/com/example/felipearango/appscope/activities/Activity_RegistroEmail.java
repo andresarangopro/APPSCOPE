@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,7 +33,7 @@ import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_U
 
 public class Activity_RegistroEmail extends AppCompatActivity implements View.OnClickListener{
 
-    private EditText email, contraseña, confirmar;
+    private EditText etEmail, etContraseña, etConfirmar;
     private TextView alreadyRegister;
     private Button btnRegister;
     private ArrayList<EditText> field = new ArrayList<>();
@@ -56,9 +57,9 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
     }
 
     private void startComponents(){
-        email = (EditText) findViewById(R.id.mail);
-        contraseña = (EditText)findViewById(R.id.contraseña);
-        confirmar = (EditText)findViewById(R.id.contraseñaC);
+        etEmail = (EditText) findViewById(R.id.mail);
+        etContraseña = (EditText)findViewById(R.id.contraseña);
+        etConfirmar = (EditText)findViewById(R.id.contraseñaC);
         alreadyRegister = (TextView)findViewById(R.id.tvAlreadyRegister);
         alreadyRegister.setOnClickListener(this);
         iBtnCompany = (Button) findViewById(R.id.iBtnCompany);
@@ -66,9 +67,9 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
         iBtnUser = (Button) findViewById(R.id.iBtnUser);
         iBtnUser.setOnClickListener(this);
 
-        field.add(email);
-        field.add(contraseña);
-        field.add(confirmar);
+        field.add(etEmail);
+        field.add(etContraseña);
+        field.add(etConfirmar);
     }
 
     @Override
@@ -78,14 +79,19 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
             switch(vista){
                 case R.id.iBtnCompany:{
                     TIPO_USUARIO = 1;
-                    registerUser(email.getText().toString(), contraseña.getText().toString());
+                    if(Util.validarCorreo(etEmail)){
+                        registerUser(etEmail.getText().toString(), etContraseña.getText().toString());
+                    }
+
                    // startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterUC.class));
                     break;
                 }
                 case R.id.iBtnUser: {
                     TIPO_USUARIO = 0;
                     //startActivity(new Intent(getApplicationContext(), Activity_ScreenRegisterE.class));
-                    registerUser(email.getText().toString(), contraseña.getText().toString());
+                    if(Util.validarCorreo(etEmail)) {
+                        registerUser(etEmail.getText().toString(), etContraseña.getText().toString());
+                    }
                     break;
                 }
             }
@@ -101,8 +107,12 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
             }
         }
         if(valido){
-            if(!contraseña.getText().toString().equals(confirmar.getText().toString())){
-                confirmar.setError("Contraseñas no concuerdan");
+            String pass = Util.getTxt(etContraseña);
+            if(pass.length() < 6 ){
+                etContraseña.setError("La contraseña debe contener almenos 6 caracteres");
+                valido = false;
+            } else  if(!etContraseña.getText().toString().equals(etConfirmar.getText().toString())){
+                etConfirmar.setError("Contraseñas no concuerdan");
                 valido = false;
             }
         }
@@ -124,12 +134,13 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(Activity_RegistroEmail.this, "REGISTER SUCCESFULLY", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Activity_RegistroEmail.this, "SE HA REGISTRO EXITOSAMENTE!GOO", Toast.LENGTH_SHORT).show();
                             // finish();
                             //startActivity(new Intent(Activity_ScreenRegisterUC.this, MainActivity.class));
                             loginUser(mail1,pass1, TIPO_USUARIO);
                         } else {
-                            Toast.makeText(Activity_RegistroEmail.this, "COULD NOT REGISTER. PLEASE TRY AGAIN", Toast.LENGTH_LONG).show();
+                            progressDialog.dismiss();
+                            Toast.makeText(Activity_RegistroEmail.this, "NO SE PUDO COMPLETAR EL REGISTRO. POR FAVOR VUELVA A INTENTAR", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
@@ -151,7 +162,6 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
                             }else{
                                 creaUEmpresa();
                             }
-
                             progressDialog.dismiss();
                         }else{
                             Toast.makeText(Activity_RegistroEmail.this,"Datos errados",Toast.LENGTH_LONG).show();
