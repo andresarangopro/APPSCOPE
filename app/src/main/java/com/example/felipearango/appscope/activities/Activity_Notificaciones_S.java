@@ -33,7 +33,9 @@ public class Activity_Notificaciones_S extends MainActivity {
 
     private RecyclerAdapterEmpresa mAdapterEmp;
     private RecyclerView mRecyclerAccounts;
+
     private ArrayList<UsuariosSolicitudEnEM> notificaciones = new ArrayList<>();
+
     private LinearLayoutManager mLinearLayoutManager;
     private LinearLayout ll;
     private ArrayList<String> idWorkers = new ArrayList<>();

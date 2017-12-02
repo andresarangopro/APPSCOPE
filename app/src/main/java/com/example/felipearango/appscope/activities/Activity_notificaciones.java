@@ -43,7 +43,6 @@ public class Activity_notificaciones extends MainActivity {
         mDrawer.addView(contentView, 0);
 
 
-
         iniciar();
         inicializatedFireBase();
     }

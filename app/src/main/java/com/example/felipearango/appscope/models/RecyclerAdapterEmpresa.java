@@ -92,6 +92,23 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
             }
         });
 
+        final UsuariosSolicitudEnEM usuariosSolicitudEnEM = mUsuariosSolicitudEnEM.get(position);
+        holder.tvNombre.setText("NOMBRE: "+usuariosSolicitudEnEM.getNombre());
+        holder.tvApellido.setText("APELLIDO: "+usuariosSolicitudEnEM.getApellido());
+        holder.tvCedula.setText("CELULAR: "+usuariosSolicitudEnEM.getCedula());
+        holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                inicializatedFireBase();
+               insertarUs(notificacion_oferta_aceptada,mUsuariosSolicitudEnEM.get(position).getIdJob()
+                       ,mUsuariosSolicitudEnEM.get(position).getId() );
+                mUsuariosSolicitudEnEM.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mUsuariosSolicitudEnEM.size());
+            }
+        });
+
         holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,13 +147,11 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         TextView tvOcupacion = (TextView)popupWindow.getContentView().findViewById(R.id.tVOcupacionP);
         TextView tvFrase = (TextView)popupWindow.getContentView().findViewById(R.id.tVFrase);
 
-
+        
         tvNombre.setText(usuariosSolicitudEnEM.getNombre());
         tvOcupacion.setText(usuariosSolicitudEnEM.getApellido());
         tvFrase.setText(usuariosSolicitudEnEM.getCedula());
 
-
-//        tvDetalles.setText("AS");
         //////////////////////////////////////////////////////////////
         ////Esto muestra el pop Up window
         ////////////////////////////////////////////////////////////
