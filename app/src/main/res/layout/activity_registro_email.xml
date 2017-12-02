@@ -105,7 +105,7 @@
             android:layout_weight="25"
             android:background="@drawable/edittextborder"
             android:hint="Pregunta....:"
-            android:inputType="textPassword" />
+            android:inputType="textShortMessage" />
 
         <TextView
             android:layout_marginBottom="5dp"
@@ -124,7 +124,7 @@
             android:layout_weight="25"
             android:background="@drawable/edittextborder"
             android:hint="Confirmar contraseña:"
-            android:inputType="textPassword" />
+            android:inputType="textShortMessage" />
 
     </LinearLayout>
 

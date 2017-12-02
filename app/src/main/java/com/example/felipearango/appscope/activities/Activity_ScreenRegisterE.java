@@ -1,7 +1,13 @@
 package com.example.felipearango.appscope.activities;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,12 +17,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 
@@ -31,19 +42,22 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
     private EditText txtEtiquetaRU;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
-    private ArrayList<String> dataEtiquetas = new ArrayList<>();
+    private ArrayList<String> dataEtiquetasRedes = new ArrayList<>();
+    private RecyclerView rvEtiquetasRedes;
+    private RecyclerAddRemoveAdapter redesAdapter;
+    private LinearLayoutManager mLinearLayoutManagerRedes;
+    private StorageReference mStorage;
+    private Uri descargarPDF = null;
+    private Uri uri = null;
+    private  final static int PICK_PDF_CODE = 2342;
 
-    private RecyclerView rvEtiquetas;
-    private RecyclerAddRemoveAdapter mAdapter;
-    private LinearLayoutManager mLinearLayoutManager;
-
-    private int id = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_register_e);
         instanceXml();
         firebaseAuth = FirebaseAuth.getInstance();
+        mStorage = FirebaseStorage.getInstance().getReference();
         initializedDR();
     }
 
@@ -76,11 +90,11 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
         txtEtiquetaRU.setHint("Redes sociales");
 
-        mLinearLayoutManager = new LinearLayoutManager(this);
-        rvEtiquetas = (RecyclerView)findViewById(R.id.rv_add);
-        rvEtiquetas.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetas);
-        rvEtiquetas.setAdapter(mAdapter);
+        mLinearLayoutManagerRedes = new LinearLayoutManager(this);
+        rvEtiquetasRedes = (RecyclerView)findViewById(R.id.rv_add);
+        rvEtiquetasRedes.setLayoutManager(mLinearLayoutManagerRedes);
+        redesAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetasRedes);
+        rvEtiquetasRedes.setAdapter(redesAdapter);
     }
 
 
@@ -93,7 +107,7 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         String nitEmpresa = getTxtEdit(txtNIT);
         String mail="";
         String foto = "";
-        String redesSociales = "";
+        String redesSociales = Util.arrayToString(dataEtiquetasRedes);
         float rating = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
@@ -106,7 +120,8 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
     }
 
     private boolean comprobarcampos(){
-        return true;
+        return !Util.emptyCampMSG(txtnameE,"Ingrese nombre de la empresa") &&
+                !Util.emptyCampMSG(txtRazonSoc,"Ingrese razón de la empresa");
     }
 
     private void insertarUsEFireBase(Empresa uE,FirebaseUser user){
@@ -115,18 +130,26 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         startActivity(new Intent(getApplicationContext(),Activity_Perfil.class));
     }
 
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnAgregarNit:{
+                getPDF();
                 break;
             }
             case R.id.btnRegisterE: {
-                takeDates();
+                if(comprobarcampos()){
+                   if(uri != null){
+                       addNit(uri);
+                   }
+                    takeDates();
+                }
+
                 break;
             }
             case R.id.btnAddLabelR: {
-
                 if(!txtEtiquetaRU.getText().toString().equals("")){
                     addToEtiquetas(getTxtEdit(txtEtiquetaRU));
                     txtEtiquetaRU.setText("");
@@ -139,29 +162,66 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         }
     }
 
+    private void getPDF() {
+        //for greater than lolipop versions we need the permissions asked on runtime
+        //so if the permission is not available user will go to the screen to allow storage permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+            return;
+        }
+        //creating an intent for file chooser
+        Intent intent = new Intent();
+        intent.setType("application/pdf");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PDF_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //when the user choses the file
+        if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            //if a file is selected
+            if (data.getData() != null) {
+                //uploading the file
+                uri = data.getData();
+                txtNIT.setText(uri.getPath());
+                txtNIT.setEnabled(false);
+            }else{
+                Toast.makeText(this, "No se escohio ningún archivo", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void addNit(Uri path){
+        StorageReference filePath = mStorage.child("archivos").child(path.getLastPathSegment());
+        filePath.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                descargarPDF = taskSnapshot.getDownloadUrl();
+
+            }
+        });
+    }
+
     private void addToEtiquetas(String lbl){
         int position = 0;
-
-        dataEtiquetas.add(position,lbl);
-        mAdapter.notifyItemInserted(position);
-        mAdapter.notifyDataSetChanged();
-        rvEtiquetas.scrollToPosition(position);
+        dataEtiquetasRedes.add(position,lbl);
+        redesAdapter.notifyItemInserted(position);
+        redesAdapter.notifyDataSetChanged();
+        rvEtiquetasRedes.scrollToPosition(position);
         Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
 
     }
 
-    private String arrayEditTxtToStr(ArrayList<String> etiquetas){
-        String etiq = "";
-        for (int i = 0; i <etiquetas.size() ; i++) {
-            if(i+1 >= etiquetas.size()){
-                etiq += etiquetas.get(i);
-            }else{
-                etiq += etiquetas.get(i)+",";
-            }
-        }
-        Toast.makeText(this,etiq,Toast.LENGTH_LONG).show();
-        return etiq;
-    }
+
+
+
+
 
     /**
      *

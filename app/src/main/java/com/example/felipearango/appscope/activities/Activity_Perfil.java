@@ -1,5 +1,6 @@
 package com.example.felipearango.appscope.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -14,8 +15,6 @@ import android.widget.TextView;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.models.Empresa;
-import com.example.felipearango.appscope.models.EmpresaSolicitud;
-import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
 import com.example.felipearango.appscope.models.RecyclerShowInfo;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,18 +27,24 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.cuenta_certificada;
+import static com.example.felipearango.appscope.Util.Util.cuenta_espera_certif;
+import static com.example.felipearango.appscope.Util.Util.cuenta_no_certificada;
+import static com.example.felipearango.appscope.Util.Util.usuario_corriente;
+import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
 public class Activity_Perfil extends MainActivity {
 
-    private ImageView imVPerfil;
+    private ImageView imVPerfil,iVCertif;
     private TabHost tHData;
     private Object obj;
-    private TextView  tVNamep, tVOcupacion, tVFrase;
+    private TextView  tVNamep, tVOcupacion, tVFrase, tVCert;
     private RecyclerView mRecyclerAccounts;
     private ArrayList<String> notificaciones = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerShowInfo mAdapterInf;
+    private static boolean estado = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,18 +55,17 @@ public class Activity_Perfil extends MainActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         initializedDR();
         startComponents();
-        datosUser();
+        if(!estado){
+            datosUser();
+        }
+
 
         putDataUser();
     }
 
 
     protected void putDataUser(){
-        if(TIPO_USUARIO == 0){
             eventPD("CorrientsUsers");
-        }else{
-            eventPD("CorrientsUsers");
-        }
     }
 
     public void eventPD(String usChildString){
@@ -73,10 +77,12 @@ public class Activity_Perfil extends MainActivity {
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                     putTxt(uC);
                     obj = uC;
+                    estado = true;
                 }else{
                     Empresa uE =  dataSnapshot.child(user.getUid()).getValue(Empresa.class);
                     putTxt(uE);
                     obj = uE;
+                    estado = true;
                 }
                 putImg(obj);
             }
@@ -87,6 +93,7 @@ public class Activity_Perfil extends MainActivity {
         });
     }
 
+
     private void putTxt(Object obj){
         if(obj instanceof UsuarioCorriente){
             tVNamep.setText(((UsuarioCorriente)obj).getNombre());
@@ -95,6 +102,13 @@ public class Activity_Perfil extends MainActivity {
         }else{
             tVNamep.setText(((Empresa)obj).getNombre());
             tVOcupacion.setText(((Empresa)obj).getMail());
+            if(((Empresa)obj).getCertificacion() == cuenta_no_certificada){
+                iVCertif.setImageResource(R.drawable.ic_x_button);
+            }else if(((Empresa)obj).getCertificacion() == cuenta_certificada){
+                iVCertif.setImageResource(R.drawable.ic_checked);
+            }else {
+                iVCertif.setImageResource(R.drawable.ic_stopwatch);
+            }
         }
     }
 
@@ -122,12 +136,19 @@ public class Activity_Perfil extends MainActivity {
         tVOcupacion = (TextView) findViewById(R.id.tVOcupacionP);
         tVFrase = (TextView) findViewById(R.id.tVFrase);
         imVPerfil = (ImageView) findViewById(R.id.imVPerfil);
-
-
+        iVCertif = (ImageView)findViewById(R.id.iVCertif);
+        tVCert = (TextView) findViewById(R.id.tVCert);
         mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Info);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
         mAdapterInf = new RecyclerShowInfo( this, notificaciones);
+
+        if(TIPO_USUARIO == usuario_corriente){
+            iVCertif.setVisibility(View.INVISIBLE);
+            tVCert.setVisibility(View.INVISIBLE);
+        }else if(TIPO_USUARIO == usuario_empresa){
+            tVFrase.setVisibility(View.INVISIBLE);
+        }
 
         mRecyclerAccounts.setAdapter(mAdapterInf);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),

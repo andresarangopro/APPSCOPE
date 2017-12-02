@@ -81,6 +81,8 @@
                     android:layout_weight="1"
                     android:background="@color/background"
                     android:drawableRight="@mipmap/ic_plus" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -102,6 +104,8 @@
 
 
                 </android.support.v7.widget.RecyclerView>
+
+
 
             </LinearLayout>
 

@@ -1,29 +1,39 @@
 package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.example.felipearango.appscope.R;
-import com.example.felipearango.appscope.models.EmpresaSolicitud;
+import com.example.felipearango.appscope.models.UsuariosSolicitudEnEM;
 import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_enEspera;
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
+
 public class Activity_Notificaciones_S extends MainActivity {
 
     private RecyclerAdapterEmpresa mAdapterEmp;
     private RecyclerView mRecyclerAccounts;
-    private ArrayList<EmpresaSolicitud> notificaciones = new ArrayList<>();
+    private ArrayList<UsuariosSolicitudEnEM> notificaciones = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private LinearLayout ll;
     private ArrayList<String> idWorkers = new ArrayList<>();
@@ -34,10 +44,6 @@ public class Activity_Notificaciones_S extends MainActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_notificaciones_siguiente, null, false);
         mDrawer.addView(contentView, 0);
-       /* notificaciones.add(new EmpresaSolicitud("Nombre 1"));
-        notificaciones.add(new EmpresaSolicitud("Nombre 2"));
-        notificaciones.add(new EmpresaSolicitud("Nombre 3"));*/
-
         ll = (LinearLayout)findViewById(R.id.llLayout);
         iniciar();
 
@@ -61,10 +67,15 @@ public class Activity_Notificaciones_S extends MainActivity {
         databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                String[]addList = new String[2];
                 for (DataSnapshot ofertChild: dataSnapshot.child(strIdJob).child("Ofertas").getChildren()) {
-                    idWorkers.add(ofertChild.getKey());
+                    int estado = Integer.parseInt(ofertChild.child("Estado").getValue().toString());
+                    if(estado == notificacion_oferta_enEspera){
+
+                        idWorkers.add(ofertChild.getKey());
+                    }
                 }
-                llenarRecycler();
+                llenarRecycler(strIdJob);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -73,13 +84,15 @@ public class Activity_Notificaciones_S extends MainActivity {
         });
     }
 
-    private void llenarRecycler() {
+
+
+    private void llenarRecycler(final String strIdJob) {
         databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (String idOfert : idWorkers) {
                     UsuarioCorriente us = dataSnapshot.child(idOfert).getValue(UsuarioCorriente.class);
-                    EmpresaSolicitud emp = new EmpresaSolicitud(us.getNombre());
+                    UsuariosSolicitudEnEM emp = new UsuariosSolicitudEnEM(us.getNombre(),us.getApellido(),us.getCelular(),us.getId(),us.getFoto(),strIdJob);
                     notificaciones.add(emp);
                 }
             }
@@ -90,5 +103,6 @@ public class Activity_Notificaciones_S extends MainActivity {
             }
         });
     }
+
 
 }

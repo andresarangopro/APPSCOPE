@@ -82,6 +82,7 @@ public class Activity_Login extends AppCompatActivity {
     private void verificaSignIn(){
         if(mn.firebaseAuth.getCurrentUser() != null){
             mn.account(Activity_Login.this);
+            finish();
         }
     }
     /**
@@ -114,7 +115,7 @@ public class Activity_Login extends AppCompatActivity {
      * @param pass
      */
     private void loginUser(String mail, String pass){
-        progressDialog.setMessage("Activity_Login user, please wait...");
+        progressDialog.setMessage("Ingresando, por favor espera");
         progressDialog.show();
 
         mn.firebaseAuth.signInWithEmailAndPassword(mail,pass)

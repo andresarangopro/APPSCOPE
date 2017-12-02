@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.example.felipearango.appscope.R;
-import com.example.felipearango.appscope.models.EmpresaSolicitud;
+import com.example.felipearango.appscope.models.UsuariosSolicitudEnEM;
 import com.example.felipearango.appscope.models.RecyclerAdapterEmpresa;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ public class SolicitudEmpresa extends MainActivity {
 
     private RecyclerAdapterEmpresa mAdapter;
     private RecyclerView mRecyclerSolicitudes;
-    private ArrayList<EmpresaSolicitud> solicitud = new ArrayList<>();
+    private ArrayList<UsuariosSolicitudEnEM> solicitud = new ArrayList<>();
     private LinearLayoutManager mLinearLayoutManager;
     private LinearLayout ll;
     @Override
@@ -31,13 +31,6 @@ public class SolicitudEmpresa extends MainActivity {
         mDrawer.addView(contentView, 0);
 
         ll = (LinearLayout) findViewById(R.id.llLayout);
-
-        EmpresaSolicitud n1 = new EmpresaSolicitud("Nombre 1");
-        EmpresaSolicitud n2 = new EmpresaSolicitud("Nombre 2");
-        EmpresaSolicitud n3 = new EmpresaSolicitud("Nombre 3");
-        solicitud.add(n1);
-        solicitud.add(n2);
-        solicitud.add(n3);
 
         iniciarRv();
     }
