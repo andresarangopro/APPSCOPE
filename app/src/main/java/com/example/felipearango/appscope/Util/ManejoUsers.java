@@ -2,20 +2,17 @@ package com.example.felipearango.appscope.Util;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.felipearango.appscope.activities.Activity_Admin;
-import com.example.felipearango.appscope.activities.Activity_AgregarAdmin;
 import com.example.felipearango.appscope.activities.Activity_Perfil;
 import com.example.felipearango.appscope.activities.Activity_ScreenRegisterE;
 import com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import static com.example.felipearango.appscope.Util.Util.usuario_administrador;
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 import static com.example.felipearango.appscope.activities.Activity_Login.calledAlready;
 
@@ -44,9 +42,14 @@ public class ManejoUsers {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 Log.e("UA", user.getUid());
-                if(dataSnapshot.child(user.getUid()).child("tipoUser").getValue() == null){
-
-                }else{
+                if(dataSnapshot.child(Util.castMailToKey(user.getEmail())).child("tipoUser").getValue() != null){
+                        int tipouser = Integer.parseInt(dataSnapshot.child(Util.castMailToKey(user.getEmail())).child("tipoUser").getValue().toString());
+                        TIPO_USUARIO = tipouser;
+                    if(tipouser == usuario_administrador){
+                        Toast.makeText(context,"ADMIN",Toast.LENGTH_SHORT).show();
+                        context.startActivity(new Intent(context, Activity_Admin.class));
+                    }
+                }else if(dataSnapshot.child(user.getUid()).child("tipoUser").getValue() != null){
                     //int tipoUser = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getTipoUser();
                     int tipoUser = Integer.parseInt(dataSnapshot.child(user.getUid()).child("tipoUser").getValue().toString());
                     String estadoCuenta = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getEstadoCuenta();
@@ -64,8 +67,6 @@ public class ManejoUsers {
                         }else{
                             context.startActivity(new Intent(context,Activity_Perfil.class));
                         }
-                    }else{
-                        context.startActivity(new Intent(context, Activity_Admin.class));
                     }
                 }
 
@@ -95,14 +96,5 @@ public class ManejoUsers {
         databaseReference.child("CorrientsUsers").child(idEmpresa).child(idNodo).setValue(valor);
     }
 
-
-    public void getUser(Context context){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setDisplayName("Jane Q. User")
-                .build();
-
-    }
 
 }

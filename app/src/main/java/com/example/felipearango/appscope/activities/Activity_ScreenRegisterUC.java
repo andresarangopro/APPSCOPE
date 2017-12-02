@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
@@ -153,7 +154,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
             }
         }else if(v == btnAddLabelR){
             if(!txtEtiquetaRU.getText().toString().equals("")){
-                addToEtiquetas(getTxtEdit(txtEtiquetaRU));
+                addToEtiquetas(Util.parametrizacionEtiqueta(getTxtEdit(txtEtiquetaRU)));
                 txtEtiquetaRU.setText("");
             } else{
                 txtEtiquetaRU.setError("Campo vacío");
@@ -203,17 +204,6 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
 
     private void actualizarFecha(String fecha){
         lblDateBorn.setText(fecha);
-    }
-
-    private boolean comprobarCampos(){
-        String name =getTxtEdit(txtName);
-        String apellido = getTxtEdit(txtPrimerA);
-        String dateBorn = lblDateBorn.getText().toString();
-        String universidad = getTxtEdit(txtUniversidad);
-        String celular = getTxtEdit(txtPhone);
-
-        return !campEmpty(name) && !campEmpty(apellido) && !campEmpty(dateBorn) && !campEmpty(universidad)
-                    && !campEmpty(celular);
     }
 
     public void updateDatesUser(){

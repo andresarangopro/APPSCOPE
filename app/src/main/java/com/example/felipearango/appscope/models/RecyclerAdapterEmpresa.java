@@ -1,6 +1,7 @@
 package com.example.felipearango.appscope.models;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -14,10 +15,20 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.activities.Activity_Notificaciones_S;
+import com.example.felipearango.appscope.activities.Activity_ScreenRegisterE;
+import com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
+import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_aceptada;
+import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_rechazada;
+import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
+import static com.example.felipearango.appscope.activities.Activity_Login.calledAlready;
 
 /**
  * Created by Sebastian Luna R on 11/11/2017.
@@ -25,45 +36,35 @@ import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapterEmpresa.SolicitudAEmpresaHolder> {
 
-    private ArrayList<UsuarioCorriente> usuario = new ArrayList<>();
-    private ArrayList<Empresa> empresa = new ArrayList<>();
+    private ArrayList<UsuariosSolicitudEnEM> mUsuariosSolicitudEnEM;
     private Context mContext;
     private LinearLayout ll;
-
-    public RecyclerAdapterEmpresa(Context context, LinearLayout linearLayout,ArrayList<Object> mEmpresaSolicitud) {
-
-        clonarListaEmpresa(mEmpresaSolicitud);
-
+    private DatabaseReference databaseReference;
+    private FirebaseDatabase firebaseDatabase;
+    public RecyclerAdapterEmpresa(Context context, LinearLayout linearLayout,ArrayList<UsuariosSolicitudEnEM> mUsuariosSolicitudEnEM) {
+        this.mUsuariosSolicitudEnEM = mUsuariosSolicitudEnEM;
         mContext = context;
         ll = linearLayout;
     }
 
-    private void clonarListaEmpresa(ArrayList<Object> mEmpresa){
-
-        for (Object obj : mEmpresa) {
-            if(obj instanceof UsuarioCorriente){
-                usuario.add((UsuarioCorriente)obj);
-            }else if(obj instanceof Empresa){
-                empresa.add((Empresa)obj);
-            }
-        }
-    }
-
     public static class SolicitudAEmpresaHolder extends RecyclerView.ViewHolder {
-
         private Button btnAceptar, btnRechazar;
         private TextView tvNombre;
+        private TextView tvApellido;
+        private TextView tvCedula;
         private View thisView;
 
         public SolicitudAEmpresaHolder(View itemView) {
             super(itemView);
+
             btnAceptar = (Button) itemView.findViewById(R.id.btnAceptar);
             btnRechazar = (Button) itemView.findViewById(R.id.btnRechazar);
             tvNombre = (TextView) itemView.findViewById(R.id.tvNombre);
+            tvApellido = (TextView) itemView.findViewById(R.id.tvApellido);
+            tvCedula = (TextView) itemView.findViewById(R.id.tvCedula);
             thisView = itemView;
         }
     }
-
 
     @Override
     public SolicitudAEmpresaHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -74,65 +75,47 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
 
     @Override
     public void onBindViewHolder(SolicitudAEmpresaHolder holder, final int position) {
+        final UsuariosSolicitudEnEM usuariosSolicitudEnEM = mUsuariosSolicitudEnEM.get(position);
+        holder.tvNombre.setText("NOMBRE: "+usuariosSolicitudEnEM.getNombre());
+        holder.tvApellido.setText("APELLIDO: "+usuariosSolicitudEnEM.getApellido());
+        holder.tvCedula.setText("CELULAR: "+usuariosSolicitudEnEM.getCedula());
+        holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-        if(empresa.isEmpty()){
-            final UsuarioCorriente empresaSolicitud = usuario.get(position);
-            holder.tvNombre.setText(empresaSolicitud.getNombre());
-            holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    /*
-                    Acá pasa lo de aceptar
-                     */
-                }
-            });
+                inicializatedFireBase();
+               insertarUs(notificacion_oferta_aceptada,mUsuariosSolicitudEnEM.get(position).getIdJob()
+                       ,mUsuariosSolicitudEnEM.get(position).getId() );
+                mUsuariosSolicitudEnEM.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mUsuariosSolicitudEnEM.size());
+            }
+        });
 
-            holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    usuario.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, usuario.size());
-                }
-            });
+        holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insertarUs(notificacion_oferta_rechazada,mUsuariosSolicitudEnEM.get(position).getIdJob()
+                        ,mUsuariosSolicitudEnEM.get(position).getId() );
+                mUsuariosSolicitudEnEM.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mUsuariosSolicitudEnEM.size());
+                inicializatedFireBase();
 
-            holder.thisView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showPopUp(usuario.get(position));
-                }
-            });
-        }else{
-            final Empresa empresaSolicitud = empresa.get(position);
-            holder.tvNombre.setText(empresaSolicitud.getNombre());
-            holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    /*
-                    Acá pasa lo de aceptar
-                     */
-                }
-            });
+            }
+        });
 
-            holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    empresa.remove(position);
-                    notifyItemRemoved(position);
-                    notifyItemRangeChanged(position, empresa.size());
-                }
-            });
+        holder.thisView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            holder.thisView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showPopUp(empresa.get(position));
-                }
-            });
-        }
+              showPopUp(mUsuariosSolicitudEnEM.get(position));
+            }
+        });
     }
 
-    private void showPopUp(Object user) {
+
+    public void showPopUp( UsuariosSolicitudEnEM usuariosSolicitudEnEM) {
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_empresa, null);
@@ -141,33 +124,14 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         boolean focusable = true;
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
-        ImageView imPerfil = (ImageView)popupWindow.getContentView().findViewById(R.id.imVPerfil);
-        TextView tvNombre = ((TextView) popupWindow.getContentView().findViewById(R.id.tVNameP));
-        TextView tvOcupacion = ((TextView) popupWindow.getContentView().findViewById(R.id.tVOcupacionP));
-        TextView tvFrase = ((TextView) popupWindow.getContentView().findViewById(R.id.tVFrase));
+        //////////////////////////////////////////////////////////////
+        ////////Inicialización de los dos componentes de el pop up
+        //////////////////////////////////////////////////////////////
 
+        TextView tvDetalles = ((TextView) popupView.findViewById(R.id.tvDetalles));
+        ImageView imVPerfil = ((ImageView) popupView.findViewById(R.id.imVPerfil));
 
-
-        if(user instanceof UsuarioCorriente){
-            UsuarioCorriente usuarioCorriente = (UsuarioCorriente) user;
-            tvNombre.setText(usuarioCorriente.getNombre());
-            tvOcupacion.setText(usuarioCorriente.getOcupacion());
-            tvFrase.setText(usuarioCorriente.getFrase());
-        }else{
-            Empresa empresa = (Empresa) user;
-            tvNombre.setText(empresa.getNombre());
-            tvOcupacion.setText(empresa.getMail());
-            tvFrase.setText(empresa.getEstadoCuenta());
-        }
-
-
-
-
-
-
-
-        //Falta la foto!!
-
+//        tvDetalles.setText("AS");
         //////////////////////////////////////////////////////////////
         ////Esto muestra el pop Up window
         ////////////////////////////////////////////////////////////
@@ -185,12 +149,23 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         });
     }
 
+
+    private void insertarUs(int estado,String idTrabajo,String idWorker){
+        databaseReference.child("Jobs").child(idTrabajo).child("Ofertas").child(idWorker).child("Estado").setValue(estado);
+
+    }
+
+    protected void inicializatedFireBase(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        if (!calledAlready) {
+            firebaseDatabase.setPersistenceEnabled(true);
+            calledAlready = true;
+        }
+        databaseReference = firebaseDatabase.getReference();
+    }
     @Override
     public int getItemCount() {
-        if(!usuario.isEmpty()){
-            return usuario.size();
-        }else{
-            return empresa.size();
-        }
+        return mUsuariosSolicitudEnEM.size();
     }
+
 }

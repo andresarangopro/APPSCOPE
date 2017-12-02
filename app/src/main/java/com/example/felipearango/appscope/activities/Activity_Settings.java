@@ -1,13 +1,19 @@
 package com.example.felipearango.appscope.activities;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
+import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,6 +26,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
@@ -33,7 +40,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -46,27 +52,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static com.example.felipearango.appscope.Util.Util.usuario_corriente;
+import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
+
 
 public class Activity_Settings extends MainActivity implements View.OnClickListener {
 
 
+    private static final int PICK_PDF_CODE = 2342;
     private ImageView iVSettingsPerfil;
     private StorageReference mStorage;
     private Object obj;
-    private Button btnSendImg;
+    private Button btnSendImg,btnAddFile;
     private Uri descargarFoto = null;
-    private EditText txtNameCP,txtOcupacionCP,txtEdadCP,txtFraseCP,txtUniversidadCP,txtCelularCP,txtUbicacionCP;
+    private EditText txtNameCP,txtOcupacionCP,txtEdadCP,txtFraseCP,txtUniversidadCP,
+            txtCelularCP, etHojaVidaCP,et_doc;
+    private TextView tVChangeImgP;
     private ArrayList<EditText> field = new ArrayList<>();
     private ArrayList<String> dataEtiquetas = new ArrayList<>();
     private  FirebaseAuth.AuthStateListener listener;
     protected static final int GALLERY_INTENT= 1;
-
+    private Uri descargarPDF = null;
     private LinearLayout lLayoutEtiquetas;
     private RecyclerView rvEtiquetas;
     private RecyclerAddRemoveAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
-
+    private Uri pathUriLocal = null;
+    private ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -77,23 +90,28 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         mDrawer.addView(contentView, 0);
         firebaseAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance().getReference();
-        initComponents();
-        initializedDR();
-        putDataUser();
-        chooseDate();
 
+        initComponents();
+        progressDialog = new ProgressDialog(this);
         mLinearLayoutManager = new LinearLayoutManager(this);
         rvEtiquetas = (RecyclerView)findViewById(R.id.rv_add);
         rvEtiquetas.setLayoutManager(mLinearLayoutManager);
         mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetas);
         rvEtiquetas.setAdapter(mAdapter);
+        initializedDR();
+        putDataUser();
+        chooseDate();
+
+
 
     }
     private void initComponents(){
         iVSettingsPerfil = (ImageView) findViewById(R.id.iVSettingsPerfil);
         btnSendImg = (Button) findViewById(R.id.btnSendImg);
+        btnAddFile = (Button) findViewById(R.id.btnAddFile);
 
         btnSendImg.setOnClickListener(this);
+        btnAddFile.setOnClickListener(this);
         iVSettingsPerfil.setOnClickListener(this);
 
         txtNameCP = (EditText) findViewById(R.id.txtNameCP);
@@ -102,12 +120,26 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         txtEdadCP = (EditText) findViewById(R.id.txtEdadCP);
         txtUniversidadCP = (EditText) findViewById(R.id.txtUniversidadCP);
         txtCelularCP = (EditText) findViewById(R.id.txtCelularCP);
-        txtUbicacionCP = (EditText) findViewById(R.id.txtUbicacionCP);
-
-        if(TIPO_USUARIO == 1){
-            txtUbicacionCP.setVisibility(View.INVISIBLE);
+        etHojaVidaCP = (EditText) findViewById(R.id.etHojaVida);
+        et_doc = (EditText)findViewById(R.id.et_doc);
+       // txtUniversidadCP.setOnClickListener(this);
+        tVChangeImgP = (TextView) findViewById(R.id.tVChangeImgP);
+        if(TIPO_USUARIO == usuario_empresa){
+            etHojaVidaCP.setVisibility(View.INVISIBLE);
             txtCelularCP.setVisibility(View.INVISIBLE);
-            txtUniversidadCP.setHint("Celular");
+            txtUniversidadCP.setHint("Nit");
+            txtUniversidadCP.setOnClickListener(this);
+            txtUniversidadCP.setKeyListener(null);
+            txtOcupacionCP.setHint("Razón Social");
+            txtFraseCP.setHint("Url Empresa");
+            txtEdadCP.setVisibility(View.INVISIBLE);
+            et_doc.setHint("Redes Sociales");
+            tVChangeImgP.setText("Redes");
+        }else if(TIPO_USUARIO == usuario_corriente){
+            etHojaVidaCP.setHint("Hoja de vida");
+            etHojaVidaCP.setKeyListener(null);
+            etHojaVidaCP.setOnClickListener(this);
+            tVChangeImgP.setText("Etiquetas");
         }
     }
 
@@ -115,7 +147,9 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     public void onClick(View v) {
 
         if(v.getId() == R.id.btnAddFile){
-            addToEtiquetas(getTxtEdit((EditText)findViewById(R.id.et_doc)));
+            if(!Util.emptyCampMSG(et_doc,"Campo vacío")){
+                addToEtiquetas(getTxtEdit((EditText)findViewById(R.id.et_doc)));
+            }
         }else if(v == iVSettingsPerfil){
             Intent intentGallery = new Intent(Intent.ACTION_PICK);
             intentGallery.setType("image/*");
@@ -126,19 +160,45 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
                         !Util.emptyCampMSG(txtEdadCP,getString(R.string.empty_camp)) &&
                         !Util.emptyCampMSG(txtCelularCP,getString(R.string.empty_camp))){
                          if( descargarFoto != null){
+                             progressDialog.setMessage("Actualizando imagen, por favor espera");
+                             progressDialog.show();
                              updateFoto("CorrientsUsers",obj,descargarFoto+"");
                          }
-                    updateData("CorrientsUsers",obj);
+                        progressDialog.setMessage("Actualizando información, por favor espera");
+                        progressDialog.show();
+                        updateData("CorrientsUsers",obj);
+                        if(pathUriLocal != null){
+                            progressDialog.setMessage("Actualizando Hoja de vida, por favor espera");
+                            progressDialog.show();
+                        addNit(pathUriLocal);
+                        // updatePDF("CorrientsUsers",obj,"anexos",descargarPDF+"");
+                        }
                 }
             }else{
                 if(!Util.emptyCampMSG(txtNameCP,getString(R.string.empty_camp)) ){
                     if(descargarFoto != null){
+                        progressDialog.setMessage("Actualizando imagen, por favor espera");
+                        progressDialog.show();
                        updateFoto("CorrientsUsers",obj,descargarFoto+"");
+
                     }
-                  //  updateData("EmpresaUsers",obj);
+                    progressDialog.setMessage("Actualizando información, por favor espera");
+                    progressDialog.show();
+                    updateData("CorrientsUsers",obj);
+                    if(pathUriLocal != null){
+                        progressDialog.setMessage("Actualizando nit, por favor espera");
+                        progressDialog.show();
+                        addNit(pathUriLocal);
+
+                    }
                 }
 
+
             }
+        }else if(v.getId() == R.id.txtUniversidadCP){
+            getPDF();
+        }else if(v.getId() == R.id.etHojaVida){
+            getPDF();
         }
 
 
@@ -151,7 +211,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         mAdapter.notifyItemInserted(position);
         mAdapter.notifyDataSetChanged();
         rvEtiquetas.scrollToPosition(position);
-        Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
+     //  Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -207,7 +267,6 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
                 putImg(obj);
                 putTxt(obj);
 
-                // putImage(userIn);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -231,15 +290,45 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
                 }
             });
         }
+
+        if (requestCode == PICK_PDF_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            //if a file is selected
+            if (data.getData() != null) {
+                //uploading the file
+                pathUriLocal = data.getData();
+
+                if(TIPO_USUARIO == usuario_empresa){
+                    txtUniversidadCP.setText(pathUriLocal.getPath());
+                }else {
+                    etHojaVidaCP.setText(pathUriLocal.getPath());
+                }
+                // txtNIT.setEnabled(false);
+            }else{
+                Toast.makeText(this, "No se escohio ningún archivo", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private void updateFoto(String kindUser,Object obja,String img){
         if(obja instanceof UsuarioCorriente){
             UsuarioCorriente uC =((UsuarioCorriente)obja);
             databaseReference.child(kindUser).child(uC.getId()).child("foto").setValue(img);
+
         }else{
             Empresa uE =((Empresa)obja);
             databaseReference.child(kindUser).child(uE.getId()).child("foto").setValue(img);
+
+        }
+        progressDialog.dismiss();
+    }
+
+    private void updatePDF(String kindUser,Object obja,String nitOrPdf,String pdf){
+        if(obja instanceof UsuarioCorriente){
+            UsuarioCorriente uC =((UsuarioCorriente)obja);
+           databaseReference.child(kindUser).child(uC.getId()).child(nitOrPdf).setValue(pdf);
+        }else{
+            Empresa uE =((Empresa)obja);
+            databaseReference.child(kindUser).child(uE.getId()).child(nitOrPdf).setValue(pdf);
         }
     }
 
@@ -254,8 +343,21 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
 
         }else{
             Empresa uE =((Empresa)obj);
-            //databaseReference.child("EmpresaUsers").child(uE.getId()).child("foto").setValue(img);
+            databaseReference.child(kindUser).child(uE.getId()).child("nombre").setValue(Util.getTxt(txtNameCP));
+            databaseReference.child(kindUser).child(uE.getId()).child("razonSocial").setValue(Util.getTxt(txtOcupacionCP));
+            databaseReference.child(kindUser).child(uE.getId()).child("urlEmpresa").setValue(Util.getTxt(txtFraseCP));
+            databaseReference.child(kindUser).child(uE.getId()).child("redesSociales").setValue(dataEtiquetas);
+
         }
+        progressDialog.dismiss();
+    }
+
+    private ArrayList<String> listEDToString(ArrayList<EditText> listEd){
+        ArrayList<String> listString = new ArrayList<>();
+        for (EditText ed: listEd ) {
+            listString.add(getTxtEdit(ed));
+        }
+        return listString;
     }
 
     private void putImg(Object obj){
@@ -286,13 +388,21 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             txtFraseCP.setText(user.getFrase());
             txtUniversidadCP.setText(user.getUniversidad());
             txtCelularCP.setText(user.getCelular());
-            txtUbicacionCP.setText("GPS");
+            etHojaVidaCP.setText(user.getAnexos());
+            for (String etiquetas: user.getEtiquetas()) {
+                addToEtiquetas(etiquetas);
+            }
         }else{
             Empresa user =  ((Empresa)obj);
             txtNameCP.setText(user.getNombre());
-            txtEdadCP.setText(user.getRazonSocial());
+            txtOcupacionCP.setText(user.getRazonSocial());
             txtFraseCP.setText(user.getUrlEmpresa());
-            txtUbicacionCP.setText("GPS");
+            txtUniversidadCP.setText(user.getNit());
+            if(user.getRedesSociales().size() >= 1 && !user.getRedesSociales().get(0).equals("")){
+                for (String redSocial:user.getRedesSociales()) {
+                    addToEtiquetas(redSocial);
+                }
+            }
         }
     }
 
@@ -313,7 +423,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     }
 
     /********************************
-     *Metodo que convierte un uri
+     *Metodo que convierte un pathUriLocal
      * en bitmp
      * @param uri
      * @return
@@ -327,4 +437,38 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         return bitmap;
     }
 
+
+    private void getPDF() {
+        //for greater than lolipop versions we need the permissions asked on runtime
+        //so if the permission is not available user will go to the screen to allow storage permission
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:" + getPackageName()));
+            startActivity(intent);
+            return;
+        }
+        //creating an intent for file chooser
+        Intent intent = new Intent();
+        intent.setType("application/pdf");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PDF_CODE);
+    }
+
+    public void addNit(Uri path){
+        StorageReference filePath = mStorage.child("archivos").child(path.getLastPathSegment());
+        filePath.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                descargarPDF = taskSnapshot.getDownloadUrl();
+                if (TIPO_USUARIO == usuario_corriente){
+                    updatePDF("CorrientsUsers",obj,"anexos",descargarPDF+"");
+                }else if(TIPO_USUARIO == usuario_empresa){
+                    updatePDF("CorrientsUsers",obj,"nit",descargarPDF+"");
+                }
+                progressDialog.dismiss();
+            }
+        });
+    }
 }

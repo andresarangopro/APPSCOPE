@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
+import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.Etiqueta;
 import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
@@ -108,9 +109,11 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
 
         listEtiquetas = etiquetas;
         if(usr instanceof Empresa){
-            t = new Trabajo(idJob,0,titulo,desc,"","", ((Empresa) usr).getId());
+            t = new Trabajo(idJob,0,titulo,desc,"","", ((Empresa) usr).getId(),((Empresa) usr).getNombre() );
         }else{
-            t = new Trabajo(idJob,0,titulo,desc,"","", ((UsuarioCorriente) usr).getId());
+            t = new Trabajo(idJob,0,titulo,desc,"","",
+                    ((UsuarioCorriente) usr).getId(),((UsuarioCorriente) usr).getNombre()
+                    +" "+((UsuarioCorriente) usr).getApellido() );
         }
         insertarJobFB(t);
         if(usr instanceof Empresa){
@@ -124,7 +127,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         }else{
             for (int i = 0; i < listEtiquetas.size() ; i++) {
                 Log.e("Etiquetas",listEtiquetas.get(i)+""+listEtiquetas.size());
-                String etiqueta = parametrizacionEtiqueta(listEtiquetas.get(i));
+                String etiqueta = Util.parametrizacionEtiqueta(listEtiquetas.get(i));
                 et = new Etiqueta(etiqueta,
                         ((UsuarioCorriente) usr).getId(), t.getId());
                 insertarEtiqFB(et);
@@ -150,7 +153,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
             }
             case R.id.btnAddLabelR:{
                     if(!txtEtiquetaRU.getText().toString().equals("")){
-                        String etPara = parametrizacionEtiqueta(getTxtEdit(txtEtiquetaRU));
+                        String etPara = Util.parametrizacionEtiqueta(getTxtEdit(txtEtiquetaRU));
                         addToEtiquetas(etPara);
                         txtEtiquetaRU.setText("");
                     } else{
@@ -223,19 +226,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         });
     }
 
-    private String parametrizacionEtiqueta(String etiqueta){
-        etiqueta = etiqueta.trim();
-        String sSubCadena = etiqueta;
-        String fisrtLetter = etiqueta;
 
-        fisrtLetter = fisrtLetter.substring(0,1);
-        fisrtLetter = fisrtLetter.toUpperCase();
-        sSubCadena = sSubCadena.substring(1,sSubCadena.length());
-        sSubCadena= sSubCadena.toLowerCase();
-
-        Toast.makeText(this, fisrtLetter+sSubCadena , Toast.LENGTH_LONG).show();
-        return fisrtLetter+sSubCadena;
-    }
 
     private void vaciasCampos(){
         for (int i = 0; i < listEdit.size() ; i++) {

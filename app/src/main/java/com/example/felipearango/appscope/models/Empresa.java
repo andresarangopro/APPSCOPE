@@ -49,7 +49,7 @@ public class Empresa {
         this.rating = rating;
         this.tipoUser = tipoUser;
         this.certificacion = certificacion;
-        this.redesSociales = new ArrayList<String>(Arrays.asList(redesSociales.split(" , ")));
+        this.redesSociales = new ArrayList<String>(Arrays.asList(redesSociales.split(",")));
     }
 
     public Empresa(){}
