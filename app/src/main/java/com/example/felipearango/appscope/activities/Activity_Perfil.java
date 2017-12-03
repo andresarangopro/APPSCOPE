@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.Notificacion;
+import com.example.felipearango.appscope.models.RecyclerAdapterNotificaciones;
+import com.example.felipearango.appscope.models.RecyclerAdapterPDF;
 import com.example.felipearango.appscope.models.RecyclerShowInfo;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
@@ -138,10 +141,7 @@ public class Activity_Perfil extends MainActivity {
         imVPerfil = (ImageView) findViewById(R.id.imVPerfil);
         iVCertif = (ImageView)findViewById(R.id.iVCertif);
         tVCert = (TextView) findViewById(R.id.tVCert);
-        mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Info);
-        mLinearLayoutManager = new LinearLayoutManager(this);
-        mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
-        mAdapterInf = new RecyclerShowInfo( this, notificaciones);
+
 
         if(TIPO_USUARIO == usuario_corriente){
             iVCertif.setVisibility(View.INVISIBLE);
@@ -149,11 +149,15 @@ public class Activity_Perfil extends MainActivity {
         }else if(TIPO_USUARIO == usuario_empresa){
             tVFrase.setVisibility(View.INVISIBLE);
         }
+     /*   mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Info);
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
+        mAdapterInf = new RecyclerShowInfo( this, notificaciones);
 
         mRecyclerAccounts.setAdapter(mAdapterInf);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
                 mLinearLayoutManager.getOrientation());
-        mRecyclerAccounts.addItemDecoration(dividerItemDecoration);
+        mRecyclerAccounts.addItemDecoration(dividerItemDecoration);*/
     }
 
 

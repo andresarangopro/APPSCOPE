@@ -5,11 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="10"
+
     android:orientation="vertical"
     android:layout_marginTop="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginLeft="16dp"
     tools:context="com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/llRegiterUC">
+
 
     <TableLayout
         android:layout_width="match_parent"
@@ -220,6 +226,6 @@
                 style="@style/btnTap1" />
         </LinearLayout>
     </TableLayout>
-
+    </LinearLayout>
 
 </ScrollView>

@@ -26,12 +26,22 @@
                 android:hint="Trabajos" />
 
             <Button
-                android:id="@+id/btnAddLabelR"
+            android:id="@+id/btnAddLabelR"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.15"
+            android:background="@null"
+            android:drawableRight="@mipmap/ic_plus" />
+
+            <Button
+                android:id="@+id/btnInfo"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
+                android:layout_weight="0.15"
                 android:background="@null"
-                android:drawableRight="@mipmap/ic_plus" />
+                android:paddingRight="3dp"
+                android:drawableRight="@mipmap/ic_info" />
+
         </LinearLayout>
 
     </LinearLayout>

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/llOfertar"
     android:layout_marginTop="16dp"
     android:layout_marginRight="16dp"
     android:layout_marginLeft="16dp"
@@ -97,6 +98,8 @@
                  android:id="@+id/btnAgregar"
                  android:layout_width="0dp"
                  android:layout_height="match_parent" />
+
+
          </LinearLayout>
     </TableLayout>
 </LinearLayout>

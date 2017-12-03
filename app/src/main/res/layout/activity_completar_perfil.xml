@@ -112,9 +112,16 @@
                 android:id="@+id/btnAddFile"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
+                android:layout_weight="0.15"
                 android:background="@null"
                 android:drawableRight="@mipmap/ic_archive" />
+            <Button
+                android:id="@+id/btnInfo"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.15"
+                android:background="@null"
+                android:drawableRight="@mipmap/ic_info" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

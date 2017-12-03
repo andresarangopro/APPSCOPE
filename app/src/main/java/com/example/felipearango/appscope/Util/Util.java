@@ -1,23 +1,17 @@
 package com.example.felipearango.appscope.Util;
 
-import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
-import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
+import android.os.Environment;
+import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 
+import java.io.File;
 import java.util.ArrayList;
-
-import static android.app.Activity.RESULT_OK;
-import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 
 
@@ -97,6 +91,18 @@ public class Util {
             }
         }
         return txt;
+    }
+
+    public static void agregarEtiquetaS(String lbl, ArrayList<String> dataEtiquetas, RecyclerAddRemoveAdapter mAdapter, RecyclerView rvEtiquetas, EditText et_doc){
+        int position = 0;
+
+        dataEtiquetas.add(position,lbl);
+        mAdapter.notifyItemInserted(position);
+        mAdapter.notifyDataSetChanged();
+        rvEtiquetas.scrollToPosition(position);
+        et_doc.setText("");
+        //  Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
+
     }
 
 }

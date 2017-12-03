@@ -2,6 +2,8 @@ package com.example.felipearango.appscope.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,7 +20,10 @@ import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.Etiqueta;
+import com.example.felipearango.appscope.models.Notificacion;
 import com.example.felipearango.appscope.models.OnSwipeTouchListener;
+import com.example.felipearango.appscope.models.RecyclerAdapterNotificaciones;
+import com.example.felipearango.appscope.models.RecyclerAdapterPDF;
 import com.example.felipearango.appscope.models.Trabajo;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +34,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+import static com.example.felipearango.appscope.Util.Util.cuenta_certificada;
+import static com.example.felipearango.appscope.Util.Util.cuenta_no_certificada;
 import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_enEspera;
 
 public class Activity_Ofertas extends MainActivity implements View.OnClickListener{
@@ -53,6 +60,8 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
         iniciarComponentes();
         inicializatedFireBase();
         eventETRE("CorrientsUsers");
+
+
 
 
         (findViewById(R.id.llMove)).setOnTouchListener(new OnSwipeTouchListener(Activity_Ofertas.this) {
@@ -86,9 +95,12 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_empresa, null);
             int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-            int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int height = LinearLayout.LayoutParams.MATCH_PARENT;
             boolean focusable = true;
             final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+
+
 
             //////////////////////////////////////////////////////////////
             ////////Inicialización de los dos componentes de el pop up
@@ -98,6 +110,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
              TextView tVFrase= ((TextView)popupView.findViewById(R.id.tVFrase));
             tVFrase.setVisibility(View.INVISIBLE);
             ImageView imVPerfil = ((ImageView) popupView.findViewById(R.id.imVPerfil));
+            ImageView iVPopUpCert = ((ImageView) popupView.findViewById(R.id.iVPopUpCert));
 
            tvDetalles.setText(empres.getNombre());
               if(!empres.getFoto().equals("")){
@@ -106,6 +119,14 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
                         .transform(new CircleTransform())
                         .into(imVPerfil);
            }
+
+            if(empres.getCertificacion() == cuenta_no_certificada){
+                iVPopUpCert.setImageResource(R.drawable.ic_x_button);
+            }else if(empres.getCertificacion() == cuenta_certificada){
+                iVPopUpCert.setImageResource(R.drawable.ic_checked);
+            }else {
+                iVPopUpCert.setImageResource(R.drawable.ic_stopwatch);
+            }
 
             //////////////////////////////////////////////////////////////
             ////Esto muestra el pop Up window
@@ -219,7 +240,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if(view == btnOfertar){
-            if(trabajos.size() > counter) {
+            if(trabajos.size() >= counter) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 insertarOferta(trabajos.get(counter), user);
                 showJob(++counter);

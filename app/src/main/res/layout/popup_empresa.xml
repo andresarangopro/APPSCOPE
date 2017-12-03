@@ -9,7 +9,7 @@
     android:layout_marginTop="30dp"
     android:layout_marginBottom="16dp"
     android:background="@drawable/pop_up_style"
-    android:weightSum="100"
+
     android:orientation="vertical"
     tools:context="com.example.felipearango.appscope.activities.Activity_Perfil">
 
@@ -20,10 +20,9 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="16dp"
         android:orientation="vertical"
-        android:layout_weight="100"
         android:weightSum="100"
         android:layout_width="match_parent"
-        android:layout_height="0dp">
+        android:layout_height="match_parent">
         <!--weight: 1
          - Espacio -->
         <LinearLayout
@@ -38,19 +37,18 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_weight="40"
-            android:weightSum="2"
             android:layout_width="match_parent"
             android:layout_height="0dp">
             <ImageView
                 android:id="@+id/imVPerfil"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:src="@drawable/user" />
             <ScrollView
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="5dp"
-                android:layout_weight="1"
+                android:layout_weight="0.5"
                 android:layout_width="0dp"
                 android:layout_height="match_parent">
                 <LinearLayout
@@ -59,6 +57,24 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:textColor="@color/colorAccent"
+                            android:id="@+id/tVCertificada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Certificada: "
+                            android:textSize="18dp" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/iVPopUpCert"/>
+                    </LinearLayout>
                     <TextView
                         android:textColor="@color/colorAccent"
                         android:gravity="center_horizontal"
@@ -86,14 +102,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="20"
-            android:orientation="vertical"
-            android:weightSum="2">
+            android:orientation="vertical"   >
 
             <RatingBar
 
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:layout_gravity="center_horizontal"
                 android:isIndicator="true"
                 android:numStars="5"
@@ -106,7 +121,7 @@
                 android:id="@+id/tVFrase"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="0.4"
                 android:text="Frase:''   ''"
                 android:textSize="20dp" />
 
@@ -115,7 +130,7 @@
         <!--Weigth: 3-->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_Info"
-            android:layout_weight="50"
+            android:layout_weight="30"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp">

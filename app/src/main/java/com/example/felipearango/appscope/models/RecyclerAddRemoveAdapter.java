@@ -30,12 +30,13 @@ public class RecyclerAddRemoveAdapter extends RecyclerView.Adapter<RecyclerAddRe
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public EditText etData;
-        public Button btnAdd;
+        public Button btnAdd, btnInfo;
 
         public ViewHolder(View itemView) {
             super(itemView);
             etData = (EditText) itemView.findViewById(R.id.txtEtiquetasRU1);
             btnAdd = (Button) itemView.findViewById(R.id.btnAddLabelR1);
+
         }
     }
 
@@ -59,6 +60,7 @@ public class RecyclerAddRemoveAdapter extends RecyclerView.Adapter<RecyclerAddRe
                 notifyItemRangeChanged(position,text.size());
             }
         });
+
     }
 
     @Override

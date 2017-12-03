@@ -13,11 +13,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,6 +29,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,9 +37,13 @@ import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Empresa;
+import com.example.felipearango.appscope.models.RecyclerAdapterInfo;
 import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,13 +72,15 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     private ImageView iVSettingsPerfil;
     private StorageReference mStorage;
     private Object obj;
-    private Button btnSendImg,btnAddFile;
+    private Button btnSendImg,btnAddFile, btnInfo;
     private Uri descargarFoto = null;
     private EditText txtNameCP,txtOcupacionCP,txtEdadCP,txtFraseCP,txtUniversidadCP,
             txtCelularCP, etHojaVidaCP,et_doc;
     private TextView tVChangeImgP;
     private ArrayList<EditText> field = new ArrayList<>();
     private ArrayList<String> dataEtiquetas = new ArrayList<>();
+    private ArrayList<String> listEtiquetasFirebase = new ArrayList<>();
+
     private  FirebaseAuth.AuthStateListener listener;
     protected static final int GALLERY_INTENT= 1;
     private Uri descargarPDF = null;
@@ -80,6 +90,11 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     private LinearLayoutManager mLinearLayoutManager;
     private Uri pathUriLocal = null;
     private ProgressDialog progressDialog;
+    private LinearLayout ll;
+    RecyclerView recycler;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager lManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -90,7 +105,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         mDrawer.addView(contentView, 0);
         firebaseAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance().getReference();
-
+        ll = (LinearLayout)findViewById(R.id.llsettings);
         initComponents();
         progressDialog = new ProgressDialog(this);
         mLinearLayoutManager = new LinearLayoutManager(this);
@@ -101,7 +116,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         initializedDR();
         putDataUser();
         chooseDate();
-
+        getEtiquetas();
 
 
     }
@@ -109,10 +124,11 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         iVSettingsPerfil = (ImageView) findViewById(R.id.iVSettingsPerfil);
         btnSendImg = (Button) findViewById(R.id.btnSendImg);
         btnAddFile = (Button) findViewById(R.id.btnAddFile);
-
+        btnInfo = (Button)findViewById(R.id.btnInfo);
         btnSendImg.setOnClickListener(this);
         btnAddFile.setOnClickListener(this);
         iVSettingsPerfil.setOnClickListener(this);
+        btnInfo.setOnClickListener(this);
 
         txtNameCP = (EditText) findViewById(R.id.txtNameCP);
         txtFraseCP = (EditText) findViewById(R.id.txtFraseCP);
@@ -122,6 +138,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         txtCelularCP = (EditText) findViewById(R.id.txtCelularCP);
         etHojaVidaCP = (EditText) findViewById(R.id.etHojaVida);
         et_doc = (EditText)findViewById(R.id.et_doc);
+
        // txtUniversidadCP.setOnClickListener(this);
         tVChangeImgP = (TextView) findViewById(R.id.tVChangeImgP);
         if(TIPO_USUARIO == usuario_empresa){
@@ -148,49 +165,34 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
 
         if(v.getId() == R.id.btnAddFile){
             if(!Util.emptyCampMSG(et_doc,"Campo vacío")){
-                addToEtiquetas(getTxtEdit((EditText)findViewById(R.id.et_doc)));
+                Util.agregarEtiquetaS(getTxtEdit((EditText)findViewById(R.id.et_doc)),dataEtiquetas,mAdapter,rvEtiquetas,et_doc);
             }
         }else if(v == iVSettingsPerfil){
             Intent intentGallery = new Intent(Intent.ACTION_PICK);
             intentGallery.setType("image/*");
             startActivityForResult(intentGallery,GALLERY_INTENT);
         }else if(v == btnSendImg){
-            if(TIPO_USUARIO == 0){
+            if(TIPO_USUARIO == usuario_corriente){
                 if(!Util.emptyCampMSG(txtNameCP,getString(R.string.empty_camp)) &&
                         !Util.emptyCampMSG(txtEdadCP,getString(R.string.empty_camp)) &&
-                        !Util.emptyCampMSG(txtCelularCP,getString(R.string.empty_camp))){
-                         if( descargarFoto != null){
-                             progressDialog.setMessage("Actualizando imagen, por favor espera");
-                             progressDialog.show();
-                             updateFoto("CorrientsUsers",obj,descargarFoto+"");
-                         }
-                        progressDialog.setMessage("Actualizando información, por favor espera");
-                        progressDialog.show();
-                        updateData("CorrientsUsers",obj);
-                        if(pathUriLocal != null){
-                            progressDialog.setMessage("Actualizando Hoja de vida, por favor espera");
+                        !Util.emptyCampMSG(txtCelularCP,getString(R.string.empty_camp)) ){
+
+                        if(dataEtiquetas.size() >= 3){
+                            progressDialog.setMessage("Actualizando hoja de vida, por favor espera");
                             progressDialog.show();
-                        addNit(pathUriLocal);
-                        // updatePDF("CorrientsUsers",obj,"anexos",descargarPDF+"");
+                            addNit(pathUriLocal);
+                        }else{
+                            et_doc.setError("Ingrese almenos tres etiquetas");
                         }
                 }
             }else{
                 if(!Util.emptyCampMSG(txtNameCP,getString(R.string.empty_camp)) ){
-                    if(descargarFoto != null){
-                        progressDialog.setMessage("Actualizando imagen, por favor espera");
-                        progressDialog.show();
-                       updateFoto("CorrientsUsers",obj,descargarFoto+"");
-
-                    }
-                    progressDialog.setMessage("Actualizando información, por favor espera");
-                    progressDialog.show();
-                    updateData("CorrientsUsers",obj);
                     if(pathUriLocal != null){
                         progressDialog.setMessage("Actualizando nit, por favor espera");
                         progressDialog.show();
                         addNit(pathUriLocal);
-
                     }
+
                 }
 
 
@@ -199,21 +201,14 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             getPDF();
         }else if(v.getId() == R.id.etHojaVida){
             getPDF();
+        }else if(v.getId() == R.id.btnInfo){
+            showPopUp();
         }
 
 
     }
 
-    private void addToEtiquetas(String lbl){
-        int position = 0;
 
-        dataEtiquetas.add(position,lbl);
-        mAdapter.notifyItemInserted(position);
-        mAdapter.notifyDataSetChanged();
-        rvEtiquetas.scrollToPosition(position);
-     //  Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
-
-    }
 
     protected void putDataUser(){
             eventPD("CorrientsUsers");
@@ -275,6 +270,28 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         });
     }
 
+    public void getEtiquetas(){
+
+        databaseReference.child("Etiqueta").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //listUsers.clear();
+                if(listEtiquetasFirebase.size() >= 1){
+                    listEtiquetasFirebase.clear();
+                }
+                for (DataSnapshot etiqueta:dataSnapshot.getChildren()) {
+                    String eti = etiqueta.getKey();
+                    listEtiquetasFirebase.add(eti);
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -319,18 +336,40 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             databaseReference.child(kindUser).child(uE.getId()).child("foto").setValue(img);
 
         }
-        progressDialog.dismiss();
+
     }
 
     private void updatePDF(String kindUser,Object obja,String nitOrPdf,String pdf){
         if(obja instanceof UsuarioCorriente){
             UsuarioCorriente uC =((UsuarioCorriente)obja);
-           databaseReference.child(kindUser).child(uC.getId()).child(nitOrPdf).setValue(pdf);
-        }else{
-            Empresa uE =((Empresa)obja);
-            databaseReference.child(kindUser).child(uE.getId()).child(nitOrPdf).setValue(pdf);
+                databaseReference.child(kindUser).child(uC.getId()).child(nitOrPdf).setValue(pdf).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        progressDialog.dismiss();
+                        if( descargarFoto != null){
+                            updateFoto("CorrientsUsers",obj,descargarFoto+"");
+                        }
+                        updateData("CorrientsUsers",obj);
+
+                    }
+                });
+
+        }else {
+            Empresa uE = ((Empresa) obja);
+            databaseReference.child(kindUser).child(uE.getId()).child(nitOrPdf).setValue(pdf).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    progressDialog.dismiss();
+                    if(descargarFoto != null){
+                        updateFoto("CorrientsUsers",obj,descargarFoto+"");
+                    }
+                    updateData("CorrientsUsers",obj);
+                }
+            });
         }
+
     }
+
 
     private void updateData(String kindUser,Object obj){
         if(obj instanceof UsuarioCorriente){
@@ -340,6 +379,9 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             databaseReference.child(kindUser).child(uC.getId()).child("ocupacion").setValue(Util.getTxt(txtOcupacionCP));
             databaseReference.child(kindUser).child(uC.getId()).child("universidad").setValue(Util.getTxt(txtUniversidadCP));
             databaseReference.child(kindUser).child(uC.getId()).child("celular").setValue(Util.getTxt(txtCelularCP));
+            databaseReference.child(kindUser).child(uC.getId()).child("etiquetas").setValue(dataEtiquetas);
+            databaseReference.child(kindUser).child(uC.getId()).child("fechaNacimiento").setValue(Util.getTxt(txtEdadCP));
+
 
         }else{
             Empresa uE =((Empresa)obj);
@@ -349,7 +391,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             databaseReference.child(kindUser).child(uE.getId()).child("redesSociales").setValue(dataEtiquetas);
 
         }
-        progressDialog.dismiss();
+
     }
 
     private ArrayList<String> listEDToString(ArrayList<EditText> listEd){
@@ -388,19 +430,24 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             txtFraseCP.setText(user.getFrase());
             txtUniversidadCP.setText(user.getUniversidad());
             txtCelularCP.setText(user.getCelular());
-            etHojaVidaCP.setText(user.getAnexos());
+            if(!user.getAnexos().equals("")){
+                etHojaVidaCP.setText("Hoja de vida anexada");
+            }
+
             for (String etiquetas: user.getEtiquetas()) {
-                addToEtiquetas(etiquetas);
+                Util.agregarEtiquetaS(etiquetas,dataEtiquetas,mAdapter,rvEtiquetas,et_doc);
             }
         }else{
             Empresa user =  ((Empresa)obj);
             txtNameCP.setText(user.getNombre());
             txtOcupacionCP.setText(user.getRazonSocial());
             txtFraseCP.setText(user.getUrlEmpresa());
-            txtUniversidadCP.setText(user.getNit());
+            if(!user.getNit().equals("")){
+                txtUniversidadCP.setText("Nit anexado");
+            }
             if(user.getRedesSociales().size() >= 1 && !user.getRedesSociales().get(0).equals("")){
                 for (String redSocial:user.getRedesSociales()) {
-                    addToEtiquetas(redSocial);
+                    Util.agregarEtiquetaS(redSocial,dataEtiquetas,mAdapter,rvEtiquetas,et_doc);
                 }
             }
         }
@@ -457,18 +504,69 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     }
 
     public void addNit(Uri path){
-        StorageReference filePath = mStorage.child("archivos").child(path.getLastPathSegment());
-        filePath.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                descargarPDF = taskSnapshot.getDownloadUrl();
-                if (TIPO_USUARIO == usuario_corriente){
-                    updatePDF("CorrientsUsers",obj,"anexos",descargarPDF+"");
-                }else if(TIPO_USUARIO == usuario_empresa){
-                    updatePDF("CorrientsUsers",obj,"nit",descargarPDF+"");
+        if(path != null){
+            StorageReference filePath = mStorage.child("archivos").child(path.getLastPathSegment());
+            filePath.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    descargarPDF = taskSnapshot.getDownloadUrl();
+                    if (TIPO_USUARIO == usuario_corriente){
+                        updatePDF("CorrientsUsers",obj,"anexos",descargarPDF+"");
+                    }else if(TIPO_USUARIO == usuario_empresa){
+                        updatePDF("CorrientsUsers",obj,"nit",descargarPDF+"");
+                    }
+
                 }
-                progressDialog.dismiss();
+            });
+        }else{
+            if( descargarFoto != null){
+                updateFoto("CorrientsUsers",obj,descargarFoto+"");
+            }
+            updateData("CorrientsUsers",obj);
+            progressDialog.dismiss();
+        }
+
+
+    }
+
+    public void showPopUp() {
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_info, null);
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // Obtener el Recycler
+        recycler = (RecyclerView) popupView.findViewById(R.id.rv_Info);
+        recycler.setHasFixedSize(true);
+
+        // Usar un administrador para LinearLayout
+        lManager = new LinearLayoutManager(this);
+        recycler.setLayoutManager(lManager);
+
+        // Crear un nuevo adaptador
+        adapter = new RecyclerAdapterInfo(this,listEtiquetasFirebase,dataEtiquetas,mAdapter,rvEtiquetas,et_doc);
+        recycler.setAdapter(adapter);
+
+
+        //////////////////////////////////////////////////////////////
+        ////Esto muestra el pop Up window
+        ////////////////////////////////////////////////////////////
+
+        popupWindow.showAtLocation(ll, Gravity.CENTER, 0, 0);
+        //////////////////////////////////////////////////
+        ////////Listener que oculta el pop Up
+        ////////////////////////////////////////////////
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
             }
         });
     }
+
+
 }

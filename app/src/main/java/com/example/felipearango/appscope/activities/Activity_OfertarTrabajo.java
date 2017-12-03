@@ -5,17 +5,21 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.Util;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.Etiqueta;
+import com.example.felipearango.appscope.models.RecyclerAdapterInfo;
 import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 import com.example.felipearango.appscope.models.Trabajo;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
@@ -38,7 +42,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
 
     private EditText titulo, detalles, txtEtiquetaRU;
     private Button btnAddLabelR;
-    private Button btnIngresar;
+    private Button btnIngresar, btnInfo;
     private  ArrayList<String> listEtiquetas;
    // private ArrayList<String> dataEtiquetas = new ArrayList<>();
     private ArrayList<Button> dataButtons = new ArrayList<>();
@@ -48,8 +52,11 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
     private RecyclerView rvEtiquetas;
     private RecyclerAddRemoveAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
-
-
+    RecyclerView recycler;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager lManager;
+    private ArrayList<String> listEtiquetasFirebase = new ArrayList<>();
+    private LinearLayout ll;
     ////////////////////////////
     //onCreate
     ///////////////////////////
@@ -60,8 +67,11 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_oferta_trabajo, null, false);
         mDrawer.addView(contentView, 0);
+
         initiComponents();
         initializedDR();
+
+        getEtiquetas();
        // inicializatedFireBase();
     }
 
@@ -75,12 +85,14 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         detalles = (EditText)findViewById(R.id.tvDetalles);
         //etiquetas = (EditText)findViewById(R.id.tvEtiqueta);
         btnIngresar = (Button)findViewById(R.id.btnAgregar);
+        btnInfo = (Button) findViewById(R.id.btnInfo);
+        btnInfo.setOnClickListener(this);
         btnIngresar.setOnClickListener(this);
         lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
         txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
         txtEtiquetaRU.setHint("Etiquetas");
         btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
-
+        ll = (LinearLayout)findViewById(R.id.llOfertar);
         btnAddLabelR.setOnClickListener(this);
 
         listEdit.add(titulo);
@@ -99,6 +111,29 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
             listEqtiquetas.add(etiqu.get(i).getText().toString());
         }
         return  listEqtiquetas;
+    }
+
+    public void getEtiquetas(){
+
+        databaseReference.child("Etiqueta").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //listUsers.clear();
+                if(listEtiquetasFirebase.size() >= 1){
+                    listEtiquetasFirebase.clear();
+                }
+                for (DataSnapshot etiqueta:dataSnapshot.getChildren()) {
+                    String eti = etiqueta.getKey();
+
+                    listEtiquetasFirebase.add(eti);
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void addJob(String titulo, String desc, ArrayList<String> etiquetas, Object usr){
@@ -147,7 +182,11 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         switch (vista){
             case R.id.btnAgregar:{
                 if(camposVacios()){
-                        eventPD("CorrientsUsers");
+                      if(dataEtiquetas.size() >= 1){
+                          eventPD("CorrientsUsers");
+                      }else{
+                          txtEtiquetaRU.setError("Ingrese almenos una etiquetas");
+                      }
                 }
                 break;
             }
@@ -159,6 +198,10 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
                     } else{
                         txtEtiquetaRU.setError("Campo vacío");
                     }
+                break;
+            }
+            case R.id.btnInfo:{
+                    showPopUp();
                 break;
             }
 
@@ -235,6 +278,45 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
             mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetas);
             rvEtiquetas.setAdapter(mAdapter);
         }
+    }
+
+    public void showPopUp() {
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_info, null);
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // Obtener el Recycler
+        recycler = (RecyclerView) popupView.findViewById(R.id.rv_Info);
+        recycler.setHasFixedSize(true);
+
+        // Usar un administrador para LinearLayout
+        lManager = new LinearLayoutManager(this);
+        recycler.setLayoutManager(lManager);
+
+        // Crear un nuevo adaptador
+        adapter = new RecyclerAdapterInfo(this,listEtiquetasFirebase,dataEtiquetas,mAdapter,rvEtiquetas,txtEtiquetaRU);
+        recycler.setAdapter(adapter);
+
+
+        //////////////////////////////////////////////////////////////
+        ////Esto muestra el pop Up window
+        ////////////////////////////////////////////////////////////
+
+        popupWindow.showAtLocation(ll, Gravity.CENTER, 0, 0);
+        //////////////////////////////////////////////////
+        ////////Listener que oculta el pop Up
+        ////////////////////////////////////////////////
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 
 }

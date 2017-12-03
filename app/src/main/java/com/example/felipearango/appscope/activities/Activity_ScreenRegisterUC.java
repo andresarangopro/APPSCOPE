@@ -11,12 +11,16 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -25,12 +29,16 @@ import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.Util;
+import com.example.felipearango.appscope.models.RecyclerAdapterInfo;
 import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -50,7 +58,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
     private Button btnAddLabelR;
     private RadioGroup rGDisponibilidadViaje;
     private Spinner spOcupation;
-    private Button btnRegister;
+    private Button btnRegister, btnInfo;
     private FirebaseAuth firebaseAuth;
     private ProgressDialog progressDialog;
 
@@ -61,6 +69,12 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
     private RecyclerView rvEtiquetas;
     private RecyclerAddRemoveAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
+
+    RecyclerView recycler;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager lManager;
+    private ArrayList<String> listEtiquetasFirebase = new ArrayList<>();
+    private LinearLayout ll;
 
     public static final String ESTADO_ACTIVA = "ACTIVA";
 
@@ -77,6 +91,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         progressDialog = new ProgressDialog(this);
         initializedDR();
         chooseDate();
+        getEtiquetas();
     }
 
 
@@ -101,7 +116,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         txtEtiquetaRU = (EditText) findViewById(R.id.txtEtiquetasRU);
         lblDisponibilidad = (TextView) findViewById(R.id.lblDisponibilidad);
         lblDateBorn = (TextView) findViewById(R.id.lblDateBorn);
-
+        ll = (LinearLayout)findViewById(R.id.llRegiterUC);
 
         rGDisponibilidadViaje = (RadioGroup) findViewById(R.id.rGDisponibilidadViaje);
 
@@ -109,7 +124,8 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
 
         btnRegister = (Button) findViewById(R.id.btnRegistrar);
         btnAddLabelR = (Button) findViewById(R.id.btnAddLabelR);
-
+        btnInfo = (Button) findViewById(R.id. btnInfo);
+        btnInfo.setOnClickListener(this);
         btnAddLabelR.setOnClickListener(this);
         btnRegister.setOnClickListener(this);
         lLayoutEtiquetas = (LinearLayout) findViewById(R.id.lLayoutEtiquetas);
@@ -159,6 +175,8 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
             } else{
                 txtEtiquetaRU.setError("Campo vacío");
             }
+        }else if(v == btnInfo){
+            showPopUp();
         }
     }
 
@@ -272,6 +290,67 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         }
         Toast.makeText(this,etiq,Toast.LENGTH_LONG).show();
         return etiq;
+    }
+
+    public void getEtiquetas(){
+
+        databaseReference.child("Etiqueta").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //listUsers.clear();
+                if(listEtiquetasFirebase.size() >= 1){
+                    listEtiquetasFirebase.clear();
+                }
+                for (DataSnapshot etiqueta:dataSnapshot.getChildren()) {
+                    String eti = etiqueta.getKey();
+
+                    listEtiquetasFirebase.add(eti);
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void showPopUp() {
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_info, null);
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
+        boolean focusable = true;
+        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
+
+        // Obtener el Recycler
+        recycler = (RecyclerView) popupView.findViewById(R.id.rv_Info);
+        recycler.setHasFixedSize(true);
+
+        // Usar un administrador para LinearLayout
+        lManager = new LinearLayoutManager(this);
+        recycler.setLayoutManager(lManager);
+
+        // Crear un nuevo adaptador
+        adapter = new RecyclerAdapterInfo(this,listEtiquetasFirebase,dataEtiquetas,mAdapter,rvEtiquetas,txtEtiquetaRU);
+        recycler.setAdapter(adapter);
+
+
+        //////////////////////////////////////////////////////////////
+        ////Esto muestra el pop Up window
+        ////////////////////////////////////////////////////////////
+
+        popupWindow.showAtLocation(ll, Gravity.CENTER, 0, 0);
+        //////////////////////////////////////////////////
+        ////////Listener que oculta el pop Up
+        ////////////////////////////////////////////////
+        popupView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                popupWindow.dismiss();
+                return true;
+            }
+        });
     }
 
 }

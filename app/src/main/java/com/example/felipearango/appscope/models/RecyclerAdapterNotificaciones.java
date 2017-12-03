@@ -80,9 +80,9 @@ public class RecyclerAdapterNotificaciones extends RecyclerView.Adapter<Recycler
             holder.tvEmpresa.setText(notificacion.getIdTrabajo());
             holder.tvEstado.setText("Aspirantes: "+notificacion.getNumOfertantes());
         }else if(TIPO_USUARIO == usuario_corriente){
-            holder.tvTitulo.setText(notificacion.getNombreEmpresa());
+            holder.tvTitulo.setText(notificacion.getNombreTrabajo());
             holder.tvTitulo.setTextColor((Color.parseColor("#017580")));
-            holder.tvEmpresa.setText(notificacion.getNombreTrabajo());
+            holder.tvEmpresa.setText(notificacion.getNombreEmpresa());
             holder.tvEmpresa.setTextColor((Color.parseColor("#000000")));
             holder.tvEstado.setText("Resultado : "+ (notificacion.getNumOfertantes() == notificacion_oferta_aceptada ? "ACEPTADA":"RECHAZADA"));
         }

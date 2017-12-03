@@ -1,7 +1,13 @@
 package com.example.felipearango.appscope.models;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -13,21 +19,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.felipearango.appscope.R;
-import com.example.felipearango.appscope.activities.Activity_Notificaciones_S;
-import com.example.felipearango.appscope.activities.Activity_ScreenRegisterE;
-import com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC;
-import com.google.firebase.auth.FirebaseUser;
+import com.example.felipearango.appscope.Util.CircleTransform;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_aceptada;
 import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_rechazada;
-import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 import static com.example.felipearango.appscope.activities.Activity_Login.calledAlready;
 
 /**
@@ -41,6 +52,12 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
     private LinearLayout ll;
     private DatabaseReference databaseReference;
     private FirebaseDatabase firebaseDatabase;
+    RecyclerView recycler;
+    RecyclerView.Adapter adapter;
+    RecyclerView.LayoutManager lManager;
+
+    DividerItemDecoration dividerItemDecoration ;
+
     public RecyclerAdapterEmpresa(Context context, LinearLayout linearLayout,ArrayList<UsuariosSolicitudEnEM> mUsuariosSolicitudEnEM) {
         this.mUsuariosSolicitudEnEM = mUsuariosSolicitudEnEM;
         mContext = context;
@@ -92,7 +109,7 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
             }
         });
 
-        final UsuariosSolicitudEnEM usuariosSolicitudEnEM = mUsuariosSolicitudEnEM.get(position);
+
         holder.tvNombre.setText("NOMBRE: "+usuariosSolicitudEnEM.getNombre());
         holder.tvApellido.setText("APELLIDO: "+usuariosSolicitudEnEM.getApellido());
         holder.tvCedula.setText("CELULAR: "+usuariosSolicitudEnEM.getCedula());
@@ -141,16 +158,50 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         boolean focusable = true;
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
+        ArrayList<String[]> txtAndId = new ArrayList();
+
+
+
+
+        if(usuariosSolicitudEnEM.getPdfHojaVida().equals("")){
+            txtAndId.add(new String[] {"No hay hoja de vida",""});
+            Toast.makeText(mContext,"No hay documento para descargar",Toast.LENGTH_SHORT).show();
+        }else {
+            txtAndId.add(new String[]  {"Hoja de vida anexada",usuariosSolicitudEnEM.getPdfHojaVida()});
+        }
+
+        // Obtener el Recycler
+        recycler = (RecyclerView) popupView.findViewById(R.id.rv_Info);
+        recycler.setHasFixedSize(true);
+
+        // Usar un administrador para LinearLayout
+        lManager = new LinearLayoutManager(mContext);
+        recycler.setLayoutManager(lManager);
+
+        // Crear un nuevo adaptador
+        adapter = new RecyclerAdapterPDF(mContext,txtAndId);
+        recycler.setAdapter(adapter);
+
+
+
 
         ImageView imageView = (ImageView)popupWindow.getContentView().findViewById(R.id.imVPerfil);
         TextView tvNombre = (TextView)popupWindow.getContentView().findViewById(R.id.tVNameP);
         TextView tvOcupacion = (TextView)popupWindow.getContentView().findViewById(R.id.tVOcupacionP);
         TextView tvFrase = (TextView)popupWindow.getContentView().findViewById(R.id.tVFrase);
-
-        
+        TextView tVCertificada = (TextView)popupWindow.getContentView().findViewById(R.id.tVCertificada);
+        tVCertificada.setVisibility(View.INVISIBLE);
         tvNombre.setText(usuariosSolicitudEnEM.getNombre());
         tvOcupacion.setText(usuariosSolicitudEnEM.getApellido());
         tvFrase.setText(usuariosSolicitudEnEM.getCedula());
+        if(!(usuariosSolicitudEnEM.getImage().equals(""))){
+            Picasso.with(mContext)
+                    .load(usuariosSolicitudEnEM.getImage())
+                    .transform(new CircleTransform())
+                    .into(imageView);
+        }
+
+
 
         //////////////////////////////////////////////////////////////
         ////Esto muestra el pop Up window
@@ -187,5 +238,11 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
     public int getItemCount() {
         return mUsuariosSolicitudEnEM.size();
     }
+
+
+
+
+
+
 
 }

@@ -52,7 +52,8 @@ public class ManejoUsers {
                 }else if(dataSnapshot.child(user.getUid()).child("tipoUser").getValue() != null){
                     //int tipoUser = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getTipoUser();
                     int tipoUser = Integer.parseInt(dataSnapshot.child(user.getUid()).child("tipoUser").getValue().toString());
-                    String estadoCuenta = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getEstadoCuenta();
+                   // Log.e("WHAT",  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getEstadoCuenta()+"");
+                    String estadoCuenta = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getEstadoCuenta().toString();
                     Log.e("account",tipoUser+" - "+estadoCuenta);
                     TIPO_USUARIO = tipoUser;
                     if(tipoUser == 0){

@@ -1,8 +1,11 @@
 package com.example.felipearango.appscope.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,8 +27,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 
+import static android.support.v4.content.ContextCompat.startActivity;
 import static com.example.felipearango.appscope.Util.Util.notificacion_oferta_enEspera;
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
 
@@ -94,7 +99,8 @@ public class Activity_Notificaciones_S extends MainActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (String idOfert : idWorkers) {
                     UsuarioCorriente us = dataSnapshot.child(idOfert).getValue(UsuarioCorriente.class);
-                    UsuariosSolicitudEnEM emp = new UsuariosSolicitudEnEM(us.getNombre(),us.getApellido(),us.getCelular(),us.getId(),us.getFoto(),strIdJob);
+                    UsuariosSolicitudEnEM emp = new UsuariosSolicitudEnEM(us.getNombre(),us.getApellido(),
+                            us.getCelular(),us.getId(),us.getFoto(),strIdJob, us.getAnexos());
                     notificaciones.add(emp);
                 }
             }
@@ -105,6 +111,8 @@ public class Activity_Notificaciones_S extends MainActivity {
             }
         });
     }
+
+
 
 
 }
