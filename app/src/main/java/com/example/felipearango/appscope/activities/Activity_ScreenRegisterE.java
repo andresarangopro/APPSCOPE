@@ -38,7 +38,7 @@ import static com.example.felipearango.appscope.activities.Activity_ScreenRegist
 public class Activity_ScreenRegisterE extends AppCompatActivity implements View.OnClickListener {
 
     private EditText txtnameE,txtRazonSoc, txtNIT, txtUrl, txtSocial1;
-    private Button btnRegisterE, btnAgregarNIT, btnAgregarRedSocial1;
+    private Button btnRegisterE, btnAgregarNIT, btnAgregarRedSocial1, btnInfo;
     private EditText txtEtiquetaRU;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
@@ -74,6 +74,9 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         txtRazonSoc = (EditText) findViewById(R.id.txtRazonSoc);
         txtNIT = (EditText) findViewById(R.id.txtNIT);
         txtUrl = (EditText) findViewById(R.id.txtUrl);
+
+        btnInfo = (Button) findViewById(R.id.btnInfo);
+       btnInfo.setVisibility(View.INVISIBLE);
         //linearLayout = (LinearLayout) findViewById(R.id.llLayout);
 
         btnRegisterE = (Button) findViewById(R.id.btnRegisterE);

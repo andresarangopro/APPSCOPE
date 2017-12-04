@@ -11,26 +11,30 @@ public class Administrador {
     ////////////////////////
 
     private String nombre;
-    private String apellido;
     private String correo;
+    private String pass;
     private int tipoUser;
+
 
     /////////////////////////
     //Constructor
     ////////////////////////
 
-    public Administrador(String nombre, String apellido, String correo, int tipoUser) {
+    public Administrador(String nombre, String correo, String pass, int tipoUser) {
         this.nombre = nombre;
-        this.apellido = apellido;
         this.correo = correo;
+        this.pass = pass;
         this.tipoUser = tipoUser;
     }
+
+
+
+    public Administrador(){}
 
     //////////////////////
     //Getter and setters
     /////////////////////
 
-    public Administrador(){}
 
     public String getNombre() {
         return nombre;
@@ -38,14 +42,6 @@ public class Administrador {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
     }
 
     public String getCorreo() {
@@ -62,5 +58,9 @@ public class Administrador {
 
     public void setTipoUser(int tipoUser) {
         this.tipoUser = tipoUser;
+    }
+
+    public String getPass() {
+        return pass;
     }
 }

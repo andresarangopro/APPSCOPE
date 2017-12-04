@@ -1,16 +1,11 @@
 package com.example.felipearango.appscope.Util;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.felipearango.appscope.models.RecyclerAddRemoveAdapter;
 
-import java.io.File;
 import java.util.ArrayList;
 
 
@@ -101,7 +96,7 @@ public class Util {
         mAdapter.notifyDataSetChanged();
         rvEtiquetas.scrollToPosition(position);
         et_doc.setText("");
-        //  Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
 
     }
 

@@ -40,7 +40,7 @@ public class Activity_Notificaciones_S extends MainActivity {
     private RecyclerView mRecyclerAccounts;
 
     private ArrayList<UsuariosSolicitudEnEM> notificaciones = new ArrayList<>();
-
+    private Context context;
     private LinearLayoutManager mLinearLayoutManager;
     private LinearLayout ll;
     private ArrayList<String> idWorkers = new ArrayList<>();
@@ -60,8 +60,9 @@ public class Activity_Notificaciones_S extends MainActivity {
         mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Noti);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
-        mAdapterEmp = new RecyclerAdapterEmpresa(this, ll, notificaciones);
+        mAdapterEmp = new RecyclerAdapterEmpresa(context, ll, notificaciones);
 
+        context = this;
         mRecyclerAccounts.setAdapter(mAdapterEmp);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
                 mLinearLayoutManager.getOrientation());
@@ -71,7 +72,7 @@ public class Activity_Notificaciones_S extends MainActivity {
         startnotifiOferts(index);
     }
     private void startnotifiOferts(final String strIdJob){
-        databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Jobs").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String[]addList = new String[2];
@@ -94,7 +95,7 @@ public class Activity_Notificaciones_S extends MainActivity {
 
 
     private void llenarRecycler(final String strIdJob) {
-        databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("CorrientsUsers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (String idOfert : idWorkers) {
@@ -103,6 +104,8 @@ public class Activity_Notificaciones_S extends MainActivity {
                             us.getCelular(),us.getId(),us.getFoto(),strIdJob, us.getAnexos());
                     notificaciones.add(emp);
                 }
+                mAdapterEmp = new RecyclerAdapterEmpresa(context, ll, notificaciones);
+                mRecyclerAccounts.setAdapter(mAdapterEmp);
             }
 
             @Override

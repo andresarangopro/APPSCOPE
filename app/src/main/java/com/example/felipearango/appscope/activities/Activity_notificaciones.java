@@ -41,8 +41,6 @@ public class Activity_notificaciones extends MainActivity {
         LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.activity_notificaciones, null, false);
         mDrawer.addView(contentView, 0);
-
-
         iniciar();
         inicializatedFireBase();
     }
@@ -59,16 +57,16 @@ public class Activity_notificaciones extends MainActivity {
                 mLinearLayoutManager.getOrientation());
         mRecyclerAccounts.addItemDecoration(dividerItemDecoration);
         if(TIPO_USUARIO == usuario_empresa){
-            startArrayJobs();
-            startnotifiOferts(idJobs);
+            startArrayJobs(this);
+
         }else if(TIPO_USUARIO == usuario_corriente){
             notifiersUser();
         }
 
     }
 
-    private void startArrayJobs(){
-        databaseReference.child("Etiqueta").addValueEventListener(new ValueEventListener() {
+    private void startArrayJobs(final Context context){
+        databaseReference.child("Etiqueta").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -83,6 +81,7 @@ public class Activity_notificaciones extends MainActivity {
                         }
                     }
                     idJobs = quitarRepetidos(idJobs);
+                    startnotifiOferts(context,idJobs);
 
             }
             @Override
@@ -92,8 +91,8 @@ public class Activity_notificaciones extends MainActivity {
         });
     }
 
-    private void startnotifiOferts(final ArrayList<String> strIdJob){
-        databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
+    private void startnotifiOferts(final Context context,final ArrayList<String> strIdJob){
+        databaseReference.child("Jobs").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Trabajo tb = null;
@@ -108,6 +107,8 @@ public class Activity_notificaciones extends MainActivity {
                     }
 
                 }
+                mAdapter = new RecyclerAdapterNotificaciones(context,notificacion);
+                mRecyclerAccounts.setAdapter(mAdapter);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -118,7 +119,7 @@ public class Activity_notificaciones extends MainActivity {
 
 
     private void notifiersUser(){
-        databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Jobs").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 

@@ -33,6 +33,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.Util.Util;
@@ -53,7 +55,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.squareup.picasso.Picasso;
 
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -63,6 +64,7 @@ import java.util.Calendar;
 import static com.example.felipearango.appscope.Util.Util.usuario_corriente;
 import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
 import static com.example.felipearango.appscope.activities.Activity_Login.TIPO_USUARIO;
+import static com.example.felipearango.appscope.activities.Activity_Login.calledAlready;
 
 
 public class Activity_Settings extends MainActivity implements View.OnClickListener {
@@ -91,6 +93,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     private Uri pathUriLocal = null;
     private ProgressDialog progressDialog;
     private LinearLayout ll;
+    private ValueEventListener valueEventListenerSettings ;
     RecyclerView recycler;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager lManager;
@@ -114,11 +117,23 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         mAdapter = new RecyclerAddRemoveAdapter(this, dataEtiquetas);
         rvEtiquetas.setAdapter(mAdapter);
         initializedDR();
+        inicializatedFireBase();
         putDataUser();
         chooseDate();
         getEtiquetas();
 
 
+    }
+    /**
+     *
+     */
+    protected void inicializatedFireBase(){
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        if (!calledAlready) {
+            firebaseDatabase.setPersistenceEnabled(true);
+            calledAlready = true;
+        }
+        databaseReference = firebaseDatabase.getReference();
     }
     private void initComponents(){
         iVSettingsPerfil = (ImageView) findViewById(R.id.iVSettingsPerfil);
@@ -128,7 +143,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         btnSendImg.setOnClickListener(this);
         btnAddFile.setOnClickListener(this);
         iVSettingsPerfil.setOnClickListener(this);
-        btnInfo.setOnClickListener(this);
+
 
         txtNameCP = (EditText) findViewById(R.id.txtNameCP);
         txtFraseCP = (EditText) findViewById(R.id.txtFraseCP);
@@ -152,11 +167,13 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             txtEdadCP.setVisibility(View.INVISIBLE);
             et_doc.setHint("Redes Sociales");
             tVChangeImgP.setText("Redes");
+            btnInfo.setVisibility(View.INVISIBLE);
         }else if(TIPO_USUARIO == usuario_corriente){
             etHojaVidaCP.setHint("Hoja de vida");
             etHojaVidaCP.setKeyListener(null);
             etHojaVidaCP.setOnClickListener(this);
             tVChangeImgP.setText("Etiquetas");
+            btnInfo.setOnClickListener(this);
         }
     }
 
@@ -165,7 +182,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
 
         if(v.getId() == R.id.btnAddFile){
             if(!Util.emptyCampMSG(et_doc,"Campo vacío")){
-                Util.agregarEtiquetaS(getTxtEdit((EditText)findViewById(R.id.et_doc)),dataEtiquetas,mAdapter,rvEtiquetas,et_doc);
+                Util.agregarEtiquetaS(Util.parametrizacionEtiqueta(getTxtEdit(et_doc)),dataEtiquetas,mAdapter,rvEtiquetas,et_doc);
             }
         }else if(v == iVSettingsPerfil){
             Intent intentGallery = new Intent(Intent.ACTION_PICK);
@@ -178,8 +195,6 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
                         !Util.emptyCampMSG(txtCelularCP,getString(R.string.empty_camp)) ){
 
                         if(dataEtiquetas.size() >= 3){
-                            progressDialog.setMessage("Actualizando hoja de vida, por favor espera");
-                            progressDialog.show();
                             addNit(pathUriLocal);
                         }else{
                             et_doc.setError("Ingrese almenos tres etiquetas");
@@ -187,11 +202,9 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
                 }
             }else{
                 if(!Util.emptyCampMSG(txtNameCP,getString(R.string.empty_camp)) ){
-                    if(pathUriLocal != null){
-                        progressDialog.setMessage("Actualizando nit, por favor espera");
-                        progressDialog.show();
-                        addNit(pathUriLocal);
-                    }
+                    addNit(pathUriLocal);
+
+
 
                 }
 
@@ -247,10 +260,9 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
 
 
     public void eventPD(String usChildString){
-        databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(usChildString).addListenerForSingleValueEvent(valueEventListenerSettings = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //listUsers.clear();
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(TIPO_USUARIO == 0){
                     UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
@@ -263,6 +275,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
                 putTxt(obj);
 
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -271,8 +284,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     }
 
     public void getEtiquetas(){
-
-        databaseReference.child("Etiqueta").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Etiqueta").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //listUsers.clear();
@@ -359,10 +371,11 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             databaseReference.child(kindUser).child(uE.getId()).child(nitOrPdf).setValue(pdf).addOnCompleteListener(this, new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    progressDialog.dismiss();
+
                     if(descargarFoto != null){
                         updateFoto("CorrientsUsers",obj,descargarFoto+"");
                     }
+
                     updateData("CorrientsUsers",obj);
                 }
             });
@@ -391,6 +404,8 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             databaseReference.child(kindUser).child(uE.getId()).child("redesSociales").setValue(dataEtiquetas);
 
         }
+        startActivity(new Intent(Activity_Settings.this,Activity_Perfil.class));
+        finish();
 
     }
 
@@ -405,18 +420,26 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
     private void putImg(Object obj){
         if(obj instanceof UsuarioCorriente){
             if(!(((UsuarioCorriente)obj).getFoto().equals(""))){
-                Picasso.with(Activity_Settings.this)
+                Glide.with(Activity_Settings.this)
+                        .load(((UsuarioCorriente)obj).getFoto())
+                        .apply(RequestOptions
+                                .circleCropTransform()).into(iVSettingsPerfil);
+                /*Picasso.with(Activity_Settings.this)
                         .load(((UsuarioCorriente)obj).getFoto())
                         .transform(new CircleTransform())
-                        .into(iVSettingsPerfil);
+                        .into(iVSettingsPerfil);*/
             }
         }else{
             if(!((Empresa)obj).getFoto().equals("")){
                 Log.i("IMGSF",((Empresa)obj).getFoto());
-                Picasso.with(Activity_Settings.this)
+                Glide.with(Activity_Settings.this)
+                        .load(((Empresa)obj).getFoto())
+                        .apply(RequestOptions
+                                .circleCropTransform()).into(iVSettingsPerfil);
+              /*  Picasso.with(Activity_Settings.this)
                         .load(((Empresa)obj).getFoto())
                         .transform(new CircleTransform())
-                        .into(iVSettingsPerfil);
+                        .into(iVSettingsPerfil);*/
             }
         }
     }
@@ -505,6 +528,13 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
 
     public void addNit(Uri path){
         if(path != null){
+            if(TIPO_USUARIO == usuario_corriente){
+                progressDialog.setMessage("Actualizando hoja de vida, por favor espera");
+            }else if(TIPO_USUARIO == usuario_empresa){
+                progressDialog.setMessage("Actualizando nit, por favor espera");
+            }
+            progressDialog.show();
+
             StorageReference filePath = mStorage.child("archivos").child(path.getLastPathSegment());
             filePath.putFile(path).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -523,7 +553,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
                 updateFoto("CorrientsUsers",obj,descargarFoto+"");
             }
             updateData("CorrientsUsers",obj);
-            progressDialog.dismiss();
+
         }
 
 
@@ -567,6 +597,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
             }
         });
     }
+
 
 
 }

@@ -37,24 +37,23 @@ public class ManejoUsers {
 
     public void account(final Context context){
        // TIPO_USUARIO  = 0;
-        databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("CorrientsUsers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                Log.e("UA", user.getUid());
+
                 if(dataSnapshot.child(Util.castMailToKey(user.getEmail())).child("tipoUser").getValue() != null){
                         int tipouser = Integer.parseInt(dataSnapshot.child(Util.castMailToKey(user.getEmail())).child("tipoUser").getValue().toString());
                         TIPO_USUARIO = tipouser;
                     if(tipouser == usuario_administrador){
+                        Log.e("UA", user.getUid());
                         Toast.makeText(context,"ADMIN",Toast.LENGTH_SHORT).show();
                         context.startActivity(new Intent(context, Activity_Admin.class));
                     }
                 }else if(dataSnapshot.child(user.getUid()).child("tipoUser").getValue() != null){
-                    //int tipoUser = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getTipoUser();
+
                     int tipoUser = Integer.parseInt(dataSnapshot.child(user.getUid()).child("tipoUser").getValue().toString());
-                   // Log.e("WHAT",  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getEstadoCuenta()+"");
                     String estadoCuenta = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class).getEstadoCuenta().toString();
-                    Log.e("account",tipoUser+" - "+estadoCuenta);
                     TIPO_USUARIO = tipoUser;
                     if(tipoUser == 0){
                         if(estadoCuenta.equals("NUEVA")){

@@ -56,7 +56,8 @@
             android:layout_weight="4"
             android:background="@drawable/edittextborder"
             android:gravity="start"
-            android:hint="Descripción" />
+            android:hint="Descripción"
+            android:inputType="textMultiLine" />
 
 
 

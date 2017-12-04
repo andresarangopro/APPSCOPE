@@ -294,7 +294,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
 
     public void getEtiquetas(){
 
-        databaseReference.child("Etiqueta").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Etiqueta").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //listUsers.clear();

@@ -105,17 +105,8 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         rvEtiquetas.setAdapter(mAdapter);
     }
 
-    private ArrayList<String> listEtToST(ArrayList<EditText> etiqu){
-        ArrayList<String> listEqtiquetas = new ArrayList<>();
-        for (int i = 0; i < etiqu.size() ; i++) {
-            listEqtiquetas.add(etiqu.get(i).getText().toString());
-        }
-        return  listEqtiquetas;
-    }
-
     public void getEtiquetas(){
-
-        databaseReference.child("Etiqueta").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Etiqueta").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //listUsers.clear();
@@ -131,13 +122,11 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
     }
 
     private void addJob(String titulo, String desc, ArrayList<String> etiquetas, Object usr){
-
         String idJob =  databaseReference.push().getKey();
         Etiqueta et ;
         Trabajo t;
@@ -216,7 +205,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
         mAdapter.notifyItemInserted(position);
         mAdapter.notifyDataSetChanged();
         rvEtiquetas.scrollToPosition(position);
-        Toast.makeText(this, "Etiqueta Agregada" +dataEtiquetas, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Etiqueta Agregada" , Toast.LENGTH_SHORT).show();
     }
 
 
@@ -241,7 +230,7 @@ public class Activity_OfertarTrabajo extends MainActivity implements View.OnClic
     }
 
     private void eventPD(String usChildString){
-        databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(usChildString).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();

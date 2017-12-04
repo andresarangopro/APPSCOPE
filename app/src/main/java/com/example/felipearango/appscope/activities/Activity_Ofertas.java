@@ -16,6 +16,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.models.Empresa;
@@ -30,7 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
@@ -94,7 +96,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
 
             LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
             View popupView = inflater.inflate(R.layout.popup_empresa, null);
-            int width = LinearLayout.LayoutParams.WRAP_CONTENT;
+            int width = LinearLayout.LayoutParams.MATCH_PARENT;
             int height = LinearLayout.LayoutParams.MATCH_PARENT;
             boolean focusable = true;
             final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
@@ -114,10 +116,14 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
 
            tvDetalles.setText(empres.getNombre());
               if(!empres.getFoto().equals("")){
-                Picasso.with(this)
+                  Glide.with(this)
+                          .load(empres.getFoto())
+                          .apply(RequestOptions
+                                  .circleCropTransform()).into(imVPerfil);
+               /* Picasso.with(this)
                         .load(empres.getFoto())
                         .transform(new CircleTransform())
-                        .into(imVPerfil);
+                        .into(imVPerfil);*/
            }
 
             if(empres.getCertificacion() == cuenta_no_certificada){
@@ -151,7 +157,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     }
 
     private void showEmpresa(final String idEmpresa){
-        databaseReference.child("CorrientsUsers").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("CorrientsUsers").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 empres = dataSnapshot.child(idEmpresa).getValue(Empresa.class);
@@ -189,7 +195,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     }
 
     private void startArrayEtiquetas(final String nameEtiqueta){
-        databaseReference.child("Etiqueta").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Etiqueta").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot objSnapshot: dataSnapshot.child(nameEtiqueta).getChildren()){
@@ -211,7 +217,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     }
 
     private void startArrayJobs(){
-        databaseReference.child("Jobs").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Jobs").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -240,7 +246,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     @Override
     public void onClick(View view) {
         if(view == btnOfertar){
-            if(trabajos.size() >= counter) {
+            if(trabajos.size() > counter) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 insertarOferta(trabajos.get(counter), user);
                 showJob(++counter);
@@ -262,7 +268,7 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     }
 
     public void eventETRE(String usChildString){
-        databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(usChildString).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();

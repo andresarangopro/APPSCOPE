@@ -1,8 +1,11 @@
 package com.example.felipearango.appscope.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,7 +13,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.Util.Util;
@@ -52,6 +56,7 @@ public class MainActivity extends AppCompatActivity
     protected static DatabaseReference databaseReference;
     protected static FirebaseDatabase firebaseDatabase;
     private MenuView.ItemView nav_gallery;
+    protected ValueEventListener valueEventListener ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +141,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), Activity_notificaciones.class));
             //startActivity(new Intent(getApplicationContext(), Activity_Admin.class));
             //startActivity(new Intent(getApplicationContext(),Activity_AgregarAdmin.class));
+
             finish();
         } else if (id == R.id.nav_trabajos) {
             startActivity(new Intent(getApplicationContext(), Activity_Ofertas.class));
@@ -145,6 +151,11 @@ public class MainActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.nav_configuracion) {
             startActivity(new Intent(getApplicationContext(),Activity_Settings.class));
+            if(valueEventListener != null){
+                databaseReference.child("CorrientsUsers").removeEventListener(valueEventListener);
+                Glide.get(this).clearMemory();//clear memory
+                //databaseReference.child("CorrientsUsers").addValueEventListener(null);
+            }
             finish();
         }else if (id == R.id.nav_notificaciones_admin) {
             startActivity(new Intent(getApplicationContext(),Activity_Admin.class));
@@ -193,50 +204,66 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
     protected void datosUser(){
+        try {
             eventPDU("CorrientsUsers");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void eventPDU(String usChildString){
 
-        databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
+    public void eventPDU(String usChildString)throws Exception{
+        databaseReference.child(usChildString).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if(TIPO_USUARIO == usuario_corriente){
-                    UsuarioCorriente uC =  dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
+                if (TIPO_USUARIO == usuario_corriente) {
+                    UsuarioCorriente uC = dataSnapshot.child(user.getUid()).getValue(UsuarioCorriente.class);
                     putDatesUsC(uC);
                     putImg(uC);
-                }else if(TIPO_USUARIO == usuario_empresa){
-                    Empresa uE =  dataSnapshot.child(user.getUid()).getValue(Empresa.class);
+                } else if (TIPO_USUARIO == usuario_empresa) {
+                    Empresa uE = dataSnapshot.child(user.getUid()).getValue(Empresa.class);
                     putDatesUsE(uE);
                     putImg(uE);
-                }else{
-                    Administrador admin =dataSnapshot.child(Util.castMailToKey(user.getEmail())).getValue(Administrador.class);
+                } else {
+                    Administrador admin = dataSnapshot.child(Util.castMailToKey(user.getEmail())).getValue(Administrador.class);
                     putDatesAdmin(admin);
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
+
     }
     private void putImg(Object obj){
         if(obj instanceof UsuarioCorriente){
             if(!(((UsuarioCorriente)obj).getFoto().equals(""))){
-                Picasso.with(MainActivity.this)
+                Glide.with(this)
+                        .load(((UsuarioCorriente)obj).getFoto())
+                        .apply(RequestOptions
+                                .circleCropTransform()).into(iVNavPerfil);
+
+             /*  Picasso.with(MainActivity.this)
                         .load(((UsuarioCorriente)obj).getFoto())
                         .transform(new CircleTransform())
-                        .into(iVNavPerfil);
+                        .into(iVNavPerfil);*/
 
             }
         }else{
             if(!(((Empresa)obj).getFoto().equals(""))){
-                Picasso.with(MainActivity.this)
+                Glide.with(this)
+                        .load(((Empresa)obj).getFoto())
+                        .apply(RequestOptions
+                                .circleCropTransform()).into(iVNavPerfil);
+               /* Picasso.with(MainActivity.this)
                         .load(((Empresa)obj).getFoto())
                         .transform(new CircleTransform())
-                        .into(iVNavPerfil);
+                        .into(iVNavPerfil);*/
 
             }
         }
@@ -253,26 +280,12 @@ public class MainActivity extends AppCompatActivity
 
     private void putDatesAdmin(Administrador admin){
        if(admin != null){
-           txtNavName.setText(admin.getNombre()+" "+admin.getApellido());
+           txtNavName.setText(admin.getNombre());
            txtNavMail.setText(admin.getCorreo());
 
        }
     }
 
-    private void quitarAUth(){
-        FirebaseAuth.AuthStateListener mauthListenr;
-        mauthListenr = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    // Sign in logic here.
-                }
-            }
-        };
-
-        firebaseAuth.removeAuthStateListener(mauthListenr);
-    }
 
     private void signout(){
         firebaseAuth.signOut();

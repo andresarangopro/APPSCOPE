@@ -21,6 +21,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
+
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,8 +57,8 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
     RecyclerView recycler;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager lManager;
-
-    DividerItemDecoration dividerItemDecoration ;
+    RecyclerAdapterEmpresa rES;
+    RecyclerView recyclerES;
 
     public RecyclerAdapterEmpresa(Context context, LinearLayout linearLayout,ArrayList<UsuariosSolicitudEnEM> mUsuariosSolicitudEnEM) {
         this.mUsuariosSolicitudEnEM = mUsuariosSolicitudEnEM;
@@ -123,19 +125,20 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
                 mUsuariosSolicitudEnEM.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, mUsuariosSolicitudEnEM.size());
+                notifyDataSetChanged();
             }
         });
 
         holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                inicializatedFireBase();
                 insertarUs(notificacion_oferta_rechazada,mUsuariosSolicitudEnEM.get(position).getIdJob()
                         ,mUsuariosSolicitudEnEM.get(position).getId() );
                 mUsuariosSolicitudEnEM.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, mUsuariosSolicitudEnEM.size());
-                inicializatedFireBase();
-
+                notifyDataSetChanged();
             }
         });
 
@@ -153,15 +156,12 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup_empresa, null);
-        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
+        int width = LinearLayout.LayoutParams.MATCH_PARENT;
+        int height = LinearLayout.LayoutParams.MATCH_PARENT;
         boolean focusable = true;
         final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
 
         ArrayList<String[]> txtAndId = new ArrayList();
-
-
-
 
         if(usuariosSolicitudEnEM.getPdfHojaVida().equals("")){
             txtAndId.add(new String[] {"No hay hoja de vida",""});
@@ -195,10 +195,14 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         tvOcupacion.setText(usuariosSolicitudEnEM.getApellido());
         tvFrase.setText(usuariosSolicitudEnEM.getCedula());
         if(!(usuariosSolicitudEnEM.getImage().equals(""))){
-            Picasso.with(mContext)
+            Glide.with(mContext)
+                    .load(usuariosSolicitudEnEM.getImage())
+                    .apply(RequestOptions
+                            .circleCropTransform()).into(imageView);
+            /*Picasso.with(mContext)
                     .load(usuariosSolicitudEnEM.getImage())
                     .transform(new CircleTransform())
-                    .into(imageView);
+                    .into(imageView);*/
         }
 
 
@@ -223,6 +227,8 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
 
     private void insertarUs(int estado,String idTrabajo,String idWorker){
         databaseReference.child("Jobs").child(idTrabajo).child("Ofertas").child(idWorker).child("Estado").setValue(estado);
+
+
 
     }
 

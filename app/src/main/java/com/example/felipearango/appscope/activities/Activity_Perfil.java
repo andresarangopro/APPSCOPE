@@ -1,9 +1,7 @@
 package com.example.felipearango.appscope.activities;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,12 +10,11 @@ import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.models.Empresa;
-import com.example.felipearango.appscope.models.Notificacion;
-import com.example.felipearango.appscope.models.RecyclerAdapterNotificaciones;
-import com.example.felipearango.appscope.models.RecyclerAdapterPDF;
 import com.example.felipearango.appscope.models.RecyclerShowInfo;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,12 +23,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
+
 
 import java.util.ArrayList;
 
 import static com.example.felipearango.appscope.Util.Util.cuenta_certificada;
-import static com.example.felipearango.appscope.Util.Util.cuenta_espera_certif;
 import static com.example.felipearango.appscope.Util.Util.cuenta_no_certificada;
 import static com.example.felipearango.appscope.Util.Util.usuario_corriente;
 import static com.example.felipearango.appscope.Util.Util.usuario_empresa;
@@ -48,7 +44,7 @@ public class Activity_Perfil extends MainActivity {
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerShowInfo mAdapterInf;
     private static boolean estado = false;
-
+    private ValueEventListener valueEventListenerPerfil ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +68,7 @@ public class Activity_Perfil extends MainActivity {
     }
 
     public void eventPD(String usChildString){
-        databaseReference.child(usChildString).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(usChildString).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
@@ -89,6 +85,7 @@ public class Activity_Perfil extends MainActivity {
                 }
                 putImg(obj);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -118,17 +115,25 @@ public class Activity_Perfil extends MainActivity {
     private void putImg(Object obj){
         if(obj instanceof UsuarioCorriente){
             if(!(((UsuarioCorriente)obj).getFoto().equals(""))){
-                Picasso.with(Activity_Perfil.this)
+                Glide.with(this)
+                        .load(((UsuarioCorriente)obj).getFoto())
+                        .apply(RequestOptions
+                                .circleCropTransform()).into(imVPerfil);
+                /*Picasso.with(Activity_Perfil.this)
                         .load(((UsuarioCorriente)obj).getFoto())
                         .transform(new CircleTransform())
-                        .into(imVPerfil);
+                        .into(imVPerfil);*/
             }
         }else{
             if(!(((Empresa)obj).getFoto().equals(""))){
-                Picasso.with(Activity_Perfil.this)
+              /*  Picasso.with(Activity_Perfil.this)
                         .load(((Empresa)obj).getFoto())
                         .transform(new CircleTransform())
-                        .into(imVPerfil);
+                        .into(imVPerfil);*/
+                Glide.with(this)
+                        .load(((Empresa)obj).getFoto())
+                        .apply(RequestOptions
+                         .circleCropTransform()).into(imVPerfil);
             }
         }
     }
@@ -159,9 +164,6 @@ public class Activity_Perfil extends MainActivity {
                 mLinearLayoutManager.getOrientation());
         mRecyclerAccounts.addItemDecoration(dividerItemDecoration);*/
     }
-
-
-
 
 
     private void initializedDR() {
