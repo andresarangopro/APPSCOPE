@@ -29,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Activity_Login extends AppCompatActivity {
+public class Activity_Login extends AppCompatActivity implements View.OnClickListener{
 
 
     //////////////////////////
@@ -52,7 +52,6 @@ public class Activity_Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         instances();
-        onclickList();
         mn.inicializatedFireBase();
         progressDialog = new ProgressDialog(this);
         verificaSignIn();
@@ -72,6 +71,10 @@ public class Activity_Login extends AppCompatActivity {
         lblForgotPass= (TextView) findViewById(R.id.lblForgotPass);
         lblRegister= (TextView) findViewById(R.id.lblregister);
         signIn = (Button) findViewById(R.id.btnSignIn);
+
+        lblForgotPass.setOnClickListener(this);
+        lblRegister.setOnClickListener(this);
+        signIn.setOnClickListener(this);
     }
 
     /**
@@ -84,29 +87,6 @@ public class Activity_Login extends AppCompatActivity {
             mn.account(Activity_Login.this);
             finish();
         }
-    }
-    /**
-     *
-     */
-    private void onclickList(){
-        lblRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                startActivity(new Intent(Activity_Login.this,Activity_RegistroEmail.class));
-            }
-        });
-
-        signIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String mail = Util.getTxt(txtMail);
-                String pass = Util.getTxt(txtPass);
-                if(!Util.emptyCampMSG(txtMail,"Correo vacío") && !Util.emptyCampMSG(txtPass, "Contraseña vacía")){
-                    loginUser(mail, pass);
-                }
-            }
-        });
     }
 
     /**
@@ -131,5 +111,30 @@ public class Activity_Login extends AppCompatActivity {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void onClick(View v) {
+        int vista = v.getId();
+        switch (vista){
+            case R.id.lblForgotPass:{
+                finish();
+                startActivity(new Intent(Activity_Login.this,Activity_Manufacture_Pass.class));
+                break;
+            }
+            case R.id.lblregister:{
+                finish();
+                startActivity(new Intent(Activity_Login.this,Activity_RegistroEmail.class));
+                break;
+            }
+            case R.id.btnSignIn:{
+                String mail = Util.getTxt(txtMail);
+                String pass = Util.getTxt(txtPass);
+                if(!Util.emptyCampMSG(txtMail,"Correo vacío") && !Util.emptyCampMSG(txtPass, "Contraseña vacía")){
+                    loginUser(mail, pass);
+                }
+                break;
+            }
+        }
     }
 }

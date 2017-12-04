@@ -139,9 +139,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_notificaciones) {
             startActivity(new Intent(getApplicationContext(), Activity_notificaciones.class));
-            //startActivity(new Intent(getApplicationContext(), Activity_Admin.class));
-            //startActivity(new Intent(getApplicationContext(),Activity_AgregarAdmin.class));
-
             finish();
         } else if (id == R.id.nav_trabajos) {
             startActivity(new Intent(getApplicationContext(), Activity_Ofertas.class));
@@ -151,11 +148,6 @@ public class MainActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.nav_configuracion) {
             startActivity(new Intent(getApplicationContext(),Activity_Settings.class));
-            if(valueEventListener != null){
-                databaseReference.child("CorrientsUsers").removeEventListener(valueEventListener);
-                Glide.get(this).clearMemory();//clear memory
-                //databaseReference.child("CorrientsUsers").addValueEventListener(null);
-            }
             finish();
         }else if (id == R.id.nav_notificaciones_admin) {
             startActivity(new Intent(getApplicationContext(),Activity_Admin.class));
@@ -168,6 +160,7 @@ public class MainActivity extends AppCompatActivity
             finish();
         } else if (id == R.id.nav_logout) {
             signout();
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -290,7 +283,7 @@ public class MainActivity extends AppCompatActivity
     private void signout(){
         firebaseAuth.signOut();
         finish();
-        startActivity(new Intent(MainActivity.this, Activity_Login.class));
+        startActivity(new Intent(MainActivity.this, Activity_Login.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK));
     }
     protected ArrayList<String> quitarRepetidos(ArrayList<String> strRe){
         for (int i = 0; i < strRe.size() ; i++) {

@@ -15,17 +15,21 @@ public class UsuariosSolicitudEnEM {
     private String id;
     private String image;
     private String idJob;
+    private String correo;
+    private String frase;
     private String pdfHojaVida;
 
     public UsuariosSolicitudEnEM(String nombre, String apellido, String cedula, String id,
-                                 String image, String idJob, String pdfHojaVida) {
+                                 String image, String idJob,String correo, String frase, String pdfHojaVida) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.cedula = cedula;
         this.id = id;
         this.image = image;
         this.idJob = idJob;
+        this.correo = correo;
         this.pdfHojaVida = pdfHojaVida;
+        this.frase = frase;
     }
 
     public String getNombre() {
@@ -66,6 +70,14 @@ public class UsuariosSolicitudEnEM {
 
     public String getPdfHojaVida() {
         return pdfHojaVida;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public String getFrase() {
+        return frase;
     }
 
     public String getCedula() {

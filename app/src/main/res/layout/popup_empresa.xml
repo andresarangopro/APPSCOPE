@@ -101,15 +101,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
+            android:layout_weight="35"
             android:orientation="vertical"   >
 
             <RatingBar
-
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:layout_weight="0.6"
-                android:layout_gravity="center_horizontal"
+                android:layout_weight="0.3"
+                android:layout_gravity="center"
+
                 android:isIndicator="true"
                 android:numStars="5"
                 android:stepSize="0.1" />
@@ -121,7 +121,7 @@
                 android:id="@+id/tVFrase"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="0.4"
+                android:layout_weight="0.7"
                 android:text="Frase:''   ''"
                 android:textSize="20dp" />
 
@@ -130,7 +130,7 @@
         <!--Weigth: 3-->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_Info"
-            android:layout_weight="30"
+            android:layout_weight="15"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp">

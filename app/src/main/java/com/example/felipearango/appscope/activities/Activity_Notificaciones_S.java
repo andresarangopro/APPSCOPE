@@ -101,7 +101,7 @@ public class Activity_Notificaciones_S extends MainActivity {
                 for (String idOfert : idWorkers) {
                     UsuarioCorriente us = dataSnapshot.child(idOfert).getValue(UsuarioCorriente.class);
                     UsuariosSolicitudEnEM emp = new UsuariosSolicitudEnEM(us.getNombre(),us.getApellido(),
-                            us.getCelular(),us.getId(),us.getFoto(),strIdJob, us.getAnexos());
+                            us.getCelular(),us.getId(),us.getFoto(),strIdJob, us.getCorreo(),us.getFrase(), us.getAnexos());
                     notificaciones.add(emp);
                 }
                 mAdapterEmp = new RecyclerAdapterEmpresa(context, ll, notificaciones);

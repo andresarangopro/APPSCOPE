@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context="com.example.felipearango.appscope.activities.Activity_notificaciones">
 
+    <include layout="@layout/content_notificaciones_user_c_e"></include>
     <include layout="@layout/content_notificaciones"></include>
 
 </LinearLayout>

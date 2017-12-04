@@ -193,7 +193,8 @@ public class RecyclerAdapterEmpresa extends RecyclerView.Adapter<RecyclerAdapter
         tVCertificada.setVisibility(View.INVISIBLE);
         tvNombre.setText(usuariosSolicitudEnEM.getNombre());
         tvOcupacion.setText(usuariosSolicitudEnEM.getApellido());
-        tvFrase.setText(usuariosSolicitudEnEM.getCedula());
+        tvFrase.setText("Frase: "+usuariosSolicitudEnEM.getFrase()+"\n\n"+"Telefono: "+usuariosSolicitudEnEM.getCedula()+"\n\n"+"Correo: "+
+                usuariosSolicitudEnEM.getCorreo()+"\n");
         if(!(usuariosSolicitudEnEM.getImage().equals(""))){
             Glide.with(mContext)
                     .load(usuariosSolicitudEnEM.getImage())

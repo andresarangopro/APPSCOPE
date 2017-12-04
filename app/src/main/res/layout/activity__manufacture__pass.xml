@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.felipearango.appscope.activities.Activity_Manufacture_Pass">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1">
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:weightSum="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:background="@color/orangeBasic"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="RESTABLECIMIENTO DE CONTRASEÑA"
+            android:textSize="16sp"
+            android:textColor="@color/colorAccent"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
+            android:hint="Correo"
+            android:id="@+id/etRecuperarPass"
+            android:layout_margin="@dimen/fab_margin"/>
+        <Button
+            android:id="@+id/btnRecuperar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            style="@style/btnTap1"
+            android:text="Recuperar"/>
+    </LinearLayout>
+
+
+</LinearLayout>

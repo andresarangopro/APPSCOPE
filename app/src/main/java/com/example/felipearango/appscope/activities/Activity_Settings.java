@@ -211,8 +211,12 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
 
             }
         }else if(v.getId() == R.id.txtUniversidadCP){
+            progressDialog.setMessage("Abriendo memoria local");
+            progressDialog.show();
             getPDF();
         }else if(v.getId() == R.id.etHojaVida){
+            progressDialog.setMessage("Abriendo memoria local");
+            progressDialog.show();
             getPDF();
         }else if(v.getId() == R.id.btnInfo){
             showPopUp();
@@ -523,6 +527,7 @@ public class Activity_Settings extends MainActivity implements View.OnClickListe
         Intent intent = new Intent();
         intent.setType("application/pdf");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        progressDialog.dismiss();
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_PDF_CODE);
     }
 
