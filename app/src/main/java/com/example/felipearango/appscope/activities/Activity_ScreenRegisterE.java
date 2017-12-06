@@ -116,6 +116,9 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
+        if(!nitEmpresa.equals("")){
+            nitEmpresa = descargarPDF+"";
+        }
         Empresa uE = new Empresa(id, nombre, razonSocial, urlEmpresa,nitEmpresa,
                 mail,ESTADO_ACTIVA,foto,rating,usuario_empresa, cuenta_espera_certif,votos,redesSociales);
         if(uE != null){
@@ -221,11 +224,6 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         Toast.makeText(this, "Etiqueta Agregada", Toast.LENGTH_SHORT).show();
 
     }
-
-
-
-
-
 
     /**
      *

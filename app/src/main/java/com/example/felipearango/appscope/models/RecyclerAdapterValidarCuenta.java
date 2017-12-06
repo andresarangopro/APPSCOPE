@@ -133,6 +133,7 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<RecyclerA
             txtAndId.add(new String[] {"No hay nit anexado ",""});
             Toast.makeText(mContext,"No hay documento para descargar",Toast.LENGTH_SHORT).show();
         }else {
+            Log.e("TAG",empresa.getNit());
             txtAndId.add(new String[]  {"Hoja de vida anexada",empresa.getNit()});
         }
 
@@ -145,6 +146,7 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<RecyclerA
         recycler.setLayoutManager(lManager);
 
         // Crear un nuevo adaptador
+
         adapter = new RecyclerAdapterPDF(mContext,txtAndId);
         recycler.setAdapter(adapter);
 

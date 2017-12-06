@@ -71,6 +71,7 @@ public class RecyclerAdapterPDF extends RecyclerView.Adapter<RecyclerAdapterPDF.
         @Override
         public void onClick(View v) {
             if(!listPDf.get(position)[1].equals("")){
+                Log.e("TAG",listPDf.get(position)[1]);
                 progressDialog.setMessage("Descargando, por favor espera");
                 progressDialog.show();
                 downloadFile(listPDf.get(position)[1]);
