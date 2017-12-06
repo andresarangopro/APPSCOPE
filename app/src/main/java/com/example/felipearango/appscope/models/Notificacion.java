@@ -10,19 +10,22 @@ public class Notificacion {
     ////////Variables
     /////////////////////////////////
     private final String nombreTrabajo;
-    private final String idTrabajo;
+    private final String idEmpresa;
     private final String nombreEmpresa;
-    private final long numOfertantes;
-
+    private final String idJob;
+    private final long estado;
+    private  long estadoCalif;
     /////////////////////////////////
     /////Constructor
     //////////////////////////////////
 
-    public Notificacion(String nombreTrabajo, String idTrabajo, String nombreEmpresa, long numOfertantes) {
+    public Notificacion(String nombreTrabajo, String idEmpresa, String nombreEmpresa,String idJob, long estado, long estadoCalif) {
         this.nombreTrabajo = nombreTrabajo;
-        this.idTrabajo = idTrabajo;
+        this.idEmpresa = idEmpresa;
         this.nombreEmpresa = nombreEmpresa;
-        this.numOfertantes = numOfertantes;
+        this.idJob = idJob;
+        this.estado = estado;
+        this.estadoCalif =estadoCalif;
     }
 
 
@@ -35,15 +38,27 @@ public class Notificacion {
         return nombreTrabajo;
     }
 
-    public String getIdTrabajo() {
-        return idTrabajo;
-    }
-
-    public long getNumOfertantes() {
-        return numOfertantes;
+    public String getIdEmpresa() {
+        return idEmpresa;
     }
 
     public String getNombreEmpresa() {
         return nombreEmpresa;
+    }
+
+    public String getIdJob() {
+        return idJob;
+    }
+
+    public long getEstado() {
+        return estado;
+    }
+
+    public long getEstadoCalif() {
+        return estadoCalif;
+    }
+
+    public void setEstadoCalif(long estado){
+        this.estadoCalif = estado;
     }
 }

@@ -12,8 +12,6 @@ import com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -95,6 +93,38 @@ public class ManejoUsers {
     public void updateEstadoEmpresa(String idEmpresa, String idNodo, int valor){
         databaseReference.child("CorrientsUsers").child(idEmpresa).child(idNodo).setValue(valor);
     }
+
+    public void updateEstadoC (String idJob, String idOfertante,String idEmpresa, int calificacion){
+        databaseReference.child("Jobs").child(idJob).child("Ofertas").child(idOfertante).child("EstadoCalif").setValue(calificacion);
+        updateRating(idEmpresa,calificacion);
+    }
+
+
+    public void updateRating (final String idEmpresa, final int rating){
+        getDataRating(idEmpresa).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int ratinNew = Integer.parseInt(dataSnapshot.child("rating").getValue().toString());
+                int votosNew = Integer.parseInt(dataSnapshot.child("votos").getValue().toString());
+                ratinNew += rating;
+                votosNew ++;
+
+                databaseReference.child("CorrientsUsers").child(idEmpresa).child("rating").setValue(ratinNew);
+                databaseReference.child("CorrientsUsers").child(idEmpresa).child("votos").setValue(votosNew);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    public DatabaseReference getDataRating(String idEmpresa){
+        return databaseReference.child("CorrientsUsers").child(idEmpresa);
+    }
+
 
 
 }

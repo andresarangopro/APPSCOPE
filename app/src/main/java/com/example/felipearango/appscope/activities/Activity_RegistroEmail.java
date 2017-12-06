@@ -190,11 +190,12 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
         String mail = "";
         String etiquetas = "";
         float rating = 0;
+        int votos = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
         UsuarioCorriente uC = new UsuarioCorriente(id,name,apellido,ocupacion,dateBorn,universidad
-                ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,rating,usuario_corriente,
+                ,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_NUEVA,rating,usuario_corriente,votos,
                 anexos,idiomas,expProfesionaless,refEmpleo,formacion, etiquetas);
         if(uC != null){
             insertarUs(uC,user);
@@ -214,11 +215,12 @@ public class Activity_RegistroEmail extends AppCompatActivity implements View.On
         String foto = "";
         String redesSociales = "";
         float rating = 0;
+        int votos = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
         Empresa uE = new Empresa(id,nombre,razonSocial,urlEmpresa,nit,mail,ESTADO_NUEVA,foto,rating,
-                usuario_empresa, cuenta_espera_certif,redesSociales);
+                usuario_empresa, cuenta_espera_certif,votos,redesSociales);
         if(uE != null){
             insertarUs(uE,user);
         }

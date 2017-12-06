@@ -28,6 +28,7 @@ public class UsuarioCorriente {
     private String estadoCuenta;
     private float rating;
     private int tipoUser;
+    private int votos;
     private String anexos;
     private ArrayList<String> idiomas;
     private ArrayList<String> experienciasProfesionales;
@@ -43,7 +44,7 @@ public class UsuarioCorriente {
                             String fechaNacimiento, String universidad, String celular,
                             String correo, String foto, String frase, String hobbies,
                             String conocimientosInformaticos, String estadoCuenta,
-                            float rating, int tipoUser, String anexos, String idiomas, String
+                            float rating, int tipoUser,int votos, String anexos, String idiomas, String
                                     experienciasProfesionales,String referenciasEmpleo, String formacion,String etiquetas) {
         this.id = id;
         this.nombre = nombre;
@@ -60,6 +61,7 @@ public class UsuarioCorriente {
         this.estadoCuenta = estadoCuenta;
         this.rating = rating;
         this.tipoUser = tipoUser;
+        this.votos = votos;
         this.anexos = anexos;
         this.idiomas = new ArrayList<String>(Arrays.asList(idiomas.split(",")));
         this.experienciasProfesionales = new ArrayList<String>(Arrays.asList(experienciasProfesionales.split(" , ")));
@@ -78,6 +80,14 @@ public class UsuarioCorriente {
     //Getters and Setters
     /////////////////////////
 
+
+    public int getVotos() {
+        return votos;
+    }
+
+    public void setVotos(int votos) {
+        this.votos = votos;
+    }
 
     public String getId() {
         return id;

@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -155,8 +156,12 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<RecyclerA
         TextView tvFrase = (TextView)popupWindow.getContentView().findViewById(R.id.tVFrase);
         TextView tVCertificada = (TextView)popupWindow.getContentView().findViewById(R.id.tVCertificada);
         tVCertificada.setVisibility(View.INVISIBLE);
+        tvFrase.setVisibility(View.INVISIBLE);
         tvNombre.setText(empresa.getNombre());
         tvOcupacion.setText(empresa.getMail());
+        RatingBar rBRating = (RatingBar) popupView.findViewById(R.id.rBRating);
+        float rating = (empresa.getRating())/empresa.getVotos();
+        rBRating.setRating(rating);
         //tvFrase.setText(usuariosSolicitudEnEM.getCedula());
         if(!(empresa.getFoto().equals(""))){
             Glide.with(mContext)

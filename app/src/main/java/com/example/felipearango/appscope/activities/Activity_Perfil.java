@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -37,6 +38,7 @@ public class Activity_Perfil extends MainActivity {
 
     private ImageView imVPerfil,iVCertif;
     private TabHost tHData;
+    private RatingBar rBRating;
     private Object obj;
     private TextView  tVNamep, tVOcupacion, tVFrase, tVCert;
     private RecyclerView mRecyclerAccounts;
@@ -99,9 +101,13 @@ public class Activity_Perfil extends MainActivity {
             tVNamep.setText(((UsuarioCorriente)obj).getNombre());
             tVOcupacion.setText(((UsuarioCorriente) obj).getOcupacion());
             tVFrase.setText("Frase: "+((UsuarioCorriente) obj).getFrase());
+            float rating = (((UsuarioCorriente) obj).getRating())/((UsuarioCorriente) obj).getVotos();
+            rBRating.setRating(rating);
         }else{
             tVNamep.setText(((Empresa)obj).getNombre());
             tVOcupacion.setText(((Empresa)obj).getMail());
+            float rating = (((Empresa)obj).getRating())/((Empresa)obj).getVotos();
+            rBRating.setRating(rating);
             if(((Empresa)obj).getCertificacion() == cuenta_no_certificada){
                 iVCertif.setImageResource(R.drawable.ic_x_button);
             }else if(((Empresa)obj).getCertificacion() == cuenta_certificada){
@@ -146,7 +152,7 @@ public class Activity_Perfil extends MainActivity {
         imVPerfil = (ImageView) findViewById(R.id.imVPerfil);
         iVCertif = (ImageView)findViewById(R.id.iVCertif);
         tVCert = (TextView) findViewById(R.id.tVCert);
-
+        rBRating = (RatingBar) findViewById(R.id.rBRating);
 
         if(TIPO_USUARIO == usuario_corriente){
             iVCertif.setVisibility(View.INVISIBLE);

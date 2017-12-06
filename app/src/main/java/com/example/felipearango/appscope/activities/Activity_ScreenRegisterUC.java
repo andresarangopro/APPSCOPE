@@ -252,7 +252,7 @@ public class Activity_ScreenRegisterUC extends AppCompatActivity implements View
         mail = user.getEmail();
         UsuarioCorriente uC = new UsuarioCorriente(id,name+" "+sName,apellido+" "+sApellido,ocupacion,
                 dateBorn,universidad,celular,mail,foto,frase,hobbies,conocimientosInf,ESTADO_ACTIVA,
-                rating,0,anexos,idiomas,expProfesionaless,refEmpleo,formacion, etiquetas);
+                rating,0,0,anexos,idiomas,expProfesionaless,refEmpleo,formacion, etiquetas);
 
         if(uC != null){
             insertarUsCFireBase(uC,user);

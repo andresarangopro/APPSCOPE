@@ -24,6 +24,7 @@ public class Empresa {
     private float rating;
     private int tipoUser;
     private int certificacion;
+    private int votos;
     private ArrayList<String> redesSociales = new ArrayList<>();
     /*
     Es importante recalcar que para publicar ofertas de trabajo se requiere el lugar, una descripción del empleo
@@ -37,7 +38,7 @@ public class Empresa {
 
     public Empresa(String id, String nombre, String razonSocial, String urlEmpresa, String nit,
                    String mail, String estadoCuenta, String foto, float rating, int
-                           tipoUser, int certificacion, String redesSociales) {
+                           tipoUser, int certificacion,int votos, String redesSociales) {
         this.id = id;
         this.nombre = nombre;
         this.razonSocial = razonSocial;
@@ -49,6 +50,7 @@ public class Empresa {
         this.rating = rating;
         this.tipoUser = tipoUser;
         this.certificacion = certificacion;
+        this.votos = votos;
         this.redesSociales = new ArrayList<String>(Arrays.asList(redesSociales.split(",")));
     }
 
@@ -141,6 +143,14 @@ public class Empresa {
 
     public float getRating() {
         return rating;
+    }
+
+    public int getVotos() {
+        return votos;
+    }
+
+    public void setVotos(int votos) {
+        this.votos = votos;
     }
 
     public void setRating(float rating) {

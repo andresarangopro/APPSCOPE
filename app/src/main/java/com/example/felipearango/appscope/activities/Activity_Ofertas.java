@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -113,7 +114,9 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
             tVFrase.setVisibility(View.INVISIBLE);
             ImageView imVPerfil = ((ImageView) popupView.findViewById(R.id.imVPerfil));
             ImageView iVPopUpCert = ((ImageView) popupView.findViewById(R.id.iVPopUpCert));
-
+           RatingBar rBRating = (RatingBar) popupView.findViewById(R.id.rBRating);
+            float rating = (empres.getRating())/empres.getVotos();
+            rBRating.setRating(rating);
            tvDetalles.setText(empres.getNombre());
               if(!empres.getFoto().equals("")){
                   Glide.with(this)
@@ -257,6 +260,8 @@ public class Activity_Ofertas extends MainActivity implements View.OnClickListen
     private void insertarOferta(Trabajo job, FirebaseUser user){
         databaseReference.child("Jobs").child(job.getId()).
                 child("Ofertas").child(user.getUid()).child("Estado").setValue(notificacion_oferta_enEspera);
+        databaseReference.child("Jobs").child(job.getId()).
+                child("Ofertas").child(user.getUid()).child("EstadoCalif").setValue(0);
     }
 
     private void cargarEtiquetas(ArrayList<String> strEtiqueta){

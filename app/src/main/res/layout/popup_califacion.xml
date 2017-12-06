@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginRight="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="30dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/pop_up_style"
+
+    android:orientation="vertical"
+    tools:context="com.example.felipearango.appscope.activities.Activity_Perfil">
+
+    <LinearLayout
+        android:background="@color/background"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="@dimen/fab_margin"
+            android:text="CALIFICANOS!!"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:orientation="horizontal">
+            <Button
+                android:text="1"
+                android:id="@+id/btnC1"
+                android:layout_margin="@dimen/fab_margin"
+                style="@style/btnTap1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"/>
+            <Button
+                android:id="@+id/btnC2"
+                android:text="2"
+                android:layout_margin="@dimen/fab_margin"
+                style="@style/btnTap1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"/>
+            <Button
+                android:id="@+id/btnC3"
+                android:text="3"
+                android:layout_margin="@dimen/fab_margin"
+                style="@style/btnTap1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"/>
+            <Button
+                android:id="@+id/btnC4"
+                android:text="4"
+                android:layout_margin="@dimen/fab_margin"
+                style="@style/btnTap1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"/>
+            <Button
+                android:id="@+id/btnC5"
+                android:text="5"
+                android:layout_margin="@dimen/fab_margin"
+                style="@style/btnTap1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"/>
+        </LinearLayout>
+        <!--weight: 1
+         - Espacio -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.2" ></LinearLayout>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/fab_margin"
+            android:src="@drawable/ic_return" />
+    </LinearLayout>
+
+
+</LinearLayout>

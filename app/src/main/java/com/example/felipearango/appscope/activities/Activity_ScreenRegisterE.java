@@ -112,11 +112,12 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
         String foto = "";
         String redesSociales = Util.arrayToString(dataEtiquetasRedes);
         float rating = 0;
+        int votos = 0;
         FirebaseUser user = firebaseAuth.getCurrentUser();
         id = user.getUid();
         mail = user.getEmail();
         Empresa uE = new Empresa(id, nombre, razonSocial, urlEmpresa,nitEmpresa,
-                mail,ESTADO_ACTIVA,foto,rating,usuario_empresa, cuenta_espera_certif,redesSociales);
+                mail,ESTADO_ACTIVA,foto,rating,usuario_empresa, cuenta_espera_certif,votos,redesSociales);
         if(uE != null){
             insertarUsEFireBase(uE,user);
         }
@@ -195,7 +196,7 @@ public class Activity_ScreenRegisterE extends AppCompatActivity implements View.
                 txtNIT.setText(uri.getPath());
                 txtNIT.setEnabled(false);
             }else{
-                Toast.makeText(this, "No se escohio ningún archivo", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No se escogio ningún archivo", Toast.LENGTH_SHORT).show();
             }
         }
     }

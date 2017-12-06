@@ -47,8 +47,9 @@ public class Activity_notificaciones extends MainActivity implements View.OnClic
         ll = (LinearLayout) findViewById(R.id.ll);
         llNotificacionUserE = (LinearLayout)findViewById(R.id.llNotificacionUserE);
 
-        iniciar();
+
         inicializatedFireBase();
+        iniciar();
     }
 
     private void iniciar(){
@@ -56,8 +57,8 @@ public class Activity_notificaciones extends MainActivity implements View.OnClic
         mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Noti);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
-
-        mAdapter = new RecyclerAdapterNotificaciones(this,notificacion, ofertaTrabajo);
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        mAdapter = new RecyclerAdapterNotificaciones(this,notificacion, ofertaTrabajo,ll,user);
         mRecyclerAccounts.setAdapter(mAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
@@ -106,6 +107,7 @@ public class Activity_notificaciones extends MainActivity implements View.OnClic
     }
 
     private void startnotifiOferts(final Context context,final ArrayList<String> strIdJob){
+       final FirebaseUser  user = firebaseAuth.getCurrentUser();
         databaseReference.child("Jobs").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -114,14 +116,22 @@ public class Activity_notificaciones extends MainActivity implements View.OnClic
                     for(String idOfJob: strIdJob){
                         if(idOfJob.equals(jobsChild.getKey())){
                             tb = jobsChild.getValue(Trabajo.class);
+                            int aspirantes =0 ;
+                            for (DataSnapshot ofertantes: jobsChild.child("Ofertas").getChildren() ) {
+                                int estado = Integer.parseInt(ofertantes.child("Estado").getValue().toString());
+                                if(estado == 0){
+                                    aspirantes ++;
+                                }
+                            }
+
                             Notificacion noti = new Notificacion(tb.getTitulo(),
-                                    tb.getId(),"", jobsChild.child("Ofertas").getChildrenCount());
+                                    tb.getId(),"",tb.getId(), aspirantes,1);
                             notificacion.add(noti);
                         }
                     }
 
                 }
-                mAdapter = new RecyclerAdapterNotificaciones(context,notificacion, ofertaTrabajo);
+                mAdapter = new RecyclerAdapterNotificaciones(context,notificacion, ofertaTrabajo,ll, user);
                 mRecyclerAccounts.setAdapter(mAdapter);
             }
             @Override
@@ -170,17 +180,18 @@ public class Activity_notificaciones extends MainActivity implements View.OnClic
                         if(jobs.child("Ofertas") != null){
                             for (DataSnapshot  ofertantes : jobs.child("Ofertas").getChildren()) {
                                 int estado = Integer.parseInt(ofertantes.child("Estado").getValue().toString());
+                                int estadoCalif = Integer.parseInt(ofertantes.child("EstadoCalif").getValue().toString());
                                 if(ofertantes.getKey().equals(user.getUid()) && estado >= 1){
                                     tb = jobs.getValue(Trabajo.class);
                                     Notificacion noti = new Notificacion(tb.getTitulo(),
-                                            tb.getIdEmpresa(), tb.getNameEmpresa(), estado);
+                                            tb.getIdEmpresa(), tb.getNameEmpresa(),tb.getId(), estado, estadoCalif);
                                     notificacion.add(noti);
                                 }
                             }
                         }
 
                 }
-                mAdapter = new RecyclerAdapterNotificaciones(context,notificacion,ofertaTrabajo);
+                mAdapter = new RecyclerAdapterNotificaciones(context,notificacion,ofertaTrabajo,ll,user);
                 mRecyclerAccounts.setAdapter(mAdapter);
             }
 
