@@ -10,6 +10,7 @@ import com.example.felipearango.appscope.activities.Activity_Perfil;
 import com.example.felipearango.appscope.activities.Activity_ScreenRegisterE;
 import com.example.felipearango.appscope.activities.Activity_ScreenRegisterUC;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -90,8 +91,8 @@ public class ManejoUsers {
         databaseReference = firebaseDatabase.getReference();
     }
 
-    public void updateEstadoEmpresa(String idEmpresa, String idNodo, int valor){
-        databaseReference.child("CorrientsUsers").child(idEmpresa).child(idNodo).setValue(valor);
+    public Task<Void> updateEstadoEmpresa(String idEmpresa, String idNodo, int valor){
+        return databaseReference.child("CorrientsUsers").child(idEmpresa).child(idNodo).setValue(valor);
     }
 
     public void updateEstadoC (String idJob, String idOfertante,String idEmpresa, int calificacion){

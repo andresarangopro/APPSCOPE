@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,7 +15,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.felipearango.appscope.R;
-import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.models.Empresa;
 import com.example.felipearango.appscope.models.RecyclerShowInfo;
 import com.example.felipearango.appscope.models.UsuarioCorriente;
@@ -24,7 +24,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 
 import java.util.ArrayList;
 
@@ -108,6 +107,7 @@ public class Activity_Perfil extends MainActivity {
             tVOcupacion.setText(((Empresa)obj).getMail());
             float rating = (((Empresa)obj).getRating())/((Empresa)obj).getVotos();
             rBRating.setRating(rating);
+            Log.e("Tag",((Empresa)obj).getCertificacion()+"" );
             if(((Empresa)obj).getCertificacion() == cuenta_no_certificada){
                 iVCertif.setImageResource(R.drawable.ic_x_button);
             }else if(((Empresa)obj).getCertificacion() == cuenta_certificada){

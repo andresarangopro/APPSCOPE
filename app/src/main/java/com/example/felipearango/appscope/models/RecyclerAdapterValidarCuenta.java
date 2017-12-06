@@ -1,6 +1,7 @@
 package com.example.felipearango.appscope.models;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,6 +23,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.felipearango.appscope.R;
 import com.example.felipearango.appscope.Util.CircleTransform;
 import com.example.felipearango.appscope.Util.ManejoUsers;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 
 import java.util.ArrayList;
@@ -43,6 +46,8 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<RecyclerA
     RecyclerView.LayoutManager lManager;
     private Context mContext;
     private LinearLayout ll;
+    private RecyclerAdapterValidarCuenta mAdapter;
+    private RecyclerView mRecyclerAccounts;
 
     public static class ValidarCuentaHolder extends RecyclerView.ViewHolder {
         // Campos respectivos de un item
@@ -61,10 +66,11 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<RecyclerA
         }
     }
 
-    public RecyclerAdapterValidarCuenta(LinearLayout linearl,Context context,ArrayList<Empresa> mValidarCuenta) {
+    public RecyclerAdapterValidarCuenta(LinearLayout linearl,Context context,ArrayList<Empresa> mValidarCuenta,RecyclerAdapterValidarCuenta mAdapter,RecyclerView mRecyclerAccounts) {
         this.listEmpresaValidar = mValidarCuenta;
         mContext = context;
-
+        this.adapter =mAdapter;
+        this.mRecyclerAccounts = mRecyclerAccounts;
         ll = linearl;
     }
 
@@ -85,7 +91,15 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<RecyclerA
             public void onClick(View v) {
                 Log.e("apr","APROBO");
                 mn.inicializatedFireBase();
-                mn.updateEstadoEmpresa(listEmpresaValidar.get(position).getId(),"certificacion",cuenta_certificada);
+                mn.updateEstadoEmpresa(listEmpresaValidar.get(position).getId(),
+                        "certificacion",cuenta_certificada).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listEmpresaValidar.remove(position);
+                        mAdapter = new RecyclerAdapterValidarCuenta(ll,mContext, listEmpresaValidar, mAdapter,mRecyclerAccounts);
+                        mRecyclerAccounts.setAdapter(mAdapter);
+                    }
+                });
             }
         });
 
@@ -94,7 +108,15 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<RecyclerA
             public void onClick(View v) {
                 Log.e("apr","NO APROBO");
                 mn.inicializatedFireBase();
-                mn.updateEstadoEmpresa(listEmpresaValidar.get(position).getId(),"certificacion",cuenta_no_certificada);
+                mn.updateEstadoEmpresa(listEmpresaValidar.get(position).getId(),
+                        "certificacion",cuenta_no_certificada).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        listEmpresaValidar.remove(position);
+                        mAdapter = new RecyclerAdapterValidarCuenta(ll,mContext, listEmpresaValidar, mAdapter,mRecyclerAccounts);
+                        mRecyclerAccounts.setAdapter(mAdapter);
+                    }
+                });
             }
         });
 
@@ -133,7 +155,6 @@ public class RecyclerAdapterValidarCuenta extends RecyclerView.Adapter<RecyclerA
             txtAndId.add(new String[] {"No hay nit anexado ",""});
             Toast.makeText(mContext,"No hay documento para descargar",Toast.LENGTH_SHORT).show();
         }else {
-            Log.e("TAG",empresa.getNit());
             txtAndId.add(new String[]  {"Hoja de vida anexada",empresa.getNit()});
         }
 

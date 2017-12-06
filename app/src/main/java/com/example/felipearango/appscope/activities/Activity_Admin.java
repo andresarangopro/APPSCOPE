@@ -42,7 +42,7 @@ public class Activity_Admin extends MainActivity {
         View contentView = inflater.inflate(R.layout.activity_admin, null, false);
         mDrawer.addView(contentView, 0);
         listENoCertificadas();
-        iniciar();
+
     }
 
     private void iniciar(){
@@ -50,7 +50,7 @@ public class Activity_Admin extends MainActivity {
         mRecyclerAccounts = (RecyclerView) findViewById(R.id.rv_Empresas);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerAccounts.setLayoutManager(mLinearLayoutManager);
-        mAdapter = new RecyclerAdapterValidarCuenta(ll,this,mValidarCuenta);
+        mAdapter = new RecyclerAdapterValidarCuenta(ll,this,mValidarCuenta, mAdapter,mRecyclerAccounts);
         mRecyclerAccounts.setAdapter(mAdapter);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(mRecyclerAccounts.getContext(),
                 mLinearLayoutManager.getOrientation());
@@ -67,10 +67,10 @@ public class Activity_Admin extends MainActivity {
                         Empresa empresa = objetos.getValue(Empresa.class);
                         if(empresa.getCertificacion() == cuenta_espera_certif){
                             mValidarCuenta.add(empresa);
-
                         }
                     }
                 }
+                iniciar();
             }
 
             @Override
